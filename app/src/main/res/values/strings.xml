@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">MOBILE MAP BPKP</string>
+    <string name="login_screen_title">Aplikasi Mobile\nProfil Pegawai\nBPKP</string>
+    <string name="title_activity_dashboard">Beranda</string>
+
+    <string name="navigation_drawer_open">Buka laci navigasi</string>
+    <string name="navigation_drawer_close">Tutup laci navigasi</string>
+
+    <string name="action_help">Bantuan</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_fragment_profil_seluruh_pegawai">Profil Seluruh Pegawai</string>
+    <string name="title_fragment_dashboard">Beranda</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Kata sandi (opsional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_username">Nama pengguna atau NIP tidak sesuai</string>
+    <string name="error_invalid_password">Kata sandi terlalu pendek</string>
+    <string name="error_incorrect_password">Kata sandi tidak sesuai</string>
+    <string name="error_field_required">Kolom ini wajib diisi</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="action_settings">Settings</string>
+</resources>

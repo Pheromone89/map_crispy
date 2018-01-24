@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/navigation_drawer_personal"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile_seluruh_pegawai"
+            android:icon="@drawable/ic_menu_man"
+            android:title="Profil Seluruh Pegawai" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_man"
+            android:title="Profil" />
+    </group>
+    <group
+        android:id="@+id/navigation_drawer_module"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_izin_cuti"
+            android:icon="@drawable/ic_menu_izin_cuti"
+            android:title="Izin Cuti" />
+        <item
+            android:id="@+id/nav_tugas_belajar"
+            android:icon="@drawable/ic_menu_tugas_belajar"
+            android:title="Tugas Belajar" />
+        <item
+            android:id="@+id/nav_izin_belajar"
+            android:icon="@drawable/ic_menu_izin_belajar"
+            android:title="Izin Belajar" />
+        <item
+            android:id="@+id/nav_izin_kantor"
+            android:icon="@drawable/ic_menu_izin_kantor"
+            android:title="Izin Kantor" />
+        <item
+            android:id="@+id/nav_izin_luar_negeri"
+            android:icon="@drawable/ic_menu_izin_luar_negeri"
+            android:title="Izin Luar Negeri" />
+        <item
+            android:id="@+id/nav_surat_keluar"
+            android:icon="@drawable/ic_menu_surat_keluar"
+            android:title="Surat Keluar" />
+    </group>
+    <group
+        android:id="@+id/navigation_drawer_settings"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_pengaturan"
+            android:title="Pengaturan" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Logout" />
+    </group>
+
+</menu>
