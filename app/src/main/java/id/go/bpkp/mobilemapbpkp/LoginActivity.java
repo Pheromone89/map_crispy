@@ -3,8 +3,11 @@ package id.go.bpkp.mobilemapbpkp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -23,6 +26,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,15 +60,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
-    private static final int REQUEST_READ_CONTACTS = 0;
     public static final String API_TOKEN = "id.go.bpkp.mobilemapbpkp.extra.API_TOKEN";
-    public static final String ID = "id.go.bpkp.mobilemapbpkp.extra.ID";
     public static final String NAMA = "id.go.bpkp.mobilemapbpkp.extra.NAMA";
-    public static final String EMAIL = "id.go.bpkp.mobilemapbpkp.extra.EMAIL";
     public static final String USERNAME = "id.go.bpkp.mobilemapbpkp.extra.USERNAME";
     public static final String ROLEID = "id.go.bpkp.mobilemapbpkp.extra.ROLEID";
     public static final String NIPLAMA = "id.go.bpkp.mobilemapbpkp.extra.NIPLAMA";
-    public static final String NOMORHP = "id.go.bpkp.mobilemapbpkp.extra.NOMORHP";
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -79,12 +80,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private EditText mUsername;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-    private ImageView mEmailSignInButton;
-    private String JSON_STRING;
+    private EditText
+            mUsername,
+            mPasswordView;
+    private View
+            mProgressView,
+            mLoginFormView;
+    private TextView
+            mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +101,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                     attemptLogin();
-                    return true;
                 }
                 return false;
             }
         });
 
-        mEmailSignInButton = (ImageView) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (TextView) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +116,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        Intent loginIntent = getIntent();
+        String username = loginIntent.getStringExtra("username");
+
+        mUsername.setText(username);
     }
 
     /**
@@ -135,26 +142,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
-        View focusView = null;
+//        View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+//            focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(username)) {
             mUsername.setError(getString(R.string.error_field_required));
-            focusView = mUsername;
+//            focusView = mUsername;
             cancel = true;
         }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView.requestFocus();
+//            focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -303,17 +310,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (jsonObject.getString("success").equals("true")){
                                 Intent i = new Intent(LoginActivity.this,DashboardActivity.class);
                                 i.putExtra(API_TOKEN, jsonObject.getString("api_token"));
-//                                i.putExtra(ID, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(NAMA, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(EMAIL, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(USERNAME, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(ROLEID, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(NIPLAMA, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-//                                i.putExtra(NOMORHP, jsonObject.getJSONArray("message").getJSONObject(0).getString("id") );
-
+                                i.putExtra(ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
+                                i.putExtra(NAMA, jsonObject.getJSONObject("message").getString("name"));
+                                i.putExtra(USERNAME, jsonObject.getJSONObject("message").getString("username"));
+                                i.putExtra(NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
                                 startActivity(i);
                             } else {
-                                Toast.makeText(LoginActivity.this, "Error " +jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                String failedLoginMessage = jsonObject.getString("message");
+                                if (failedLoginMessage.equals("Your username or password incorrect!")){
+                                    Snackbar.make(mEmailSignInButton, "Username atau kata sandi yang Anda masukkan salah", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                                } else if (failedLoginMessage.equals("Your password incorrect!")){
+                                    Snackbar.make(mEmailSignInButton, "Kata sandi yang Anda masukkan salah", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                                } else {
+                                    Snackbar.make(mEmailSignInButton, "Gagal melakukan Login", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -353,6 +363,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+
+    public static void setUsername(Context context, String username){
+        SharedPreferences prefs = context.getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("username", username);
+        editor.apply();
     }
 }
 

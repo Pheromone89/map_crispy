@@ -11,15 +11,20 @@ public class konfigurasi {
     //dimana File PHP tersebut berada
     //PENTING! JANGAN LUPA GANTI IP SESUAI DENGAN IP KOMPUTER DIMANA DATA PHP BERADA
     //ADD
-    public static final String URL_ADD = "none";
+    static final String URL_ADD = "none";
     //ALL PEGAWAI
     public static final String URL_GET_ALL = "http://118.97.51.140:10001/map/api/pegawai?api_token=";
+    public static final String URL_GET_ALLSMALL = "http://118.97.51.140:10001/map/api/pegawaiSingkat?api_token=";
+    public static final String URL_GET_ALLBYUNIT = "http://118.97.51.140:10001/map/api/pegawaiUnit/";
+    public static final String URL_GET_ALLBYQUERY = "http://118.97.51.140:10001/map/api/pegawaiLikeName/";
     //LOGIN
     public static final String URL_LOGIN = "http://118.97.51.140:10001/map/api/login";
     //LOGOUT
     public static final String URL_LOGOUT = "http://118.97.51.140:10001/map/api/logout?";
+    public static final String URL_GET_DASHBOARD_CONTENT_ADMIN = "CONTENT DASHBOARD UNIT";
+    public static final String URL_GET_DASHBOARD_CONTENT_USER = "URL CONTENT DASHBOARD USER";
 
-    public static final String URL_GET_EMP = "http://118.97.51.140:10001/map/api/userByUsername/";
+    public static final String URL_GET_EMP = "http://118.97.51.140:10001/map/api/pegawaiByNIP/";
     //UDPATE
     public static final String URL_UPDATE_EMP = "none";
     //HAPUS
@@ -157,7 +162,7 @@ public class konfigurasi {
     public static final String TAG_STATUS = "status";
     public static final String TAG_IDSORT = "id_sort";
     public static final String TAG_NAMA = "nama";
-    public static final String TAG_NIPPISAH = "nip";
+    public static final String TAG_NIPBARUGABUNG = "nip";
     public static final String TAG_FOTO = "foto";
 
     public static final String EMP_ID  = "id";

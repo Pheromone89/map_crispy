@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#020308</color>
     <color name="colorAccent">#FF4081</color>
     <!--Custom color palette-->
-    <color name="blueBasic">#405caa</color>
-    <color name="blueBasicDark">#182547</color>
-    <color name="blueBasicPale">#dde4f4</color>
+    <color name="blueBasicDark">#0a1733</color>
+    <color name="blueBasic">#769ab4</color>
+    <color name="blueBasicPale">#b6c5d5</color>
+    <color name="blueAccent">#3d5daa</color>
+    <color name="blueAccentPale">#6f7fbe</color>
 </resources>

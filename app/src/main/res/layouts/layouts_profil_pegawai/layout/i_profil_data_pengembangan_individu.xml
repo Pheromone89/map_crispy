@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/blueBasicDark"
         android:padding="10dp"
-        android:text="Data Diklat"
+        android:text="Data Pengembangan"
         android:textColor="@color/blueBasicPale"
         android:textSize="15sp" />
 

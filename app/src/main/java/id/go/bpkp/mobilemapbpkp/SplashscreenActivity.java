@@ -14,6 +14,7 @@ import android.widget.TextView;
 public class SplashscreenActivity extends AppCompatActivity {
     //Set waktu lama splashscreen
     private static int splashInterval = 1500;
+    public static final String USERNAME = "id.go.bpkp.mobilemapbpkp.extra.USERNAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +27,22 @@ public class SplashscreenActivity extends AppCompatActivity {
         Animation downtoup, uptodown;
         TextView splashTitle;
 
-        splashBottom = (ImageView) findViewById(R.id.splash_bottom);
+//        splashBottom = (ImageView) findViewById(R.id.splash_bottom);
         splashLogo = (ImageView) findViewById(R.id.splash_logo) ;
-        splashTitle = (TextView) findViewById(R.id.splash_title);
+//        splashTitle = (TextView) findViewById(R.id.splash_title);
         downtoup = AnimationUtils.loadAnimation(this, R.anim.downtoup);
-        uptodown = AnimationUtils.loadAnimation(this, R.anim.uptodown);
-        splashBottom.setAnimation(downtoup);
-        splashLogo.setAnimation(uptodown);
-        splashTitle.setAnimation(downtoup);
+//        uptodown = AnimationUtils.loadAnimation(this, R.anim.uptodown);
+//        splashBottom.setAnimation(downtoup);
+        splashLogo.setAnimation(downtoup);
+//        splashTitle.setAnimation(downtoup);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                startActivity(new Intent(SplashscreenActivity.this,LoginActivity.class));
+                Intent loginIntent = new Intent(SplashscreenActivity.this,LoginActivity.class);
+                loginIntent.putExtra("username", "");
+                startActivity(loginIntent);
                 this.finish();
             }
 

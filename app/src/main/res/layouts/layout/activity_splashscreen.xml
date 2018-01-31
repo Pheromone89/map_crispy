@@ -6,42 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="id.go.bpkp.mobilemapbpkp.SplashscreenActivity">
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splashup" />
-
+        android:background="@color/blueBasicPale"/>
     <ImageView
         android:id="@+id/splash_logo"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_margin="20dp"
-        android:paddingTop="20dp"
-        android:src="@drawable/logo_bpkp" />
-
-    <ImageView
-        android:id="@+id/splash_bottom"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/splashbot" />
-
-    <TextView
-        android:id="@+id/splash_title"
-        style="@style/LoginScreenText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/splash_logo"
-        android:layout_marginBottom="21dp"
-        android:gravity="center"
-        android:paddingBottom="20dp"
-        android:text="@null"
-        android:textSize="30sp" />
-
-
+        android:scaleType="fitCenter"
+        android:scaleX="0.5"
+        android:scaleY="0.45"
+        android:layout_centerInParent="true"
+        android:background="@color/blueBasicDark"
+        android:src="@drawable/splash_logo" />
 </RelativeLayout>

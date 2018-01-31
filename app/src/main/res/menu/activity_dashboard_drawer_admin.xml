@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_profile_seluruh_pegawai"
             android:icon="@drawable/ic_menu_man"
-            android:title="Profil Seluruh Pegawai" />
+            android:title="Profil Seluruh Pegawai"/>
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_man"
@@ -49,7 +49,8 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_pengaturan"
-            android:title="Pengaturan" />
+            android:title="Pengaturan"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_logout"

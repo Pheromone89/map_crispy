@@ -9,7 +9,7 @@
     android:layout_marginBottom="10dp"
     android:background="@color/blueBasicPale"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="120dp"
@@ -33,5 +33,24 @@
             android:src="@drawable/ic_login_user" />
 
     </android.support.v7.widget.CardView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mas Muhamad Dzulfkar"
+        style="@style/LoginScreenText"
+        android:gravity="center"
+        android:id="@+id/profil_individu_proficnama"
+        android:textSize="19sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/profil_individu_proficnip"
+        android:layout_height="wrap_content"
+        android:text="19891111 201210 1 001"
+        style="@style/LoginScreenText"
+        android:gravity="center"
+        android:textSize="17sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>
 
 </LinearLayout>

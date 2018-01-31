@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swiperefresh"
+    android:id="@+id/swipe_refresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blueBasicPale">
+    android:background="@color/blueBasicPale"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Hasil Pencarian"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/blueBasicDark"
+        android:textSize="15sp"
+        android:id="@+id/search_extra_label"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/list_seluruh_pegawai"
@@ -13,4 +26,4 @@
         android:divider="@color/blueBasic"
         android:dividerHeight="1dp"/>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

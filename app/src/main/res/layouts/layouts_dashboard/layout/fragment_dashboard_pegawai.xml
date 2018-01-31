@@ -6,7 +6,11 @@
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="HelloDude"/>
+        android:layout_height="match_parent"
+        android:text="Dashboard Pegawai"
+        android:textSize="70sp"
+        android:gravity="center"
+        style="@style/LoginScreenText"
+        android:background="@color/blueBasic"/>
 
 </LinearLayout>

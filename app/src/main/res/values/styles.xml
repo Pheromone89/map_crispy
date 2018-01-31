@@ -20,6 +20,19 @@
         <item name="android:textColor">@color/blueBasic</item>
     </style>
 
+    <style name="IndividuTextTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/blueBasicPale</item>
+        <item name="android:background">@color/blueBasicDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="IndividuTextContent" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/blueBasicDark</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
     <style name="NOActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -31,7 +44,7 @@
     </style>
 
     <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/help_icon</item>
+        <item name="android:src">@drawable/ic_bantuan</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
