@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/profil_individu_data_pokok_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/profil_individu_data_pokok"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/i_profil_pegawai_foto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/include2"
+                layout="@layout/i_profil_pegawai_data_pokok"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blueBasicDark"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/IndividuTextTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:text="@string/copyright"
+            android:textColor="@color/whiteAlternate" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,16 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <android.support.v4.view.ViewPager
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dashboard_view_pager">
-        <android.support.v4.view.PagerTabStrip
+        android:background="@color/blueBasic"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/i_dashboard_admin_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"/>
-    </android.support.v4.view.ViewPager>
-</LinearLayout>
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_jabatan_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_jfa_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_golongan_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_strata_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_usia_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <include
+            layout="@layout/i_dashboard_admin_kelamin_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blueBasicDark"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="@string/copyright"
+                android:textColor="@color/whiteAlternate" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="30dp"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_bpkp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

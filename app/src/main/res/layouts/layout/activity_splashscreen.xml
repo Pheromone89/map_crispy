@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="id.go.bpkp.mobilemapbpkp.SplashscreenActivity">
+    tools:context="id.go.bpkp.mobilemapbpkp.splashscreen.SplashscreenActivity">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blueBasicPale"/>
+        android:background="@color/blueBasicPale" />
+
     <ImageView
         android:id="@+id/splash_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:scaleX="0.5"
-        android:scaleY="0.45"
         android:layout_centerInParent="true"
-        android:background="@color/blueBasicDark"
-        android:src="@drawable/splash_logo" />
+        android:scaleType="fitCenter"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@drawable/splashscreen_logo" />
+
+    <TextView
+        android:id="@+id/version_name"
+        style="@style/IndividuTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="Mobile MAP BPKP versi "
+        android:textColor="@color/whiteAlternate" />
 </RelativeLayout>

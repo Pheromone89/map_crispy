@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
     app:cardBackgroundColor="@color/blueBasicPale"
     app:cardCornerRadius="0dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/whiteAlternate"
         android:orientation="horizontal"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="15dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="center">
 
             <android.support.v7.widget.CardView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:elevation="12dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 android:thicknessRatio="1.9"
-                app:cardCornerRadius="40dp">
+                app:cardCornerRadius="20dp">
 
                 <ImageView
                     android:id="@+id/profic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:src="@drawable/logo_bpkp" />
 
@@ -53,9 +53,9 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
@@ -66,6 +66,7 @@
                 android:id="@+id/nama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="Mas Muhamad Dzulfikar" />
@@ -74,43 +75,41 @@
                 android:id="@+id/nipbaru"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:textSize="15sp"
                 tools:text="19891111 201210 1 001" />
 
             <TextView
                 android:id="@+id/jabatan_singkat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:textColor="@android:color/black"
                 android:textSize="15sp"
                 tools:text="test" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/unit"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:textSize="15sp"
                     tools:text="Ropeg" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_thumb_up_black_24dp"
-                    android:layout_marginRight="10dp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_thumb_down_black_24dp" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="15dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="999dp"
+        android:layout_height="2dp"
+        android:background="@color/blueBasic" />
 </LinearLayout>

@@ -4,6 +4,14 @@
     tools:showIn="navigation_view">
 
     <group
+        android:id="@+id/navigation_drawer_home"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_drawer_dashboard"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Beranda" />
+    </group>
+    <group
         android:id="@+id/navigation_drawer_personal"
         android:checkableBehavior="single">
         <item
@@ -21,27 +29,33 @@
         <item
             android:id="@+id/nav_izin_cuti"
             android:icon="@drawable/ic_menu_izin_cuti"
-            android:title="Izin Cuti" />
+            android:title="Izin Cuti"
+            android:visible="true" />
         <item
             android:id="@+id/nav_tugas_belajar"
             android:icon="@drawable/ic_menu_tugas_belajar"
-            android:title="Tugas Belajar" />
+            android:title="Tugas Belajar"
+            android:visible="false" />
         <item
             android:id="@+id/nav_izin_belajar"
             android:icon="@drawable/ic_menu_izin_belajar"
-            android:title="Izin Belajar" />
+            android:title="Izin Belajar"
+            android:visible="false" />
         <item
             android:id="@+id/nav_izin_kantor"
             android:icon="@drawable/ic_menu_izin_kantor"
-            android:title="Izin Kantor" />
+            android:title="Izin Kantor"
+            android:visible="false" />
         <item
             android:id="@+id/nav_izin_luar_negeri"
             android:icon="@drawable/ic_menu_izin_luar_negeri"
-            android:title="Izin Luar Negeri" />
+            android:title="Izin Luar Negeri"
+            android:visible="false" />
         <item
             android:id="@+id/nav_surat_keluar"
             android:icon="@drawable/ic_menu_surat_keluar"
-            android:title="Surat Keluar" />
+            android:title="Surat Keluar"
+            android:visible="false" />
     </group>
     <group
         android:id="@+id/navigation_drawer_settings"

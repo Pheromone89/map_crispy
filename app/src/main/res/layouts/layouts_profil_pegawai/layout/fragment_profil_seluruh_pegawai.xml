@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_refresh_view"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blueBasicPale"
-    android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/search_extra_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Hasil Pencarian"
-        android:padding="10dp"
         android:gravity="center"
+        android:padding="10dp"
         android:textColor="@color/blueBasicDark"
         android:textSize="15sp"
-        android:id="@+id/search_extra_label"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:text="Hasil Pencarian" />
 
-    <ListView
-        android:id="@+id/list_seluruh_pegawai"
+    <ProgressBar
+        android:id="@+id/seluruh_pegawai_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/blueBasic"
-        android:dividerHeight="1dp"/>
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_seluruh_pegawai"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
 
 </LinearLayout>

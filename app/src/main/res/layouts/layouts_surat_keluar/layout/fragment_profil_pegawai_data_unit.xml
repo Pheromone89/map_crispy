@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/profil_individu_data_unit_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:visibility="gone" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profil_pegawai_data_unit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_data_unit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+</LinearLayout>

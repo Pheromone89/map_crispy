@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/data_pokok_individu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/whiteAlternate"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Data Pokok Pegawai"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp"
+                    android:paddingTop="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Nama Lengkap" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_nama"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="Nama Pegawai" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="NIP" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_nip"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="19970707 201801 2 001" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Pangkat" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_pangkat"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Jabatan" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_jabatan"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Unit" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_unit"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Pendidikan" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_pendidikan"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="TTGL / Usia" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_ttgl"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Agama" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_agama"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Alamat" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_alamat"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profil_individu_hp_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Nomor handphone" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_no_hp"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profil_individu_email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Email"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_email"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Lama dalam jabatan" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_lama_jab"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Lama dalam unit" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_lama_unit"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Lama dalam pangkat" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_lama_kp"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="TMT Pensiun" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_tmt_pensiun"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="PIM" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_sertpim"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="JFA" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_sertjfa"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Prof." />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_sertprof"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Total PAK" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_akre"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLength="9"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Nilai Toefl" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_toefl"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLength="5"
+                        android:paddingLeft="5dp"
+                        android:text="--" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Nama pasangan" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_pasangan"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="AH / Non-BPKP" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Jumlah anak" />
+
+                    <TextView
+                        style="@style/IndividuTextContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/profil_individu_jumlahanak"
+                        style="@style/IndividuTextContent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:text="NA" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

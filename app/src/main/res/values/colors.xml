@@ -2,11 +2,20 @@
 <resources>
     <color name="colorPrimary">#0b1634</color>
     <color name="colorPrimaryDark">#020308</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2bbd7e</color>
+    <color name="transparent">#00ff4081</color>
     <!--Custom color palette-->
-    <color name="blueBasicDark">#0a1733</color>
-    <color name="blueBasic">#769ab4</color>
-    <color name="blueBasicPale">#b6c5d5</color>
+    <color name="blueBasicDark">#006db3</color>
+    <color name="blueBasic">#2596d2</color>
+    <color name="blueBasicPale">#63ccff</color>
     <color name="blueAccent">#3d5daa</color>
-    <color name="blueAccentPale">#6f7fbe</color>
+    <color name="blueAccentPale">#6f7fbe</color>>
+    <color name="whiteAlternate">#dce3f3</color>
+    <!--Item Dashboard Color-->
+    <color name="blue">@android:color/holo_blue_dark</color>
+    <color name="red">@android:color/holo_red_dark</color>
+    <color name="green">@android:color/holo_green_dark</color>
+    <color name="yellow">#f4d342</color>
+    <color name="orange">@android:color/holo_orange_dark</color>
+    <color name="purple">@android:color/holo_purple</color>
 </resources>

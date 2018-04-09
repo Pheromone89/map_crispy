@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_help"
+        android:icon="@drawable/ic_bantuan"
         android:orderInCategory="100"
         android:title="@string/action_help"
-        app:showAsAction="always"
         android:visible="true"
-        android:icon="@drawable/ic_bantuan"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_search"
-        android:title="@string/search_title"
         android:icon="@drawable/ic_cari"
-        app:showAsAction="ifRoom|withText"
+        android:title="@string/search_title"
+        android:visible="false"
         app:actionViewClass="android.widget.SearchView"
-        android:visible="false" />
+        app:showAsAction="ifRoom|withText" />
 </menu>

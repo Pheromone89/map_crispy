@@ -1,17 +1,72 @@
 <resources>
-    <string name="app_name">MOBILE MAP BPKP</string>
+    <string name="app_name">MAP MOBILE BPKP</string>
     <string name="login_screen_title">Aplikasi Mobile\nProfil Pegawai\nBPKP</string>
     <string name="title_activity_dashboard">Beranda</string>
+    <string name="copyright">© Renbang 2018</string>
 
     <string name="navigation_drawer_open">Buka laci navigasi</string>
     <string name="navigation_drawer_close">Tutup laci navigasi</string>
 
     <string name="action_help">Bantuan</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="title_fragment_profil_seluruh_pegawai">Profil Seluruh Pegawai</string>
-    <string name="title_fragment_profil_pegawai_individu">Profil Pegawai</string>
+    <!--Strings terkait fragment-->
     <string name="title_fragment_dashboard_admin">Beranda Administrator</string>
     <string name="title_fragment_dashboard_pegawai">Beranda Pegawai</string>
+    <string name="title_fragment_cuti_dashboard_pegawai">Beranda Cuti Pegawai</string>
+    <string name="title_fragment_cuti_dashboard_admin">Beranda Cuti Admin</string>
+    <string name="title_fragment_cuti_data">Data Cuti Pegawai</string>
+    <string name="title_fragment_cuti_pengajuan">Pengajuan Cuti Pegawai</string>
+    <!--Strings terkait dashboard-->
+    <string-array name="absensi_status_message">
+        <item>@string/datang_1</item>
+        <item>@string/datang_2</item>
+        <item>@string/datang_3</item>
+        <item>@string/datang_4</item>
+        <item>@string/pulang_1</item>
+        <item>@string/pulang_2</item>
+        <item>@string/pulang_3</item>
+        <item>@string/pulang_4</item>
+    </string-array>
+    <string name="datang_1">Anda belum merekam kehadiran</string>
+    <string name="datang_2">Anda tidak hadir tepat waktu</string>
+    <string name="datang_3">Anda terlambat</string>
+    <string name="datang_4">Anda hadir tepat waktu</string>
+    <string name="pulang_1">Masih dalam jam kerja</string>
+    <string name="pulang_2">Anda belum merekam kepulangan</string>
+    <string name="pulang_3">Anda pulang tepat waktu</string>
+    <string name="pulang_4">Anda pulang lebih cepat dari jadwal</string>
+    <!--Strings terkait form cuti-->
+    <string name="peringatan_tidak_ada_atasan_langsung">Pegawai belum dapat mengajukan cuti jika belum melakukan setting atasan langsung. Silakan melakukan setting atasan langsung melalui aplikasi MAP BPKP.</string>
+    <string name="spinner_pengajuan_cuti_tahunan">Cuti Tahunan</string>
+    <string name="spinner_pengajuan_cuti_besar">Cuti Besar</string>
+    <string name="spinner_pengajuan_cuti_sakit">Cuti Sakit</string>
+    <string name="spinner_pengajuan_cuti_melahirkan">Cuti Melahirkan</string>
+    <string name="spinner_pengajuan_cuti_alasan_penting">Cuti Alasan Penting</string>
+    <string name="spinner_pengajuan_cuti_di_luar_tanggungan_negara">Cuti Di Luar Tanggungan Negara</string>
+    <string-array name="spinner_jenis_cuti">
+        <item>@string/spinner_pengajuan_cuti_tahunan</item>
+        <item>@string/spinner_pengajuan_cuti_besar</item>
+        <item>@string/spinner_pengajuan_cuti_di_luar_tanggungan_negara</item>
+        <item>@string/spinner_pengajuan_cuti_alasan_penting</item>
+        <item>@string/spinner_pengajuan_cuti_melahirkan</item>
+        <item>@string/spinner_pengajuan_cuti_sakit</item>
+    </string-array>
+    <string name="spinner_pengajuan_cuti_alasan_sakit_sakit">Menderita sakit</string>
+    <string name="spinner_pengajuan_cuti_alasan_sakit_keguguran">Gugur kandungan</string>
+    <string name="spinner_pengajuan_cuti_alasan_sakit_kecelakaan">Mengalami kecelakaan</string>
+    <string-array name="spinner_alasan_cuti_sakit">
+        <item>@string/spinner_pengajuan_cuti_alasan_sakit_sakit</item>
+        <item>@string/spinner_pengajuan_cuti_alasan_sakit_keguguran</item>
+        <item>@string/spinner_pengajuan_cuti_alasan_sakit_kecelakaan</item>
+    </string-array>
+    <string name="title_fragment_cuti_seluruh_pegawai">Pengajuan Cuti Pegawai</string>
+    <string name="title_fragment_profil_seluruh_pegawai">Profil Seluruh Pegawai</string>
+    <string name="title_fragment_profil_pegawai">Profil Pegawai</string>
+    <!--Strings terkait page di framgnet pegawai individu-->
+    <string name="title_fragment_page_data_pokok">Data Pokok</string>
+    <string name="title_fragment_page_data_diklat">Data Diklat</string>
+    <string name="title_fragment_page_data_unit">Data Unit</string>
+    <string name="title_fragment_page_data_jabatan">Data Jabatan</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

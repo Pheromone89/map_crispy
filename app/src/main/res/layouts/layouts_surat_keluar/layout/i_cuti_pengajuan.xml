@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cuti_pengajuan_form_area"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/blueBasicPale"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data Pengajuan Cuti Pegawai" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:id="@+id/form_pengajuan_cuti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Jenis Cuti" />
+
+                    <Spinner
+                        android:id="@+id/cuti_pengajuan_spinner_jenis"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:entries="@array/spinner_jenis_cuti"
+                        android:prompt="@string/spinner_pengajuan_cuti_tahunan" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tanggal pengajuan" />
+
+                    <EditText
+                        android:id="@+id/cuti_pengajuan_tanggal_pengajuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+
+                        android:ems="10"
+                        android:hint="Tanggal Pengajuan"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:textColor="@color/blueBasicDark"
+                        android:textColorHint="@color/blueBasicDark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Alamat pemohon" />
+
+                    <EditText
+                        android:id="@+id/cuti_pengajuan_alamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+
+                        android:ems="10"
+                        android:hint="Alamat Pemohon"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/blueBasicDark"
+                        android:textColorHint="@color/blueBasicDark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nomor telepon" />
+
+                    <EditText
+                        android:id="@+id/cuti_pengajuan_nomor_telepon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+
+                        android:ems="10"
+                        android:hint="Nomor Telepon"
+                        android:inputType="number"
+                        android:maxLines="3"
+                        android:textColor="@color/blueBasicDark"
+                        android:textColorHint="@color/blueBasicDark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nomor surat" />
+
+                    <EditText
+                        android:id="@+id/cuti_pengajuan_nomor_surat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+
+                        android:ems="10"
+                        android:hint="Nomor Surat"
+                        android:inputType="text"
+                        android:maxLines="3"
+                        android:textColor="@color/blueBasicDark"
+                        android:textColorHint="@color/blueBasicDark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tanggal surat" />
+
+                    <EditText
+                        android:id="@+id/cuti_pengajuan_tanggal_surat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+
+                        android:ems="10"
+                        android:hint="Tanggal Surat"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:textColor="@color/blueBasicDark"
+                        android:textColorHint="@color/blueBasicDark"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/pengajuan_cuti_alasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Alasan pengajuan cuti" />
+
+                        <EditText
+                            android:id="@+id/cuti_pengajuan_alasan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:gravity="top"
+                            android:hint="Alasan Pengajuan Cuti"
+                            android:inputType="textMultiLine"
+                            android:lines="3"
+                            android:maxLines="3"
+                            android:textColor="@color/blueBasicDark"
+                            android:textColorHint="@color/blueBasicDark"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pengajuan_cuti_alasan_sakit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Alasan pengajuan cuti sakit" />
+
+                        <Spinner
+                            android:id="@+id/cuti_pengajuan_spinner_alasan_sakit"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_alasan_cuti_sakit"
+                            android:prompt="@string/spinner_pengajuan_cuti_alasan_sakit_sakit" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pengajuan_cuti_alasan_melahirkan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Persalinan ke-" />
+
+                        <EditText
+                            android:id="@+id/cuti_pengajuan_persalinan_ke"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:ems="10"
+                            android:inputType="number"
+                            android:maxLines="3"
+                            android:textColor="@color/blueBasicDark"
+                            android:textColorHint="@color/blueBasicDark"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
