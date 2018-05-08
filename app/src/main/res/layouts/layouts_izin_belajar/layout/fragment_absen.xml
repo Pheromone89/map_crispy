@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/i_dashboard_cuti_pegawai_profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" />
+
+    <include
+        layout="@layout/i_absen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteAlternate"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="USER LOCATION" />
+
+        <TextView
+            android:id="@+id/tvlat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lat" />
+
+        <TextView
+            android:id="@+id/tvlong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="long" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/whiteAlternate"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Referensi Posisi Kantor:" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WEST  : " />
+
+            <TextView
+                android:id="@+id/west"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loc" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EAST  : " />
+
+            <TextView
+                android:id="@+id/east"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loc" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NORTH  : " />
+
+            <TextView
+                android:id="@+id/north"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loc" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SOUTH  : " />
+
+            <TextView
+                android:id="@+id/south"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loc" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/absen_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="refresh location" />
+
+</LinearLayout>

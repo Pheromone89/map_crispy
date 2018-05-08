@@ -61,6 +61,7 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARDCONTENT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
@@ -323,34 +324,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                                 // api_token
                                 i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
-                                // nama lengkap tanpa gelar
                                 i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
                                 i.putExtra(INTENT_USERNAME, username);
                                 i.putExtra(INTENT_PASSWORD, password);
-                                // nip baru tanpa spasi/username
                                 i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("username"));
-                                // nip lama
                                 i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
-                                // role id
                                 i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
                                 i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
-                                // no hp
                                 i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
+                                i.putExtra(INTENT_IMEI, mImei);
                                 i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
-                                // check atasan langsung
-                                // bool atasan langsung
                                 i.putExtra("is_redirect", false);
                                 boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
                                 if (!tidakPunyaAtasanLangsung) {
                                     i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-                                    // nama atasan langsung
                                     i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
-                                    // nip atasan langsung
                                     i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
                                 }
                                 editor.putString(INTENT_USERNAME, username);
                                 editor.putString(INTENT_PASSWORD, password);
-                                editor.commit();
+                                editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
+                                editor.apply();
                                 startActivity(i);
                             } else {
                                 String failedLoginMessage = jsonObject.getString("message");

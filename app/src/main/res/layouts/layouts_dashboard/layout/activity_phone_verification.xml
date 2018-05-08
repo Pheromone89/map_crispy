@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:orientation="vertical"
+    tools:context="id.go.bpkp.mobilemapbpkp.login.PhoneVerificationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/phone_verification_warning_image"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_peringatan_merah" />
+
+            <TextView
+                android:id="@+id/phone_verification_message"
+                style="@style/IndividuTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Ups! Nomor handphone Anda belum terekam dalam database kepegawaian BPKP" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:textColorHint="@android:color/white">
+
+                <EditText
+                    android:id="@+id/phone_verification_phone_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Nomor Handphone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="@color/blueBasicPale"
+                    android:textColorHint="@color/blueBasicPale" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        app:cardCornerRadius="5dp">
+
+                        <TextView
+                            android:id="@+id/phone_verification_confirmation_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/blueBasic"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Apakah Anda yakin?"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/phone_verification_simpan_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/blueBasic"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="OK"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:id="@+id/phone_verification_confirmation_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/phone_verification_yes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@android:color/holo_green_dark"
+                            app:cardCornerRadius="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:text="YA"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+                        </android.support.v7.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent" />
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/phone_verification_no"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@android:color/holo_red_light"
+                            app:cardCornerRadius="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:text="BATAL"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

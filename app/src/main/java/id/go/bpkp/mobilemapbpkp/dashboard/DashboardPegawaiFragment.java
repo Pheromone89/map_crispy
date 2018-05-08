@@ -1,33 +1,57 @@
 package id.go.bpkp.mobilemapbpkp.dashboard;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.absen.AbsenDataFragment;
+import id.go.bpkp.mobilemapbpkp.absen.SingleShotLocationProvider;
+import id.go.bpkp.mobilemapbpkp.cuti.CutiPengajuanPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
@@ -37,6 +61,24 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 public class DashboardPegawaiFragment extends Fragment {
 
+    protected static final float LOCSOUTH = -6.19225f;
+    protected static final float LOCEAST = 106.87157f;
+    protected static final float LOCNORTH = -6.19290f;
+    protected static final float LOCWEST = 106.87018f;
+    //    protected static final float LOCSOUTH = 0f;
+//    protected static final float LOCEAST = 0f;
+//    protected static final float LOCNORTH = 0f;
+//    protected static final float LOCWEST = 0f;
+    // 1^0 dalam kilometer
+    protected static final float KONSTAN = 111322f;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    boolean isSudahAbsenPagi, isSudahAbsenSore;
+    boolean coarseLoc, fineLoc, isLatitudeOnPosition, isLongitudeOnPosition;
+    float userLat, userLong, devlatfloat, devlongfloat;
+    Button refreshButton;
+    CardView absenCardView, absenWarningCardView, absenLoadingCardView, absenInactiveCardView;
+    int currentHour;
     private View rootView;
     private TextView
             jamDatangView,
@@ -46,7 +88,9 @@ public class DashboardPegawaiFragment extends Fragment {
             statusDatangView,
             statusPulangView;
     private ImageView
-            statusIcon;
+            refreshLocationButton,
+            historyButton,
+            fingerIcon;
     private CardView
             datangCardView,
             pulangCardView,
@@ -59,6 +103,7 @@ public class DashboardPegawaiFragment extends Fragment {
             mNipLama,
             mUserToken,
             mFoto,
+            mImei,
             mContentUrl;
     private String
             jamDatang,
@@ -68,16 +113,12 @@ public class DashboardPegawaiFragment extends Fragment {
             statusDatang,
             statusPulang,
             statusAbsen;
-    private ArrayList<StatusKehadiran>
-            statusMessageArrayList;
     private int
             mRoleId,
             skenarioDatang,
             skenarioPulang;
     private SimpleDateFormat
             format;
-    private StatusKehadiran
-            statusKehadiran;
 
     public DashboardPegawaiFragment() {
 
@@ -86,7 +127,7 @@ public class DashboardPegawaiFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard_pegawai, null);
+        return inflater.inflate(R.layout.fragment_dashboard_pegawai_b, null);
     }
 
     @Override
@@ -94,6 +135,9 @@ public class DashboardPegawaiFragment extends Fragment {
         rootView = view;
         setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_dashboard_pegawai);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
 
         //bundle dari fragment sebelumnya
         //URL foto
@@ -108,57 +152,19 @@ public class DashboardPegawaiFragment extends Fragment {
         mContentUrl = konfigurasi.URL_GET_ABSEN;
         //role id
         mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
+        // IMEI
+        mImei = this.getArguments().getString(PassedIntent.INTENT_IMEI);
 
         format = new SimpleDateFormat("HH:mm:ss");
 
-        initiateView();
-        initiateStatusKehadiran();
-        getJSON();
-    }
+        isSudahAbsenPagi = sharedPreferences.getBoolean("sudah_absen_pagi", false);
+        isSudahAbsenSore = sharedPreferences.getBoolean("sudah_absen_sore", false);
+        Calendar rightNow = Calendar.getInstance();
+        currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
 
-    private void initiateStatusKehadiran() {
-        String[] statusMessageArray = getResources().getStringArray(R.array.absensi_status_message);
-        // skenario 0, sebelum jam 8, pegawai belum absen
-        statusMessageArrayList = new ArrayList<>();
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[0],
-                getResources().getColor(R.color.green)
-        ));
-        // skenario 1, pegawai absen sebelum jam 8
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[3],
-                getResources().getColor(R.color.green)
-        ));
-        // skenario 2, lewat jam 8, pegawai blm absen
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[1],
-                getResources().getColor(R.color.orange)
-        ));
-        // skenario 3, lewat jam 8, pegawai absen >jam 8
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[2],
-                getResources().getColor(R.color.red)
-        ));
-        // skenario 4, belum jam pulang, pegawai blm absen
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[4],
-                getResources().getColor(R.color.green)
-        ));
-        // skenario 5, lewat jam pulang, pegawai blm absen
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[5],
-                getResources().getColor(R.color.orange)
-        ));
-        // skenario 6, belum jam pulang, pegawai sudah absen
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[7],
-                getResources().getColor(R.color.red)
-        ));
-        // skenario 7, lewat jam pulang, pegawai sudah absen
-        statusMessageArrayList.add(new StatusKehadiran(
-                statusMessageArray[6],
-                getResources().getColor(R.color.green)
-        ));
+        initiateView();
+        getJSON();
+        setOnClickMethod();
     }
 
     @Override
@@ -169,33 +175,10 @@ public class DashboardPegawaiFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void getSkenario() {
-        // get current time
-        Date waktuSekarang = Calendar.getInstance().getTime();
-        int hari = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        // minggu = 1
-        try {
-            Date datangTimestamp = format.parse(jamDatang);
-            Date pulangTimestamp = format.parse(jamPulang);
-
-            long jamDatangPegawai = datangTimestamp.getTime();
-            long jamPulangTimestamp = pulangTimestamp.getTime();
-            long batasJamDatang = 28800000;
-            long batasJamPulang;
-            if (hari == 6) {
-                batasJamPulang = 61200000;
-            } else {
-                batasJamPulang = 59400000;
-            }
-//            // masukkin list skenario di sini sama situationalnya
-//            if ( waktuSekarang.getTime() <= batasJamDatang && jamDatangPegawai == /*hari ini 00:00*/) {
-//
-//            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-//        skenarioDatang = ;
-//        skenarioPulang = ;
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLocation();
     }
 
     private void initiateView() {
@@ -206,7 +189,13 @@ public class DashboardPegawaiFragment extends Fragment {
         hariTanggalView = rootView.findViewById(R.id.dashboard_pegawai_hari_tanggal);
         statusMessageView = rootView.findViewById(R.id.dashboard_pegawai_status_message);
 
-        statusIcon = rootView.findViewById(R.id.dashboard_pegawai_status_icon);
+        absenCardView = rootView.findViewById(R.id.dashboard_pegawai_absen);
+        historyButton = rootView.findViewById(R.id.absen_history_button);
+        absenWarningCardView = rootView.findViewById(R.id.dashboard_pegawai_absen_warning);
+        refreshLocationButton = rootView.findViewById(R.id.absen_refresh_location);
+        absenLoadingCardView = rootView.findViewById(R.id.dashboard_pegawai_absen_loading);
+        absenInactiveCardView = rootView.findViewById(R.id.dashboard_pegawai_absen_inactive);
+        fingerIcon = rootView.findViewById(R.id.dashboard_pegawai_finger_icon);
 
         datangCardView = rootView.findViewById(R.id.dashboard_pegawai_datang_card);
         pulangCardView = rootView.findViewById(R.id.dashboard_pegawai_pulang_card);
@@ -220,40 +209,50 @@ public class DashboardPegawaiFragment extends Fragment {
         statusDatangView.setText(statusDatang);
         statusPulangView.setText(statusPulang);
 
-        statusMessageView.setText(statusAbsen);
-
-        hariTanggalView.setText(hariTanggal);
-
-        // skenario 0, sebelum jam 8, pegawai belum absen
-        // skenario 1, pegawai absen sebelum jam 8
-        // skenario 2, lewat jam 8, pegawai blm absen
-        // skenario 3, lewat jam 8, pegawai absen >jam 8
-        // skenario 4, belum jam pulang, pegawai blm absen
-        // skenario 5, lewat jam pulang, pegawai blm absen
-        // skenario 6, belum jam pulang, pegawai sudah absen
-        // skenario 7, lewat jam pulang, pegawai sudah absen
-
-//        getSkenario();
-        switch (skenarioDatang) {
-            case 0:
+        switch (statusDatang) {
+            case "Anda Tidak Absen Datang":
+                datangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 break;
-            case 1:
+            case "Anda Hadir Tepat Waktu":
+                datangCardView.setCardBackgroundColor(getResources().getColor(R.color.green));
                 break;
-            case 2:
-                break;
-            case 3:
+            case "Anda Datang Terlambat (DT)":
+                datangCardView.setCardBackgroundColor(getResources().getColor(R.color.orange));
                 break;
         }
+        switch (statusPulang) {
+            case "Anda Belum Absen Pulang":
+                pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
+                break;
+            case "Anda Tidak Absen Pulang":
+                pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
+                break;
+            case "Anda Pulang Cepat (PC)":
+                pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+            case "Anda Pulang Tepat Waktu":
+                pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.green));
+                break;
 
-        switch (skenarioPulang) {
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
+        }
+
+        statusMessageView.setText(statusAbsen);
+        hariTanggalView.setText(hariTanggal);
+
+        if (currentHour < 12) {
+            if (isSudahAbsenPagi) {
+                absenInactiveCardView.setVisibility(View.VISIBLE);
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.GONE);
+                absenWarningCardView.setVisibility(View.GONE);
+            }
+        } else {
+            if (isSudahAbsenSore) {
+                absenInactiveCardView.setVisibility(View.VISIBLE);
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.GONE);
+                absenWarningCardView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -299,22 +298,24 @@ public class DashboardPegawaiFragment extends Fragment {
         try {
             jsonObject = new JSONObject(JSON_STRING);
             jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            jamDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG);
-            jamPulang = jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG);
             hariTanggal = jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
+            jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
+            jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG));
             statusDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSDATANG);
             statusPulang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSPULANG);
             statusAbsen = jsonObject.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA);
 
-            //formatting
-//            Date datangTimestamp = format.parse(jamDatang);
-//            Date pulangTimestamp = format.parse(jamPulang);
-//            Date hariTanggalTimestamp = format.parse(hariTanggal);
+            if (jamDatang.equals("-")) {
+                isSudahAbsenPagi = false;
+            } else {
+                isSudahAbsenPagi = true;
+            }
+            if (jamPulang.equals("-")) {
+                isSudahAbsenSore = false;
+            } else {
+                isSudahAbsenSore = true;
+            }
 
-//            jamDatang = getDate(datangTimestamp.getTime(), "HH:mm:ss");
-//            jamPulang = getDate(pulangTimestamp.getTime(), "HH:mm:ss");
-//            hariTanggal = getDate(hariTanggalTimestamp.getTime(), "EEE, dd MMMM yyyy");
-//            statusMessage = "data belum tersedia";
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
@@ -322,28 +323,233 @@ public class DashboardPegawaiFragment extends Fragment {
         populateView();
     }
 
-    private class StatusKehadiran {
-        String status;
-        int colorCode;
-
-        public StatusKehadiran(String status, int colorCode) {
-            this.status = status;
-            this.colorCode = colorCode;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public int getColorCode() {
-            return colorCode;
+    private String checkNull(String string) {
+        if (string.equals("null")) {
+            return "-";
+        } else {
+            return string;
         }
     }
-//    private String checkNull (String string){
-//        if (string.equals("null")){
-//            return "-";
-//        } else {
-//            return string;
-//        }
-//    }
+
+    private void setOnClickMethod() {
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+
+                AbsenDataFragment absenDataFragment = new AbsenDataFragment();
+                absenDataFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, absenDataFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+        absenCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getActivity(), "Fitur masih dalam pengembangan", Toast.LENGTH_SHORT).show();
+                getLatitudeLongitude();
+                setFingerCardView(true, userLat, userLong);
+                if (isValidForAbsen(userLat, userLong)) {
+                    postDataAbsensi();
+                } else {
+                    Toast.makeText(getActivity(), "Anda telah keluar dari area absensi", Toast.LENGTH_SHORT).show();
+                    setFingerCardView(true, 0f, 0f);
+                    getLatitudeLongitude();
+                }
+            }
+        });
+        absenCardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    absenCardView.setCardBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    absenCardView.setCardBackgroundColor(getResources().getColor(R.color.blueBasicDark));
+                }
+                return false;
+            }
+        });
+        absenWarningCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLocation();
+                Toast.makeText(getActivity(), "Anda tidak dapat absen di luar area yang ditetapkan", Toast.LENGTH_SHORT).show();
+            }
+        });
+        absenInactiveCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentHour < 12) {
+                    Toast.makeText(getActivity(), "Anda sudah Absen Pagi", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Anda sudah Absen Sore", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        refreshLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLocation();
+            }
+        });
+    }
+
+    private void postDataAbsensi() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, konfigurasi.URL_POST_ABSEN + mUserToken,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getString("success").equals("true")) {
+                                Toast.makeText(getActivity(), "Absen sukses", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Absen gagal terekam", Toast.LENGTH_SHORT).show();
+                            }
+                            setFingerCardView(false, userLat, userLong);
+                            getJSON();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof AuthFailureError) {
+                            Snackbar.make(rootView, "Gagal mengotentifikasi", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                        } else if (error instanceof ServerError) {
+                            Snackbar.make(rootView, "Masalah pada server", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                        } else if (error instanceof TimeoutError) {
+                            Snackbar.make(rootView, "Waktu koneksi habis", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                        } else if (error instanceof NetworkError) {
+                            Snackbar.make(rootView, "Gagal menghubungkan dengan jaringan", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                        } else if (error instanceof ParseError) {
+                            Snackbar.make(rootView, "Gagal parsing data", Snackbar.LENGTH_LONG).setAction("Message", null).show();
+                        }
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("niplama", mNipLama);
+                params.put("lat", Float.toString(userLat));
+                params.put("long", Float.toString(userLong));
+                params.put("imei", mImei);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Accept", "application/json");
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(stringRequest);
+    }
+
+    private void hitungDeviasi(float latitude, float longitude) {
+        devlatfloat = (latitude - ((LOCNORTH + LOCSOUTH) / 2)) * KONSTAN;
+        devlongfloat = (longitude - ((LOCWEST + LOCEAST) / 2)) * KONSTAN;
+    }
+
+    private void getLatitudeLongitude() {
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        } else {
+            coarseLoc = true;
+        }
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        } else {
+            fineLoc = true;
+        }
+        if (coarseLoc && fineLoc) {
+            SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+                    new SingleShotLocationProvider.LocationCallback() {
+                        @Override
+                        public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                            userLat = location.latitude;
+                            userLong = location.longitude;
+                            setFingerCardView(false, userLat, userLong);
+                        }
+                    });
+        } else {
+            userLat = 0f;
+            userLong = 0f;
+            ActivityCompat.requestPermissions(
+                    getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PackageManager.PERMISSION_GRANTED);
+            ActivityCompat.requestPermissions(
+                    getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PackageManager.PERMISSION_GRANTED);
+            setFingerCardView(false, userLat, userLong);
+            Toast.makeText(getActivity(), "tolong izinkan MAP BPKP untuk mengakses GPS anda", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isValidForAbsen(float latitude, float longitude) {
+        if (latitude <= LOCNORTH || latitude >= LOCSOUTH) {
+            isLatitudeOnPosition = false;
+        } else {
+            isLatitudeOnPosition = true;
+        }
+        if (longitude >= LOCEAST || longitude <= LOCWEST) {
+            isLongitudeOnPosition = false;
+        } else {
+            isLongitudeOnPosition = true;
+        }
+        if (isLatitudeOnPosition && isLongitudeOnPosition) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void setFingerCardView(boolean status, float userLat, float userLong) {
+        if (status) {
+            absenCardView.setVisibility(View.GONE);
+            absenWarningCardView.setVisibility(View.GONE);
+            absenLoadingCardView.setVisibility(View.VISIBLE);
+        } else {
+            if (isValidForAbsen(userLat, userLong)) {
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.VISIBLE);
+                absenWarningCardView.setVisibility(View.GONE);
+            } else {
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.GONE);
+                absenWarningCardView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void refreshLocation() {
+        setFingerCardView(true, 0f, 0f);
+        getLatitudeLongitude();
+        if (currentHour < 12) {
+            if (isSudahAbsenPagi) {
+                absenInactiveCardView.setVisibility(View.VISIBLE);
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.GONE);
+                absenWarningCardView.setVisibility(View.GONE);
+            }
+        } else {
+            if (isSudahAbsenSore) {
+                absenInactiveCardView.setVisibility(View.VISIBLE);
+                absenLoadingCardView.setVisibility(View.GONE);
+                absenCardView.setVisibility(View.GONE);
+                absenWarningCardView.setVisibility(View.GONE);
+            }
+        }
+    }
 }

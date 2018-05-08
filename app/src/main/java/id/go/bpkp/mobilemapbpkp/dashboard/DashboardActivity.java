@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.absen.AbsenFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
@@ -45,6 +47,7 @@ import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARDCONTENT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
@@ -69,6 +72,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             mUserToken,
             mFoto,
             mNoHp,
+            mImei,
             mEmail,
             JSON_STRING,
             mContentUrl,
@@ -100,6 +104,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             drawer;
     Toolbar
             toolbar;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     private boolean
             tidakPunyaAtasanLangsung;
     private MenuItem helpButton;
@@ -108,6 +114,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_admin);
+
+        // set up setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
 
         //intent dashboard dari login activity
         Intent dashboardIntent = getIntent();
@@ -122,6 +132,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
         mFoto = PassedIntent.getFoto(mNipLama);
         mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
+        mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
         mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
@@ -201,6 +212,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         bundle.putString(INTENT_NIPBARU, mNipBaru);
         bundle.putString(INTENT_FOTO, mFoto);
         bundle.putString(INTENT_NOHP, mNoHp);
+        bundle.putString(INTENT_IMEI, mImei);
         bundle.putString(INTENT_EMAIL, mEmail);
         bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
         dashboardFragment.setArguments(bundle);
@@ -370,6 +382,26 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_surat_keluar) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_absen) {
+            if (openedDrawer != "nav_absen") {
+                String url = "test";
+                Bundle bundle = new Bundle();
+                bundle.putString(INTENT_USERTOKEN, mUserToken);
+                bundle.putString(INTENT_NIPLAMA, mNipLama);
+                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                bundle.putString(INTENT_NAMA, mNama);
+                bundle.putString(INTENT_FOTO, mFoto);
+                bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_NOHP, mNoHp);
+                bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
+                bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
+                bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+
+                fragment = new AbsenFragment();
+                fragment.setArguments(bundle);
+                fragmentTag = getResources().getString(R.string.title_fragment_absen);
+                openedDrawer = "nav_absen";
+            }
         } else if (id == R.id.nav_settings) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_logout) {
@@ -402,9 +434,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             String message = jsonObject.getString("success");
             if (message.equals("true")) {
                 logoutMessage = "logout sukses";
-                SharedPreferences prefs = getApplicationContext().getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.remove(INTENT_NIPBARU);
+                editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
                 editor.apply();
                 Toast.makeText(getApplicationContext(), logoutMessage, Toast.LENGTH_SHORT).show();
                 logoutIntent = new Intent(DashboardActivity.this, LoginActivity.class);

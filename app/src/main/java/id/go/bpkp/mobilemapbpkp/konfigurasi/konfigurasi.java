@@ -38,6 +38,7 @@ public class konfigurasi {
     public static final String URL_PENGAJUANCUTI = "http://118.97.51.140:10001/map/api/setcuti?api_token=";
     // PRESENSI
     public static final String URL_GET_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen/";
+    public static final String URL_POST_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen?api_token=";
     public static final String TAG_ABSEN_DATANG = "datang";
     public static final String TAG_ABSEN_PULANG = "pulang";
     public static final String TAG_ABSEN_TANGGAL = "event_date";

@@ -10,6 +10,7 @@
     <string name="action_help">Bantuan</string>
     <string name="title_activity_login">Sign in</string>
     <!--Strings terkait fragment-->
+    <string name="title_fragment_absen">Menu Absensi</string>
     <string name="title_fragment_dashboard_admin">Beranda Administrator</string>
     <string name="title_fragment_dashboard_pegawai">Beranda Pegawai</string>
     <string name="title_fragment_cuti_dashboard_pegawai">Beranda Cuti Pegawai</string>

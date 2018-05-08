@@ -6,6 +6,7 @@ package id.go.bpkp.mobilemapbpkp.konfigurasi;
 
 public class PassedIntent {
 
+    public static final String ISLOGGEDIN = "is_logged_in";
     public static final String INTENT_USERTOKEN = "user_token";
     // username yg dipake pas login
     public static final String INTENT_USERNAME = "username";
@@ -20,6 +21,7 @@ public class PassedIntent {
     public static final String INTENT_ROLEIDINT = "role_id_int";
     // no hp
     public static final String INTENT_NOHP = "no_hp";
+    public static final String INTENT_IMEI = "imei";
     // email
     public static final String INTENT_EMAIL = "email";
     // atasan langsung

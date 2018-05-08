@@ -56,6 +56,11 @@
             android:icon="@drawable/ic_menu_surat_keluar"
             android:title="Surat Keluar"
             android:visible="false" />
+        <item
+            android:id="@+id/nav_absen"
+            android:icon="@drawable/ic_menu_absen"
+            android:title="Absen"
+            android:visible="false" />
     </group>
     <group
         android:id="@+id/navigation_drawer_settings"

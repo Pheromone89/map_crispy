@@ -28,6 +28,7 @@ android {
                             'src/main/res/layouts/layouts_profil_pegawai',
                             'src/main/res/layouts/layouts_surat_keluar',
                             'src/main/res/layouts/layouts_tugas_belajar',
+                            'src/main/res/layouts/layouts_absen',
                             'src/main/res/layouts',
                             'src/main/res'
                     ]
