@@ -43,8 +43,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import id.go.bpkp.mobilemapbpkp.R;
@@ -90,7 +94,8 @@ public class DashboardPegawaiFragment extends Fragment {
     private ImageView
             refreshLocationButton,
             historyButton,
-            fingerIcon;
+            fingerIcon,
+            infoButton;
     private CardView
             datangCardView,
             pulangCardView,
@@ -106,6 +111,7 @@ public class DashboardPegawaiFragment extends Fragment {
             mImei,
             mContentUrl;
     private String
+            hari,
             jamDatang,
             jamPulang,
             statusMessage,
@@ -162,6 +168,14 @@ public class DashboardPegawaiFragment extends Fragment {
         Calendar rightNow = Calendar.getInstance();
         currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
 
+        Date date = new Date();
+        String languageToLoad = "ind"; // your language
+        Locale locale = new Locale(languageToLoad, "IDN");
+        Locale.setDefault(locale);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", locale);
+
+        hari = simpleDateFormat.format(date);
+
         initiateView();
         getJSON();
         setOnClickMethod();
@@ -188,6 +202,7 @@ public class DashboardPegawaiFragment extends Fragment {
         statusPulangView = rootView.findViewById(R.id.dashboard_pegawai_status_kepulangan);
         hariTanggalView = rootView.findViewById(R.id.dashboard_pegawai_hari_tanggal);
         statusMessageView = rootView.findViewById(R.id.dashboard_pegawai_status_message);
+        infoButton = rootView.findViewById(R.id.absen_info_button);
 
         absenCardView = rootView.findViewById(R.id.dashboard_pegawai_absen);
         historyButton = rootView.findViewById(R.id.absen_history_button);
@@ -264,12 +279,14 @@ public class DashboardPegawaiFragment extends Fragment {
             protected void onPreExecute() {
                 super.onPreExecute();
 //                loading = ProgressDialog.show(getActivity(),null,"Mohon Tunggu...",false,false);
+//                absenLoadingCardView.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 //                loading.dismiss();
+//                absenLoadingCardView.setVisibility(View.GONE);
                 JSON_STRING = s;
                 parseJSON();
             }
@@ -298,7 +315,7 @@ public class DashboardPegawaiFragment extends Fragment {
         try {
             jsonObject = new JSONObject(JSON_STRING);
             jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            hariTanggal = jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
+            hariTanggal = hari + ", " + jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
             jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
             jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG));
             statusDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSDATANG);
@@ -348,6 +365,12 @@ public class DashboardPegawaiFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Data akan ter-update kurang lebih 15 menit setelah pengguna merekam kehadiran", Toast.LENGTH_SHORT).show();
+            }
+        });
         absenCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -355,6 +378,7 @@ public class DashboardPegawaiFragment extends Fragment {
                 getLatitudeLongitude();
                 setFingerCardView(true, userLat, userLong);
                 if (isValidForAbsen(userLat, userLong)) {
+                    setFingerCardView(true, userLat, userLong);
                     postDataAbsensi();
                 } else {
                     Toast.makeText(getActivity(), "Anda telah keluar dari area absensi", Toast.LENGTH_SHORT).show();

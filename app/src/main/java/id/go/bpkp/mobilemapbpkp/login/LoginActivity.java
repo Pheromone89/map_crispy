@@ -62,6 +62,9 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARD
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_LDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
@@ -316,11 +319,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (jsonObject.getString("success").equals("true")) {
                                 int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
                                 boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
+
+                                int versiUpdate = 0;
+                                try {
+                                    versiUpdate = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionCode;
+                                } catch (PackageManager.NameNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+                                int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
+                                boolean isVersionValid = versiLogin == versiUpdate;
                                 Intent i = null;
                                 if (roleIdInt == 4 && belumRekamNoHp) {
                                     i = new Intent(LoginActivity.this, PhoneVerificationActivity.class);
                                 } else {
                                     i = new Intent(LoginActivity.this, DashboardActivity.class);
+                                }
+                                if (!isVersionValid) {
+                                    i = new Intent(LoginActivity.this, VersionCheckActivity.class);
                                 }
                                 // api_token
                                 i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
@@ -330,17 +346,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("username"));
                                 i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
                                 i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
+                                i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
                                 i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
                                 i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
                                 i.putExtra(INTENT_IMEI, mImei);
                                 i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
                                 i.putExtra("is_redirect", false);
                                 boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
+                                boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
+                                boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
                                 if (!tidakPunyaAtasanLangsung) {
                                     i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
                                     i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
                                     i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
                                 }
+                                i.putExtra(INTENT_ISLDAP, isLdap);
+                                i.putExtra(INTENT_ISJAB, isJab);
                                 editor.putString(INTENT_USERNAME, username);
                                 editor.putString(INTENT_PASSWORD, password);
                                 editor.putBoolean(PassedIntent.ISLOGGEDIN, true);

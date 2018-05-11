@@ -41,7 +41,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Data Kehadiran Pegawai" />
+                        android:text="Data Kehadiran" />
 
                     <ImageView
                         android:id="@+id/absen_history_button"
@@ -231,6 +231,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
                             android:layout_weight="3"
                             android:orientation="vertical">
 
@@ -251,16 +252,15 @@
                                 android:gravity="center"
                                 android:textColor="@android:color/white"
                                 tools:text="STATUS MESSAGE" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:gravity="end"
-                                android:paddingLeft="100dp"
-                                android:text="* Data akan ter-update kurang lebih 15 menit setelah pengguna merekam kehadiran"
-                                android:textSize="10sp" />
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/absen_info_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/ic_info" />
+
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -373,7 +373,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:visibility="gone"
             app:cardBackgroundColor="@color/blueBasicDark"
             app:cardCornerRadius="10dp">
 

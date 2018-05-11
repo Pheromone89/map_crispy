@@ -45,6 +45,8 @@ public class konfigurasi {
     public static final String TAG_ABSEN_WAKTUKERJA = "waktuKerja";
     public static final String TAG_ABSEN_STATUSDATANG = "statusDatang";
     public static final String TAG_ABSEN_STATUSPULANG = "statusPulang";
+    // HISTORI PRESENSI
+    public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
     //JSON tags
     public static final String TAG_JSON_ARRAY = "result";
     public static final String TAG_ID = "id";

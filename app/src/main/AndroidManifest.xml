@@ -23,8 +23,7 @@
             android:name=".splashscreen.SplashscreenActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/NOActionBar">
-        </activity>
+            android:theme="@style/NOActionBar"></activity>
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
@@ -36,7 +35,11 @@
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".login.PhoneVerificationActivity" />
+        <activity
+            android:name=".login.PhoneVerificationActivity"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.LoginDetectorActivity"
             android:noHistory="true"
@@ -48,6 +51,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".login.VersionCheckActivity"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

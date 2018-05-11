@@ -18,4 +18,6 @@
     <color name="yellow">#f4d342</color>
     <color name="orange">@android:color/holo_orange_dark</color>
     <color name="purple">@android:color/holo_purple</color>
+    <!--other-->
+    <color name="darkGrey">#232323</color>
 </resources>

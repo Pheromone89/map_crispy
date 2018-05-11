@@ -19,6 +19,9 @@ public class PassedIntent {
     // roleId
     public static final String INTENT_ROLEID = "role_id";
     public static final String INTENT_ROLEIDINT = "role_id_int";
+    public static final String INTENT_LDAP = "ldap";
+    public static final String INTENT_ISLDAP = "is_ldap";
+    public static final String INTENT_ISJAB = "is_jab";
     // no hp
     public static final String INTENT_NOHP = "no_hp";
     public static final String INTENT_IMEI = "imei";

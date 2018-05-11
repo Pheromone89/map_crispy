@@ -103,11 +103,24 @@ public class LoginDetectorActivity extends AppCompatActivity {
                             if (jsonObject.getString("success").equals("true")) {
                                 int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
                                 boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
+
+                                int versiUpdate = 0;
+                                try {
+                                    versiUpdate = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionCode;
+                                } catch (PackageManager.NameNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+                                int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
+                                boolean isVersionValid = versiLogin == versiUpdate;
                                 Intent i = null;
                                 if (roleIdInt == 4 && belumRekamNoHp) {
                                     i = new Intent(LoginDetectorActivity.this, PhoneVerificationActivity.class);
                                 } else {
                                     i = new Intent(LoginDetectorActivity.this, DashboardActivity.class);
+                                }
+                                if (!isVersionValid) {
+                                    i = new Intent(LoginDetectorActivity.this, VersionCheckActivity.class);
                                 }
                                 // api_token
                                 i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));

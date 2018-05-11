@@ -48,6 +48,8 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARD
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
@@ -107,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private boolean
-            tidakPunyaAtasanLangsung;
+            tidakPunyaAtasanLangsung, isLdap, isJab;
     private MenuItem helpButton;
 
     @Override
@@ -136,6 +138,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
+        isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
+        isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
         mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
         mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
 
@@ -200,6 +204,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             titleDashboard = getResources().getString(R.string.title_fragment_dashboard_pegawai);
             profilSemuaPegawaiMenu.setVisible(false);
             profilPegawaiMenu.setVisible(true);
+        }
+        if (isJab) {
+            profilSemuaPegawaiMenu.setVisible(true);
         }
         //initiate dashboard
         FragmentManager fragmentManager = getFragmentManager();

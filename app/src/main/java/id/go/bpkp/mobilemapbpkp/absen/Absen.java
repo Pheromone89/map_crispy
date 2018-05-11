@@ -7,15 +7,16 @@ package id.go.bpkp.mobilemapbpkp.absen;
 public class Absen {
 
     private int id;
-    private String tanggalAbsen, jamDatang, statusDatang, jamPulang, statusPulang;
+    private String tanggalAbsen, jamDatang, statusDatang, jamPulang, statusPulang, jamEfektif;
 
-    public Absen(int id, String tanggalAbsen, String jamDatang, String statusDatang, String jamPulang, String statusPulang) {
+    public Absen(int id, String tanggalAbsen, String jamDatang, String statusDatang, String jamPulang, String statusPulang, String jamEfektif) {
         this.id = id;
         this.tanggalAbsen = tanggalAbsen;
         this.jamDatang = jamDatang;
         this.statusDatang = statusDatang;
         this.jamPulang = jamPulang;
         this.statusPulang = statusPulang;
+        this.jamEfektif = jamEfektif;
     }
 
     public int getId() {
@@ -40,5 +41,9 @@ public class Absen {
 
     public String getStatusPulang() {
         return statusPulang;
+    }
+
+    public String getJamEfektif() {
+        return jamEfektif;
     }
 }

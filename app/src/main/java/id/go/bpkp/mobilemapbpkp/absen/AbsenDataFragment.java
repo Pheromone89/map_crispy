@@ -9,9 +9,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -29,8 +33,6 @@ import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
-import id.go.bpkp.mobilemapbpkp.monitoring.Diklat;
-import id.go.bpkp.mobilemapbpkp.monitoring.DiklatAdapter;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -44,8 +46,11 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
             JSON_STRING,
             jamDatang,
             jamPulang,
+            jamEfektif,
             statusDatang,
-            statusPulang;
+            statusPulang,
+            tanggalAbsen,
+            hariAbsen;
     private String
             mNipBaru,
             mFoto,
@@ -65,7 +70,7 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_data_absen, null);
+        return inflater.inflate(R.layout.fragment_absen_data, null);
     }
 
     @Override
@@ -96,6 +101,14 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
 
         initiateView();
         getJSON();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem searchMenuItem = menu.getItem(0);
+        searchMenuItem.setVisible(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_data_absen);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void initiateView() {
@@ -134,7 +147,7 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(konfigurasi.URL_GET_EMP_DIKLAT + mNipLama + "?api_token=" + mUserToken);
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_ABSENALL + mNipLama + "?api_token=" + mUserToken);
                 return s;
             }
         }
@@ -150,19 +163,22 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
                 JSONArray result = jsonObject.getJSONArray("result");
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject jo = result.getJSONObject(i);
-//                    kodeJenisDiklat = jo.getString(konfigurasi.TAG_DIKLAT_KODEJENISDIKLAT);
-//                    tanggalSertifikat = jo.getString(konfigurasi.TAG_DIKLAT_TANGGALSERTIFIKAT);
-//                    nomorSertifikat = jo.getString(konfigurasi.TAG_DIKLAT_NOMORSERTIFIKAT);
-//                    kompetensi = jo.getString(konfigurasi.TAG_DIKLAT_KOMPETENSI);
+                    tanggalAbsen = checkNull(jo.getString(konfigurasi.TAG_ABSEN_TANGGAL));
+                    jamDatang = checkNull(jo.getString(konfigurasi.TAG_ABSEN_DATANG));
+                    jamPulang = checkNull(jo.getString(konfigurasi.TAG_ABSEN_PULANG));
+                    statusDatang = checkNull(jo.getString(konfigurasi.TAG_ABSEN_STATUSDATANG));
+                    statusPulang = checkNull(jo.getString(konfigurasi.TAG_ABSEN_STATUSPULANG));
+                    jamEfektif = checkNull(jo.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA));
 
                     absenList.add(
                             new Absen(
                                     i,
-                                    "xxx",
-                                    "xxx",
-                                    "xxx",
-                                    "xxx",
-                                    "xxx"
+                                    tanggalAbsen,
+                                    jamDatang,
+                                    statusDatang,
+                                    jamPulang,
+                                    statusPulang,
+                                    jamEfektif
                             )
                     );
                 }
@@ -232,5 +248,13 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
         }
         GetJSON gj = new GetJSON();
         gj.execute();
+    }
+
+    private String checkNull(String string) {
+        if (string.equals("null") || string.equals("NULL")) {
+            return "-";
+        } else {
+            return string;
+        }
     }
 }
