@@ -141,7 +141,6 @@ public class VersionCheckActivity extends AppCompatActivity {
         unduhCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VersionCheckActivity.this, "download", Toast.LENGTH_SHORT).show();
                 String url = "http://app.bpkp.go.id";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
@@ -153,7 +152,7 @@ public class VersionCheckActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         signOut();
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 
     public void signOut() {
@@ -170,7 +169,7 @@ public class VersionCheckActivity extends AppCompatActivity {
                 logoutMessage = "logout sukses";
                 editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
                 editor.apply();
-                Toast.makeText(getApplicationContext(), logoutMessage, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), logoutMessage, Toast.LENGTH_SHORT).show();
                 logoutIntent = new Intent(VersionCheckActivity.this, LoginActivity.class);
                 logoutIntent.putExtra(INTENT_USERNAME, mUsername);
                 logoutIntent.putExtra(INTENT_PASSWORD, mPassword);

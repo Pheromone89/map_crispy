@@ -64,11 +64,19 @@
     <string name="title_fragment_cuti_seluruh_pegawai">Pengajuan Cuti Pegawai</string>
     <string name="title_fragment_profil_seluruh_pegawai">Profil Seluruh Pegawai</string>
     <string name="title_fragment_profil_pegawai">Profil Pegawai</string>
-    <!--Strings terkait page di framgnet pegawai individu-->
+    <!--Strings terkait page di fragment pegawai individu-->
     <string name="title_fragment_page_data_pokok">Data Pokok</string>
     <string name="title_fragment_page_data_diklat">Data Diklat</string>
     <string name="title_fragment_page_data_unit">Data Unit</string>
     <string name="title_fragment_page_data_jabatan">Data Jabatan</string>
+
+    <!--izin kantor-->
+
+    <string name="title_fragment_izin_kantor_seluruh_pegawai">Pengajuan Izin Kantor Pegawai</string>
+    <string name="title_fragment_izin_kantor_dashboard_pegawai">Beranda Izin Kantor Pegawai</string>
+    <string name="title_fragment_izin_kantor_dashboard_admin">Beranda Izin Kantor Admin</string>
+    <string name="title_fragment_izin_kantor_data">Data Izin Kantor Pegawai</string>
+    <string name="title_fragment_izin_kantor_pengajuan">Pengajuan Izin Kantor Pegawai</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

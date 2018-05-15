@@ -328,6 +328,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
 
                                 int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
+//                                versiLogin = 0;
                                 boolean isVersionValid = versiLogin == versiUpdate;
                                 Intent i = null;
                                 if (roleIdInt == 4 && belumRekamNoHp) {
@@ -343,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
                                 i.putExtra(INTENT_USERNAME, username);
                                 i.putExtra(INTENT_PASSWORD, password);
-                                i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("username"));
+                                i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
                                 i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
                                 i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
                                 i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));

@@ -35,6 +35,7 @@ import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardPegawaiFragment;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.monitoring.PencarianPegawaiFragment;
@@ -215,6 +216,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         Bundle bundle = new Bundle();
         bundle.putString(INTENT_USERTOKEN, mUserToken);
         bundle.putString(INTENT_DASHBOARDCONTENT, mContentUrl);
+        bundle.putString(INTENT_NAMA, mNama);
         bundle.putString(INTENT_NIPLAMA, mNipLama);
         bundle.putString(INTENT_NIPBARU, mNipBaru);
         bundle.putString(INTENT_FOTO, mFoto);
@@ -384,7 +386,44 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.nav_izin_belajar) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_izin_kantor) {
-            Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
+            if (openedDrawer != "nav_izin_kantor") {
+                if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT) {
+                    // admin
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NOHP, mNoHp);
+                    bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
+                    bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
+                    bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+
+                    fragment = new IzinKantorDashboardAdminFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTag = getResources().getString(R.string.title_fragment_izin_kantor_dashboard_pegawai);
+                    openedDrawer = "nav_izin_kantor";
+                } else {
+                    // pegawai
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NOHP, mNoHp);
+
+                    fragment = new CutiDashboardPegawaiFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTag = getResources().getString(R.string.title_fragment_izin_kantor_dashboard_pegawai);
+                    openedDrawer = "nav_izin_kantor";
+                }
+            }
         } else if (id == R.id.nav_izin_luar_negeri) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_surat_keluar) {

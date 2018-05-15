@@ -85,6 +85,7 @@ public class DashboardPegawaiFragment extends Fragment {
     int currentHour;
     private View rootView;
     private TextView
+            panelHeader,
             jamDatangView,
             jamPulangView,
             hariTanggalView,
@@ -150,6 +151,8 @@ public class DashboardPegawaiFragment extends Fragment {
         mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
         //login token
         mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
+        // nama
+        mNama = this.getArguments().getString(PassedIntent.INTENT_NAMA);
         //nip tanpa spasi
         mNipBaru = this.getArguments().getString(PassedIntent.INTENT_NIPBARU);
         //nip lama tanpa spasi
@@ -196,6 +199,7 @@ public class DashboardPegawaiFragment extends Fragment {
     }
 
     private void initiateView() {
+        panelHeader = rootView.findViewById(R.id.absen_panel_header);
         jamDatangView = rootView.findViewById(R.id.dashboard_pegawai_jam_datang);
         jamPulangView = rootView.findViewById(R.id.dashboard_pegawai_jam_pulang);
         statusDatangView = rootView.findViewById(R.id.dashboard_pegawai_status_kedatangan);
@@ -218,6 +222,9 @@ public class DashboardPegawaiFragment extends Fragment {
     }
 
     private void populateView() {
+        String header = "Data Kehadiran - " + mNama;
+        panelHeader.setText(header);
+
         jamDatangView.setText(jamDatang);
         jamPulangView.setText(jamPulang);
 
@@ -279,14 +286,12 @@ public class DashboardPegawaiFragment extends Fragment {
             protected void onPreExecute() {
                 super.onPreExecute();
 //                loading = ProgressDialog.show(getActivity(),null,"Mohon Tunggu...",false,false);
-//                absenLoadingCardView.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 //                loading.dismiss();
-//                absenLoadingCardView.setVisibility(View.GONE);
                 JSON_STRING = s;
                 parseJSON();
             }

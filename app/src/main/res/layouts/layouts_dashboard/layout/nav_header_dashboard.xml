@@ -23,10 +23,12 @@
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
+        app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="40dp">
 
         <ImageView
             android:id="@+id/navigation_drawer_header_profile_picture"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
