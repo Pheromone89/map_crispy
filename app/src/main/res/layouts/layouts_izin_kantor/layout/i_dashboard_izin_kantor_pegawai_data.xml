@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:cardBackgroundColor="@color/whiteAlternate"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blueBasicDark"
+                android:text="Data Cuti Pegawai" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_t-2_label"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Hak Cuti Tahun Lalu" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_t-2_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text="hari" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_t-1_label"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Hak Cuti Tahun Lalu" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_t-1_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text=" hari" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Hak Cuti Tahun Ini" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_t_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text="hari" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Jumlah Hak Cuti" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_jumlah_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text="hari" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Cuti Terpakai" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_terpakai_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text="hari" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="3dp">
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            android:text="Saldo Cuti" />
+
+                        <TextView
+                            style="@style/IndividuTextContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/dashboard_cuti_sisa_val"
+                            style="@style/IndividuTextContent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:text="hari" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

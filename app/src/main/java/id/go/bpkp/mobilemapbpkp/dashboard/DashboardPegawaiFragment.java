@@ -373,7 +373,7 @@ public class DashboardPegawaiFragment extends Fragment {
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Data akan ter-update kurang lebih 15 menit setelah pengguna merekam kehadiran", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data akan ter-update kurang lebih 15 menit setelah pegawai merekam kehadiran", Toast.LENGTH_SHORT).show();
             }
         });
         absenCardView.setOnClickListener(new View.OnClickListener() {
