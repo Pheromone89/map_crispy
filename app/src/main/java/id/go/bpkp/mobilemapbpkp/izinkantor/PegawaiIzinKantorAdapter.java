@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -30,6 +34,7 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
     private Context context;
     private List<PegawaiIzinKantor> pegawaiIzinKantorList;
     private String mUserToken;
+    private YoYo.YoYoString ropePegawaiIzinKantor;
 
     public PegawaiIzinKantorAdapter(Context context,
                                     List<PegawaiIzinKantor> pegawaiIzinKantorList,
@@ -56,6 +61,12 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
         Picasso.with(context).load(pegawaiIzinKantor.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(pegawaiIzinKantor.getNama());
         holder.nipBaruView.setText(pegawaiIzinKantor.getNipBaru());
+
+        ropePegawaiIzinKantor = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -67,9 +78,12 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
 
         ImageView profilePictureView, addButton;
         TextView namaView, nipBaruView;
+        LinearLayout rootview;
 
         public PegawaiIzinKantorViewHolder(View itemView) {
             super(itemView);
+
+            rootview = itemView.findViewById(R.id.pegawai_izin_kantor_layout);
 
             profilePictureView = itemView.findViewById(R.id.pegawai_izin_kantor_profic);
             namaView = itemView.findViewById(R.id.pegawai_izin_kantor_nama);

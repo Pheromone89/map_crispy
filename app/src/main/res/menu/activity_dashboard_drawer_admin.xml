@@ -10,6 +10,11 @@
             android:id="@+id/nav_drawer_dashboard"
             android:icon="@drawable/ic_menu_home"
             android:title="Beranda" />
+        <item
+            android:id="@+id/nav_presensi"
+            android:icon="@drawable/ic_menu_absen"
+            android:title="Presensi"
+            android:visible="true" />
     </group>
     <group
         android:id="@+id/navigation_drawer_personal"
@@ -45,7 +50,7 @@
             android:id="@+id/nav_izin_kantor"
             android:icon="@drawable/ic_menu_izin_kantor"
             android:title="Izin Kantor"
-            android:visible="false" />
+            android:visible="true" />
         <item
             android:id="@+id/nav_izin_luar_negeri"
             android:icon="@drawable/ic_menu_izin_luar_negeri"
@@ -55,11 +60,6 @@
             android:id="@+id/nav_surat_keluar"
             android:icon="@drawable/ic_menu_surat_keluar"
             android:title="Surat Keluar"
-            android:visible="false" />
-        <item
-            android:id="@+id/nav_absen"
-            android:icon="@drawable/ic_menu_absen"
-            android:title="Absen"
             android:visible="false" />
     </group>
     <group

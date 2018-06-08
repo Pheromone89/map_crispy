@@ -8,13 +8,13 @@
     android:orientation="vertical">
 
     <ProgressBar
-        android:id="@+id/dashboard_pegawai_progress_bar"
+        android:id="@+id/dashboard_presensi_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="150dp" />
 
     <LinearLayout
-        android:id="@+id/dashboard_pegawai_layout"
+        android:id="@+id/dashboard_presensi_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -54,7 +54,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Data Kehadiran" />
+                            android:text="Presensi" />
 
                         <ImageView
                             android:id="@+id/absen_history_button"

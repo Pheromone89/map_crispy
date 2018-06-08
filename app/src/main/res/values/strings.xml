@@ -10,8 +10,8 @@
     <string name="action_help">Bantuan</string>
     <string name="title_activity_login">Sign in</string>
     <!--Strings terkait fragment-->
-    <string name="title_fragment_absen">Menu Absensi</string>
-    <string name="title_fragment_data_absen">Data Kehadiran</string>
+    <string name="title_fragment_absen">Presensi</string>
+    <string name="title_fragment_data_absen">Data Presensi</string>
     <string name="title_fragment_dashboard_admin">Beranda Administrator</string>
     <string name="title_fragment_dashboard_pegawai">Beranda Pegawai</string>
     <string name="title_fragment_cuti_dashboard_pegawai">Beranda Cuti Pegawai</string>
@@ -77,8 +77,48 @@
     <string name="title_fragment_izin_kantor_dashboard_admin">Beranda Izin Kantor Admin</string>
     <string name="title_fragment_izin_kantor_data">Data Izin Kantor Pegawai</string>
     <string name="title_fragment_izin_kantor_pengajuan">Pengajuan Izin Kantor Pegawai</string>
+    <!--jenis izin-->
+    <string name="spinner_pengajuan_izin_kantor_tidak_masuk">Tidak masuk kantor</string>
+    <string name="spinner_pengajuan_izin_kantor_terlambat">Datang terlambat</string>
+    <string name="spinner_pengajuan_izin_kantor_pulang_cepat">Pulang cepat</string>
+    <!--spinner izin-->
+    <string-array name="spinner_jenis_izin_kantor">
+        <item>@string/spinner_pengajuan_izin_kantor_tidak_masuk</item>
+        <item>@string/spinner_pengajuan_izin_kantor_terlambat</item>
+        <item>@string/spinner_pengajuan_izin_kantor_pulang_cepat</item>
+    </string-array>
+    <!--jenis alasan-->
+    <string name="spinner_pengajuan_izin_kantor_alasan_pribadi">Pribadi</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_kantor">Penugasan</string>
+    <!--spinner alasan-->
+    <string-array name="spinner_jenis_izin_kantor_alasan">
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_pribadi</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_kantor</item>
+    </string-array>
+    <!--jenis alasan pribadi-->
+    <string name="spinner_pengajuan_izin_kantor_alasan_pribadi_keperluan_keluarga">Keperluan keluarga</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_pribadi_sakit">Sakit</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_pribadi_lain_lain">Lain-lain</string>
+    <!--spinner alasan pribadi-->
+    <string-array name="spinner_jenis_izin_kantor_alasan_pribadi">
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_pribadi_keperluan_keluarga</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_pribadi_sakit</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_pribadi_lain_lain</item>
+    </string-array>
+    <!--jenis alasan penugasan-->
+    <string name="spinner_pengajuan_izin_kantor_alasan_penugasan_rapat">Rapat di Kementerian/ Lembaga</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_penugasan_workshop">Workshop/ Sosialisasi/ Seminar</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_penugasan_mengurus_dokumen">Mengurus dokumen</string>
+    <string name="spinner_pengajuan_izin_kantor_alasan_penugasan_lain_lain">Lain-lain</string>
+    <!--spinner alasan penugasan-->
+    <string-array name="spinner_jenis_izin_kantor_alasan_penugasan">
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_penugasan_rapat</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_penugasan_workshop</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_penugasan_mengurus_dokumen</item>
+        <item>@string/spinner_pengajuan_izin_kantor_alasan_penugasan_lain_lain</item>
+    </string-array>
 
-    <!-- Strings related to login -->
+    <!--login-->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Kata sandi (opsional)</string>
     <string name="action_sign_in">Sign in or register</string>

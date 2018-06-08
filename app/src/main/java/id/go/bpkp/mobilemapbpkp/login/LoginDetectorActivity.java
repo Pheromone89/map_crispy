@@ -34,8 +34,15 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.splashscreen.SplashscreenActivity;
 
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_LDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
@@ -131,19 +138,30 @@ public class LoginDetectorActivity extends AppCompatActivity {
                                 i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
                                 i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
                                 i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
+                                i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
                                 i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
                                 i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
                                 i.putExtra(INTENT_IMEI, imei);
                                 i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
                                 i.putExtra("is_redirect", false);
                                 boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
+                                boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
+                                boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
                                 if (!tidakPunyaAtasanLangsung) {
                                     i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
                                     i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
                                     i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
                                 }
+                                i.putExtra(INTENT_ISLDAP, isLdap);
+                                i.putExtra(INTENT_ISJAB, isJab);
+                                // broadcast
+                                i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
+                                i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
+                                i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
+                                i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
                                 editor.putString(INTENT_USERNAME, username);
                                 editor.putString(INTENT_PASSWORD, password);
+                                editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
                                 editor.commit();
                                 startActivity(i);
                             } else {

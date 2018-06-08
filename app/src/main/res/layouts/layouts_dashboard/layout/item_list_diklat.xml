@@ -9,6 +9,7 @@
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
     app:cardBackgroundColor="@color/blueBasicPale"
+    android:id="@+id/data_diklat_layout"
     app:cardCornerRadius="10dp">
 
     <LinearLayout

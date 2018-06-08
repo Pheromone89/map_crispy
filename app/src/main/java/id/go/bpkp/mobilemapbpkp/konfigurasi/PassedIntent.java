@@ -35,6 +35,12 @@ public class PassedIntent {
     public static final String INTENT_DASHBOARDCONTENT = "content_url";
     // fragment url
     public static final String INTENT_FRAGMENTCONTENT = "fragment_url";
+    // broadcast
+    public static final String INTENT_BROADCASTSTATUS = "broadcast_status";
+    public static final String INTENT_BROADCASTIMAGE = "broadcast_image";
+    public static final String INTENT_BROADCASTTITLE = "broadcast_title";
+    public static final String INTENT_BROADCASTMESSAGE = "broadcast_message";
+
 
     // foto
     public static final String INTENT_FOTO = "foto";

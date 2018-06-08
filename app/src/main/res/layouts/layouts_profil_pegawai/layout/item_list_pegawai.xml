@@ -8,6 +8,7 @@
     android:orientation="vertical"
     app:cardBackgroundColor="@color/blueBasicPale"
     app:cardCornerRadius="0dp"
+    android:id="@+id/pegawai_singkat_layout"
     app:cardUseCompatPadding="true">
 
     <LinearLayout

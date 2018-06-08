@@ -1,12 +1,17 @@
 package id.go.bpkp.mobilemapbpkp.monitoring;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.List;
 
@@ -22,6 +27,7 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
     private static RecyclerViewClickListener itemListener;
     private Context mContext;
     private List<Jabatan> jabatanList;
+    private YoYo.YoYoString ropeJabatan;
 
     public JabatanAdapter(Context mContext, List<Jabatan> jabatanList,
                           RecyclerViewClickListener itemListener) {
@@ -48,6 +54,12 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
         holder.tmtJabatan.setText(tmtJabatan);
         holder.nomorSK.setText(nomor);
         holder.tanggalSK.setText(tanggal);
+
+        ropeJabatan = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -76,10 +88,13 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
 
         TextView namaJabatan, tmtJabatan, nomorSK, tanggalSK;
         LinearLayout dataJabatanDetailView;
+        CardView rootview;
         boolean isDetailShown = false;
 
         public JabatanViewHolder(View itemView) {
             super(itemView);
+
+            rootview = itemView.findViewById(R.id.data_jabatan_layout);
 
             namaJabatan = itemView.findViewById(R.id.data_jabatan_nama);
             tmtJabatan = itemView.findViewById(R.id.data_jabatan_tmt_jabatan);

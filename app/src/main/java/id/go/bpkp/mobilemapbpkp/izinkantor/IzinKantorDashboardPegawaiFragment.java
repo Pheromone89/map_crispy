@@ -48,51 +48,33 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
             mFoto,
             mAtasanLangsung,
             mNipAtasanLangsung,
-            tahunMin2Label,
-            tahunMin1Label,
-            hakCutiTMin2,
-            hakCutiTMin1,
-            hakCutiT,
-            jumlahHakCuti,
-            cutiTerpakai,
-            saldoCuti,
             jabatan;
     private int
-            mRoleIdInt,
-            tahunBerjalan,
-            tahunMin2,
-            tahunMin1;
+            mRoleIdInt;
     private ImageView
             proficView;
     private TextView
             namaView,
             nipView,
-            jabatanView,
-            cutiT2LabelView,
-            cutiT1LabelView,
-            hakCutiTMin2View,
-            hakCutiTMin1View,
-            hakCutiTView,
-            jumlahHakCutiView,
-            cutiTerpakaiView,
-            saldoCutiView;
+            jabatanView;
     private CardView
-            pengajuanCutiButton,
-            daftarCutiButton;
+            pengajuanIzinKantorButton,
+            pengajuanGagalFpButton,
+            daftarIzinKantorButton;
     private boolean
             tidakPunyaAtasanLangsung;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cuti_dashboard_pegawai, null);
+        return inflater.inflate(R.layout.fragment_izin_kantor_dashboard_pegawai, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         rootView = view;
         setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_izin_kantor_dashboard_pegawai);
 
         //bundle dari fragment sebelumnya
         //URL foto
@@ -114,17 +96,9 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
         // nip atasan langsung
         mNipAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NIPATASANLANGSUNG);
 
-
-        tahunBerjalan = Calendar.getInstance().get(Calendar.YEAR);
-        tahunMin2 = tahunBerjalan - 2;
-        tahunMin2Label = "Hak Cuti Tahun Lalu (" + tahunMin2 + ")";
-        tahunMin1 = tahunBerjalan - 1;
-        tahunMin1Label = "Hak Cuti Tahun Lalu (" + tahunMin1 + ")";
-
         initiateView();
-
+        populateView();
         // harus terakhir
-        getJSONDashboardCuti();
         initiateSetOnClickMethod();
     }
 
@@ -132,28 +106,20 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem searchMenuItem = menu.getItem(0);
         searchMenuItem.setVisible(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_izin_kantor_dashboard_pegawai);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void initiateView() {
         // profic
-        proficView = (ImageView) rootView.findViewById(R.id.dashboard_cuti_profic);
-        namaView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nama);
-        nipView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nip);
-        jabatanView = (TextView) rootView.findViewById(R.id.dashboard_cuti_jabatan);
-        // data
-        cutiT2LabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_2_label);
-        cutiT1LabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_1_label);
-        hakCutiTMin2View = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_2_val);
-        hakCutiTMin1View = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_1_val);
-        hakCutiTView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_val);
-        jumlahHakCutiView = (TextView) rootView.findViewById(R.id.dashboard_cuti_jumlah_val);
-        cutiTerpakaiView = (TextView) rootView.findViewById(R.id.dashboard_cuti_terpakai_val);
-        saldoCutiView = (TextView) rootView.findViewById(R.id.dashboard_cuti_sisa_val);
+        proficView = (ImageView) rootView.findViewById(R.id.dashboard_izin_kantor_profic);
+        namaView = (TextView) rootView.findViewById(R.id.dashboard_izin_kantor_nama);
+        nipView = (TextView) rootView.findViewById(R.id.dashboard_izin_kantor_nip);
+        jabatanView = (TextView) rootView.findViewById(R.id.dashboard_izin_kantor_jabatan);
         //  button
-        daftarCutiButton = (CardView) rootView.findViewById(R.id.dashboard_cuti_daftar_cuti_button);
-        pengajuanCutiButton = (CardView) rootView.findViewById(R.id.dashboard_cuti_pengajuan_cuti_button);
+        daftarIzinKantorButton = (CardView) rootView.findViewById(R.id.dashboard_izin_kantor_daftar_izin_kantor_button);
+        pengajuanIzinKantorButton = (CardView) rootView.findViewById(R.id.dashboard_izin_kantor_pengajuan_izin_kantor_button);
+        pengajuanGagalFpButton = (CardView) rootView.findViewById(R.id.dashboard_izin_kantor_pengajuan_gagal_fp_button);
     }
 
     private void populateView() {
@@ -165,25 +131,10 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
         namaView.setText(mNama);
         nipView.setText(mNipBaru);
         jabatanView.setText(jabatan);
-        // data
-        cutiT2LabelView.setText(tahunMin2Label);
-        cutiT1LabelView.setText(tahunMin1Label);
-        hakCutiTMin2 = hakCutiTMin2 + " hari";
-        hakCutiTMin1 = hakCutiTMin1 + " hari";
-        hakCutiT = hakCutiT + " hari";
-        jumlahHakCuti = jumlahHakCuti + " hari";
-        cutiTerpakai = cutiTerpakai + " hari";
-        saldoCuti = saldoCuti + " hari";
-        hakCutiTMin2View.setText(hakCutiTMin2);
-        hakCutiTMin1View.setText(hakCutiTMin1);
-        hakCutiTView.setText(hakCutiT);
-        jumlahHakCutiView.setText(jumlahHakCuti);
-        cutiTerpakaiView.setText(cutiTerpakai);
-        saldoCutiView.setText(saldoCuti);
     }
 
     private void initiateSetOnClickMethod() {
-        daftarCutiButton.setOnClickListener(new View.OnClickListener() {
+        daftarIzinKantorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
@@ -191,24 +142,30 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
                 bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
 //                bundle.putInt("role_id", mRoleIdInt);
 
-                IzinKantorDaftarIzinKantorFragment cutiDaftarCutiFragment = new IzinKantorDaftarIzinKantorFragment();
-                cutiDaftarCutiFragment.setArguments(bundle);
+                IzinKantorDaftarIzinKantorFragment izinKantorDaftarIzinKantorFragment = new IzinKantorDaftarIzinKantorFragment();
+                izinKantorDaftarIzinKantorFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarCutiFragment);
+                fragmentTransaction.add(R.id.content_fragment_area, izinKantorDaftarIzinKantorFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
-        pengajuanCutiButton.setOnClickListener(new View.OnClickListener() {
+        pengajuanIzinKantorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getJSONAtasanLangsung();
+                getJSONAtasanLangsung(0);
+            }
+        });
+        pengajuanGagalFpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getJSONAtasanLangsung(1);
             }
         });
     }
 
-    private void parseJSONAtasanLangsung() {
+    private void parseJSONAtasanLangsung(int kodeIzin) {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(JSON_STRING);
@@ -226,18 +183,25 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
             bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
             bundle.putString(PassedIntent.INTENT_NIPBARU, mNipBaru);
             bundle.putString(PassedIntent.INTENT_NAMA, mNama);
-//            bundle.putInt("role_id", mRoleIdInt);
+////            bundle.putInt("role_id", mRoleIdInt);
             bundle.putString(PassedIntent.INTENT_FOTO, mFoto);
             bundle.putString(PassedIntent.INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
             bundle.putString(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
             bundle.putBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-            bundle.putString("saldo_cuti", saldoCuti);
 
-            IzinKantorPengajuanPegawaiFragment cutiPengajuanPegawaiFragment = new IzinKantorPengajuanPegawaiFragment();
-            cutiPengajuanPegawaiFragment.setArguments(bundle);
+            Fragment izinFragment = null;
+            switch (kodeIzin) {
+                case 0:
+                    izinFragment = new IzinKantorPengajuanPegawaiFragment();
+                    break;
+                case 1:
+                    izinFragment = new GagalFpPengajuanPegawaiFragment();
+                    break;
+            }
+            izinFragment.setArguments(bundle);
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.content_fragment_area, cutiPengajuanPegawaiFragment);
+            fragmentTransaction.add(R.id.content_fragment_area, izinFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -247,7 +211,7 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
         }
     }
 
-    private void getJSONAtasanLangsung() {
+    private void getJSONAtasanLangsung(final int kodeIzin) {
         class GetJSON extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;
 
@@ -262,7 +226,7 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
-                parseJSONAtasanLangsung();
+                parseJSONAtasanLangsung(kodeIzin);
             }
 
             @Override
@@ -274,60 +238,6 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
         }
         GetJSON gj = new GetJSON();
         gj.execute();
-    }
-
-    private void getJSONDashboardCuti() {
-        class GetJSON extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(getActivity(), null, "mohon tunggu", false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                parseJSONDashboardCuti();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(konfigurasi.URL_GET_EMP_REKAPCUTI + mNipLama + "?api_token=" + mUserToken);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
-
-    private void parseJSONDashboardCuti() {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            // jabatan
-            jabatan = checkNull(jsonObject.getJSONObject(konfigurasi.TAG_CUTI_PEGAWAI).getString(konfigurasi.TAG_JABATANSINGKAT));
-            // hak cuti tahun ini
-            hakCutiT = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO0));
-            // hak cuti tahun -1
-            hakCutiTMin1 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO1));
-            // hak cuti tahun -2
-            hakCutiTMin2 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO2));
-            jumlahHakCuti = "" + (Integer.parseInt(hakCutiT) + Integer.parseInt(hakCutiTMin1) + Integer.parseInt(hakCutiTMin2));
-            saldoCuti = (Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI0))) +
-                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI1))) +
-                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI2)))) + "";
-            cutiTerpakai = (Integer.parseInt(jumlahHakCuti) - Integer.parseInt(saldoCuti)) + "";
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "JSON exception", Toast.LENGTH_SHORT).show();
-        }
-        populateView();
     }
 
     private String checkNull(String string) {

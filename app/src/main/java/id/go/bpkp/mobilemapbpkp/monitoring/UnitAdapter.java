@@ -1,12 +1,17 @@
 package id.go.bpkp.mobilemapbpkp.monitoring;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.List;
 
@@ -22,6 +27,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
     private static RecyclerViewClickListener itemListener;
     private Context mContext;
     private List<Unit> unitList;
+    private YoYo.YoYoString ropeUnit;
 
     public UnitAdapter(Context mContext, List<Unit> unitList,
                        RecyclerViewClickListener itemListener) {
@@ -48,6 +54,12 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
         holder.nomorView.setText(nomor);
         holder.tanggalView.setText(tanggal);
         holder.tmtView.setText(tmt);
+
+        ropeUnit = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -76,10 +88,13 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
 
         TextView namaView, nomorView, tanggalView, tmtView;
         LinearLayout detailView;
+        CardView rootview;
         boolean isDetailShown = false;
 
         public UnitViewHolder(View itemView) {
             super(itemView);
+
+            rootview = itemView.findViewById(R.id.data_unit_layout);
 
             namaView = itemView.findViewById(R.id.data_unit_nama);
             tmtView = itemView.findViewById(R.id.data_unit_tmt_unit);

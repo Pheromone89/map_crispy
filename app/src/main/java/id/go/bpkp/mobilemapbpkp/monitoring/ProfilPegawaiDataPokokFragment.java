@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -19,6 +20,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -108,6 +111,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
     private DateFormat dateFormat;
     private ProgressBar loadingProgressBar;
     private ScrollView dataPokokScrollView;
+    private YoYo.YoYoString ropeProfilIndividu;
 
     public ProfilPegawaiDataPokokFragment() {
 
@@ -188,6 +192,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
     private void initiateView(View view){
         loadingProgressBar = rootView.findViewById(R.id.profil_individu_data_pokok_progress_bar);
         dataPokokScrollView = rootView.findViewById(R.id.profil_individu_data_pokok);
+        dataPokokScrollView.setVisibility(View.GONE);
         proficPegawaiIndividuView = (ImageView) view.findViewById(R.id.profil_individu_profic);
         namaGelarProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnama);
         nipProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnip);
@@ -249,6 +254,11 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         jumlahanakProfilIndividuView.setText(jumlahanak);
         akreProfilIndividuView.setText(akre);
         toeflProfilIndividuView.setText(toefl);
+        ropeProfilIndividu = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(dataPokokScrollView);
     }
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {

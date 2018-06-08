@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,6 +37,7 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
     private Context context;
     private List<PegawaiCuti> pegawaiCutiList;
     private String mUserToken;
+    private YoYo.YoYoString ropePegawaiCuti;
 
     public PegawaiCutiAdapter(Context context,
                               List<PegawaiCuti> pegawaiCutiList,
@@ -59,6 +64,12 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
         Picasso.with(context).load(pegawaiCuti.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(pegawaiCuti.getNama());
         holder.nipBaruView.setText(pegawaiCuti.getNipBaru());
+
+        ropePegawaiCuti = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -70,9 +81,12 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
 
         ImageView profilePictureView, addButton;
         TextView namaView, nipBaruView;
+        LinearLayout rootview;
 
         public PegawaiCutiViewHolder(View itemView) {
             super(itemView);
+
+            rootview = itemView.findViewById(R.id.pegawai_cuti_layout);
 
             profilePictureView = itemView.findViewById(R.id.pegawai_cuti_profic);
             namaView = itemView.findViewById(R.id.pegawai_cuti_nama);

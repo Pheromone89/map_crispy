@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -30,6 +34,7 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
     private Context context;
     private List<PegawaiSingkat> pegawaiSingkatList;
     private String mUserToken;
+    private YoYo.YoYoString ropePegawaiSingkat;
 
     public PegawaiSingkatAdapter(Context context,
                                  List<PegawaiSingkat> pegawaiSingkatList,
@@ -58,6 +63,12 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
         holder.nipBaruView.setText(pegawaiSingkat.getNipBaru());
         holder.unitView.setText(pegawaiSingkat.getUnit());
         holder.jabatanSingkatView.setText(pegawaiSingkat.getJabatanSingkat());
+
+        ropePegawaiSingkat = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -69,9 +80,12 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
 
         ImageView profilePictureView;
         TextView namaView, nipBaruView, jabatanSingkatView, unitView;
+        LinearLayout rootview;
 
         public PegawaiSingkatViewHolder(View itemView) {
             super(itemView);
+
+            rootview = itemView.findViewById(R.id.pegawai_singkat_layout);
 
             profilePictureView = itemView.findViewById(R.id.profic);
             namaView = itemView.findViewById(R.id.nama);

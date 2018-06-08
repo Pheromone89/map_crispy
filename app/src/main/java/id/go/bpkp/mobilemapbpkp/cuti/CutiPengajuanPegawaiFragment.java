@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -41,6 +42,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,12 +135,14 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
     private LinearLayout
             alasanCutiView,
             alasanCutiSakitView,
-            alasanCutiMelahirkanView;
+            alasanCutiMelahirkanView,
+            rootLayout;
     private Spinner
             jenisCutiSpinner,
             alasanCutiSakitSpinner;
     private boolean
             tidakPunyaAtasanLangsung;
+    private YoYo.YoYoString ropeCutiPengajuan;
 
     public CutiPengajuanPegawaiFragment() {
 
@@ -213,6 +218,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                 updateTanggalSelesai();
             }
         };
+        // root
+        rootLayout = rootView.findViewById(R.id.cuti_pengajuan_layout);
+        rootLayout.setVisibility(View.GONE);
         // profile area
         namaView = rootView.findViewById(R.id.cuti_pengajuan_profil_nama);
         nipView = rootView.findViewById(R.id.cuti_pengajuan_profil_nip);
@@ -266,6 +274,12 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             Toast.makeText(getActivity(), "error mencari atasan langsung", Toast.LENGTH_SHORT).show();
         }
 
+        rootLayout.setVisibility(View.VISIBLE);
+        ropeCutiPengajuan = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(rootLayout);
     }
 
     private void populateViewAlamatHp() {

@@ -36,6 +36,8 @@ public class konfigurasi {
     // CUTI
     public static final String URL_GET_EMP_REKAPCUTI = "http://118.97.51.140:10001/map/api/rekapcuti/";
     public static final String URL_PENGAJUANCUTI = "http://118.97.51.140:10001/map/api/setcuti?api_token=";
+    // IZIN KANTOR
+    public static final String URL_PENGAJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/setizin?api_token=";
     // PRESENSI
     public static final String URL_GET_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen/";
     public static final String URL_POST_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen?api_token=";
@@ -226,12 +228,22 @@ public class konfigurasi {
     public static final String CUTI_ALASANPENTING = "Cuti Alasan Penting";
     public static final String CUTI_MELAHIRKAN = "Cuti Melahirkan";
     public static final String CUTI_SAKIT = "Cuti Sakit";
+
     public static final int KODE_CUTI_TAHUNAN = 201;
     public static final int KODE_CUTI_BESAR = 301;
     public static final int KODE_CUTI_DILUARTANGGUNGANNEGARA = 901;
     public static final int KODE_CUTI_ALASANPENTING = 601;
     public static final int KODE_CUTI_MELAHIRKAN = 501;
     public static final int KODE_CUTI_SAKIT = 401;
+    public static final int KODE_IZIN_KANTOR_TIDAK_MASUK = 1;
+    public static final int KODE_IZIN_KANTOR_TERLAMBAT = 2;
+    public static final int KODE_IZIN_KANTOR_PULANG_CEPAT = 3;
+
+    public static final int DASHBOARD_PANEL_PROFIL = 0;
+    public static final int DASHBOARD_PANEL_JARINGAN = 1;
+    public static final int DASHBOARD_PANEL_PRESENSI = 2;
+    public static final int DASHBOARD_PANEL_TUNJANGAN = 3;
+    public static final int DASHBOARD_PANEL_CUTI = 4;
     //Dibawah ini merupakan Pengalamatan dimana Lokasi Skrip CRUD PHP disimpan
     //Pada tutorial Kali ini, karena kita membuat localhost maka alamatnya tertuju ke IP komputer
     //dimana File PHP tersebut berada

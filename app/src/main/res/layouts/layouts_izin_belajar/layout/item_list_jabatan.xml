@@ -8,6 +8,7 @@
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
     app:cardBackgroundColor="@color/whiteAlternate"
+    android:id="@+id/data_jabatan_layout"
     app:cardCornerRadius="10dp">
 
     <LinearLayout

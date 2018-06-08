@@ -17,15 +17,20 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -36,6 +41,7 @@ import id.go.bpkp.mobilemapbpkp.absen.AbsenFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardAdminFragment;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.monitoring.PencarianPegawaiFragment;
@@ -45,6 +51,10 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
 
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARDCONTENT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
@@ -84,7 +94,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             mAtasanLangsung,
             mNipAtasanLangsung,
             fragmentTag = null,
-            mPhoneNumber;
+            mPhoneNumber,
+            broadcastStatus,
+            broadcastTitle,
+            broadcastImage,
+            broadcastMessage;
     int
             mRoleIdInt;
     MenuItem
@@ -93,7 +107,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     Menu
             rootMenu;
     boolean
-            isWannaQuit = false;
+            isWannaQuit = false,
+            isQuitting = false,
+            isBroadcastable;
     NavigationView
             navigationView;
     View
@@ -112,6 +128,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private boolean
             tidakPunyaAtasanLangsung, isLdap, isJab;
     private MenuItem helpButton;
+    LinearLayout broadcastLayout;
+    TextView broadcastTitleView, broadcastMessageView;
+    ImageView broadcastImageView, broadcastClose;
+    // konfirmasi logout
+    LinearLayout konfirmasiKeluarLayout;
+    CardView konfirmasiKeluarYaView, konfirmasiKeluarTidakView;
+    private YoYo.YoYoString ropeBroadcastImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +166,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
         mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
         mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
+        // broadcast
+        isBroadcastable = dashboardIntent.getBooleanExtra("is_broadcastable", false);
+        broadcastStatus = dashboardIntent.getStringExtra(INTENT_BROADCASTSTATUS);
+        broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
+        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
+        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
 
         initateView();
         populateView();
@@ -156,6 +185,36 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         //navigation view
         navigationView.setNavigationItemSelectedListener(this);
+        //broadcast
+        if (!broadcastStatus.equals("0") && isBroadcastable) {
+            broadcastLayout.setVisibility(View.VISIBLE);
+            broadcastTitleView.setText(broadcastTitle);
+            broadcastMessageView.setText(broadcastMessage);
+            toolbar.setVisibility(View.GONE);
+            Picasso.with(DashboardActivity.this).load(broadcastImage).into(broadcastImageView);
+        } else {
+            broadcastLayout.setVisibility(View.GONE);
+        }
+        //broadcast listener
+        broadcastClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                broadcastLayout.setVisibility(View.GONE);
+                toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+        konfirmasiKeluarYaView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+        konfirmasiKeluarTidakView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initiateExit(false);
+            }
+        });
     }
 
     private void initateView() {
@@ -171,17 +230,33 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //menu profile semua pegawai hide/show
-        profilSemuaPegawaiMenu = navigationView.getMenu().getItem(1);
-        profilPegawaiMenu = navigationView.getMenu().getItem(2);
+        profilSemuaPegawaiMenu = navigationView.getMenu().getItem(2);
+        profilPegawaiMenu = navigationView.getMenu().getItem(3);
+        //broadcast
+        broadcastLayout = findViewById(R.id.dashboard_broadcast);
+        broadcastImageView = findViewById(R.id.dashboard_broadcast_image);
+        broadcastMessageView = findViewById(R.id.dashboard_broadcast_message);
+        broadcastTitleView = findViewById(R.id.dashboard_broadcast_title);
+        broadcastClose = findViewById(R.id.dashboard_broadcast_close);
+        // konfirmasi
+        konfirmasiKeluarLayout = findViewById(R.id.dashboard_konfirmasi_keluar);
+        konfirmasiKeluarYaView = findViewById(R.id.dashboard_konfirmasi_keluar_ya);
+        konfirmasiKeluarTidakView = findViewById(R.id.dashboard_konfirmasi_keluar_tidak);
     }
 
     private void populateView() {
-        //header
+        // header
         Picasso.with(DashboardActivity.this).load(mFoto).into(navHeaderProficView);
         navHeaderNamaView.setText(mNama);
         navHeaderNipView.setText(mNipBaru);
-        //toolbar
+        // toolbar
         setSupportActionBar(toolbar);
+        // broadcast
+        ropeBroadcastImage = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(broadcastImageView);
     }
 
     private void initiateDashboard() {
@@ -235,23 +310,35 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        if (broadcastLayout.isShown()) {
+            broadcastLayout.setVisibility(View.GONE);
+            toolbar.setVisibility(View.VISIBLE);
+            return;
+        }
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (getFragmentManager().getBackStackEntryCount() == 0 && openedDrawer.equals("nav_drawer_dashboard")) {
+        } else if (getFragmentManager().getBackStackEntryCount() == 0 && openedDrawer.equals("nav_drawer_dashboard") && !isQuitting) {
             openedDrawer = "nav_drawer_dashboard";
-            Toast.makeText(this, "sentuh KEMBALI dua kali untuk logout", Toast.LENGTH_SHORT).show();
-            isWannaQuit = false;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (isWannaQuit) {
-                        signOut();
-                    }
-                    isWannaQuit = true;
-                }
-            }, 1000);
+//            Toast.makeText(this, "sentuh KEMBALI dua kali untuk logout", Toast.LENGTH_SHORT).show();
+//            isWannaQuit = false;
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (isWannaQuit) {
+//                        signOut();
+//                    }
+//                    isWannaQuit = true;
+//                }
+//            }, 1000);
+            if (konfirmasiKeluarLayout.isShown()) {
+                initiateExit(false);
+            } else {
+                initiateExit(true);
+            }
         } else if (getFragmentManager().getBackStackEntryCount() == 0) {
             initiateDashboard();
+            navigationView.getMenu().getItem(0).setChecked(true);
         } else {
             super.onBackPressed();
         }
@@ -286,23 +373,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         if (id == R.id.nav_drawer_dashboard) {
             if (openedDrawer != "nav_drawer_dashboard") {
                 initiateDashboard();
-//                Bundle bundle = new Bundle();
-//                if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN || mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT || mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT){
-//                    fragment = new DashboardAdminFragment();
-//                    fragmentTag = getResources().getString(R.string.title_fragment_dashboard_admin);
-//                } else {
-//                    fragment = new DashboardPegawaiFragment();
-//                    fragmentTag = getResources().getString(R.string.title_fragment_dashboard_pegawai);
-//                }
-//                bundle.putString("user_token", mUserToken);
-//                bundle.putString("content_url", mContentUrl);
-//                bundle.putString("nip_lama", mNipLama);
-//                bundle.putString("username", mNipBaru);
-//                bundle.putString("foto", mFoto);
-//                bundle.putInt("role_id", mRoleIdInt);
-//
-//                fragment.setArguments(bundle);
-//                openedDrawer = "nav_drawer_dashboard";
             }
 
         } else if (id == R.id.nav_profile_seluruh_pegawai) {
@@ -325,6 +395,25 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 fragment.setArguments(bundle);
                 fragmentTag = getResources().getString(R.string.title_fragment_profil_seluruh_pegawai);
                 openedDrawer = "nav_profile_seluruh_pegawai";
+            }
+        } else if (id == R.id.nav_presensi) {
+            if (openedDrawer != "nav_presensi") {
+                // set content dashboard
+                Bundle bundle = new Bundle();
+                bundle.putString(INTENT_USERTOKEN, mUserToken);
+                bundle.putString(INTENT_NAMA, mNama);
+                bundle.putString(INTENT_NIPLAMA, mNipLama);
+                bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_FOTO, mFoto);
+                bundle.putString(INTENT_NOHP, mNoHp);
+                bundle.putString(INTENT_IMEI, mImei);
+                bundle.putString(INTENT_EMAIL, mEmail);
+                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+
+                fragment = new AbsenFragment();
+                fragment.setArguments(bundle);
+                fragmentTag = "presensi";
+                openedDrawer = "nav_presensi";
             }
         } else if (id == R.id.nav_profile) {
             if (openedDrawer != "nav_profile") {
@@ -418,7 +507,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
                     bundle.putString(INTENT_NOHP, mNoHp);
 
-                    fragment = new CutiDashboardPegawaiFragment();
+                    fragment = new IzinKantorDashboardPegawaiFragment();
                     fragment.setArguments(bundle);
                     fragmentTag = getResources().getString(R.string.title_fragment_izin_kantor_dashboard_pegawai);
                     openedDrawer = "nav_izin_kantor";
@@ -428,26 +517,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_surat_keluar) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
-        } else if (id == R.id.nav_absen) {
-            if (openedDrawer != "nav_absen") {
-                String url = "test";
-                Bundle bundle = new Bundle();
-                bundle.putString(INTENT_USERTOKEN, mUserToken);
-                bundle.putString(INTENT_NIPLAMA, mNipLama);
-                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
-                bundle.putString(INTENT_NAMA, mNama);
-                bundle.putString(INTENT_FOTO, mFoto);
-                bundle.putString(INTENT_NIPBARU, mNipBaru);
-                bundle.putString(INTENT_NOHP, mNoHp);
-                bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
-                bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
-                bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-
-                fragment = new AbsenFragment();
-                fragment.setArguments(bundle);
-                fragmentTag = getResources().getString(R.string.title_fragment_absen);
-                openedDrawer = "nav_absen";
-            }
         } else if (id == R.id.nav_settings) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_logout) {
@@ -507,12 +576,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                isQuitting = true;
                 loading = ProgressDialog.show(DashboardActivity.this, null, null, false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                isQuitting = false;
                 loading.dismiss();
                 JSON_STRING = s;
                 parseJSON();
@@ -527,5 +598,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
         GetJSON gj = new GetJSON();
         gj.execute();
+    }
+
+    private void initiateExit(boolean status) {
+        if (status) {
+            konfirmasiKeluarLayout.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.GONE);
+        } else {
+            konfirmasiKeluarLayout.setVisibility(View.GONE);
+            toolbar.setVisibility(View.VISIBLE);
+        }
     }
 }

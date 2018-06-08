@@ -15,10 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -81,6 +86,10 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             daftarCutiButton;
     private boolean
             tidakPunyaAtasanLangsung;
+    private YoYo.YoYoString ropeCutiDashboard;
+    private LinearLayout rootLayout;
+    private ProgressBar rootProgressBar, pengajuanProgressBar;
+    private TextView pengajuanLabel;
 
     @Nullable
     @Override
@@ -137,6 +146,11 @@ public class CutiDashboardPegawaiFragment extends Fragment {
     }
 
     private void initiateView() {
+        // root
+        rootLayout = rootView.findViewById(R.id.cuti_pegawai_dashboard);
+        rootProgressBar = rootView.findViewById(R.id.cuti_pegawai_progress_bar);
+        rootLayout.setVisibility(View.GONE);
+        rootProgressBar.setVisibility(View.VISIBLE);
         // profic
         proficView = (ImageView) rootView.findViewById(R.id.dashboard_cuti_profic);
         namaView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nama);
@@ -154,6 +168,8 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         //  button
         daftarCutiButton = (CardView) rootView.findViewById(R.id.dashboard_cuti_daftar_cuti_button);
         pengajuanCutiButton = (CardView) rootView.findViewById(R.id.dashboard_cuti_pengajuan_cuti_button);
+        pengajuanProgressBar = rootView.findViewById(R.id.cuti_pegawai_dashboard_pengajuan_progress_bar);
+        pengajuanLabel = rootLayout.findViewById(R.id.cuti_pegawai_dashboard_pengajuan_label);
     }
 
     private void populateView() {
@@ -180,6 +196,14 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         jumlahHakCutiView.setText(jumlahHakCuti);
         cutiTerpakaiView.setText(cutiTerpakai);
         saldoCutiView.setText(saldoCuti);
+
+        rootLayout.setVisibility(View.VISIBLE);
+        rootProgressBar.setVisibility(View.GONE);
+        ropeCutiDashboard = YoYo.with(Techniques.FadeIn)
+                .duration(1500)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(rootLayout);
     }
 
     private void initiateSetOnClickMethod() {
@@ -240,10 +264,14 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             fragmentTransaction.add(R.id.content_fragment_area, cutiPengajuanPegawaiFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+            pengajuanLabel.setVisibility(View.VISIBLE);
+            pengajuanProgressBar.setVisibility(View.GONE);
 
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "JSON exception", Toast.LENGTH_SHORT).show();
+            pengajuanLabel.setVisibility(View.VISIBLE);
+            pengajuanProgressBar.setVisibility(View.GONE);
         }
     }
 
@@ -254,13 +282,14 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(getActivity(), null, "mohon tunggu", false, false);
+                pengajuanLabel.setVisibility(View.INVISIBLE);
+                pengajuanProgressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loading.dismiss();
+//                loading.dismiss();
                 JSON_STRING = s;
                 parseJSONAtasanLangsung();
             }
@@ -283,13 +312,13 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(getActivity(), null, "mohon tunggu", false, false);
+//                loading = ProgressDialog.show(getActivity(), null, "mohon tunggu", false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loading.dismiss();
+//                loading.dismiss();
                 JSON_STRING = s;
                 parseJSONDashboardCuti();
             }
