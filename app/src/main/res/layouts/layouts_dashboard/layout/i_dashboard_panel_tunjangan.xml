@@ -78,6 +78,13 @@
                     android:paddingStart="10dp">
 
                     <TextView
+                        android:id="@+id/dashboard_tunjangan_periode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Data Tunjangan Kinerja "
+                        android:textSize="12sp" />
+
+                    <TextView
                         android:id="@+id/dashboard_tunjangan_dasar"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"

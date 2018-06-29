@@ -150,9 +150,13 @@ public class DashboardPegawaiFragment extends Fragment {
     private TextView panelCutiSaldo, panelCutiHak, panelCutiTerpakai;
     private long animationDurationLong = 1500;
     private long animationDurationShort = 500;
+    Calendar c;
+    int year;
+    int prevMonth;
+    String time;
     // panel tukin
-    private String tukinBulan, tukinTahun, tukinGrade, tukinPersenPotongan, tukinDasar, tukinPotongan, tukinBersih;
-    private TextView tukinGradeTextView, tukinDasarTextView, tukinPotonganTextView, tukinBersihTextView;
+    private String tukinBulan, tukinTahun, tukinGrade, tukinPersenPotongan, tukinDasar, tukinPotongan, tukinBersih, tukinPeriode;
+    private TextView tukinGradeTextView, tukinDasarTextView, tukinPotonganTextView, tukinBersihTextView, tukinPeriodeTextView;
 
     public DashboardPegawaiFragment() {
 
@@ -196,6 +200,13 @@ public class DashboardPegawaiFragment extends Fragment {
         // panel setting
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPreferences.edit();
+
+        c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        // bulan diindeks dari 0
+        prevMonth = c.get(Calendar.MONTH) + 1;
+        time = "/" + prevMonth + "/" + year;
+        Toast.makeText(getActivity(), time, Toast.LENGTH_SHORT).show();
 
         initiateView();
         populateView();
@@ -727,6 +738,7 @@ public class DashboardPegawaiFragment extends Fragment {
         tukinDasarTextView = rootView.findViewById(R.id.dashboard_tunjangan_dasar);
         tukinPotonganTextView = rootView.findViewById(R.id.dashboard_tunjangan_potongan);
         tukinBersihTextView = rootView.findViewById(R.id.dashboard_tunjangan_bersih);
+        tukinPeriodeTextView = rootView.findViewById(R.id.dashboard_tunjangan_periode);
 
         ImageView tukinInfo = rootView.findViewById(R.id.dashboard_tunjangan_info);
         tukinInfo.setOnClickListener(new View.OnClickListener() {
@@ -743,6 +755,8 @@ public class DashboardPegawaiFragment extends Fragment {
         tukinPotonganTextView.setText(infoPotongan);
         tukinBersihTextView.setText(tukinBersih);
         tukinGradeTextView.setText(tukinGrade);
+        String periode = "Tukin bulan " + tukinBulan + " " + tukinTahun;
+        tukinPeriodeTextView.setText(periode);
 
         panelTunjanganCardView.setVisibility(View.VISIBLE);
         ropePanelEnable = YoYo.with(Techniques.SlideInRight)
@@ -788,10 +802,6 @@ public class DashboardPegawaiFragment extends Fragment {
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int prevMonth = c.get(Calendar.MONTH) - 1;
-                String time = "/" + prevMonth + "/" + year;
                 String s = rh.sendGetRequest(konfigurasi.URL_GET_TUKIN + mNipLama + time + "?api_token=" + mUserToken);
                 return s;
             }
