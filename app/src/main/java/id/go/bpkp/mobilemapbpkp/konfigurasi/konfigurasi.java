@@ -49,6 +49,8 @@ public class konfigurasi {
     public static final String TAG_ABSEN_STATUSPULANG = "statusPulang";
     // HISTORI PRESENSI
     public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
+    // TUKIN
+    public static final String URL_GET_TUKIN = "http://118.97.51.140:10001/map/api/tukin/";
     //JSON tags
     public static final String TAG_JSON_ARRAY = "result";
     public static final String TAG_ID = "id";
@@ -156,6 +158,14 @@ public class konfigurasi {
     public static final String TAG_UNIT_WILAYAH2 = "wil2";
     public static final String TAG_UNIT_WILAYAH3 = "wil3";
     // TAG BUAT ATASAN LANGSUNG
+    // TAG BUAT TUKIN
+    public static final String TAG_TUNJANGAN_BULAN = "bulan";
+    public static final String TAG_TUNJANGAN_TAHUN = "tahun";
+    public static final String TAG_TUNJANGAN_GRADE = "grade";
+    public static final String TAG_TUNJANGAN_PERSENPOTONGAN = "pot_tukin";
+    public static final String TAG_TUNJANGAN_TUKINDASAR = "tukin_full";
+    public static final String TAG_TUNJANGAN_POTONGAN = "potongan";
+    public static final String TAG_TUNJANGAN_TUKINBERSIH = "tukin_net";
 //    public static final String TAG_DIKLAT_NIPLAMA = "s_nip";
     public static final String EMP_ID  = "id";
     public static final String EMP_NIPLAMA  = "niplama";
@@ -239,11 +249,13 @@ public class konfigurasi {
     public static final int KODE_IZIN_KANTOR_TERLAMBAT = 2;
     public static final int KODE_IZIN_KANTOR_PULANG_CEPAT = 3;
 
-    public static final int DASHBOARD_PANEL_PROFIL = 0;
-    public static final int DASHBOARD_PANEL_JARINGAN = 1;
+    public static final int DASHBOARD_PANEL_ULTAH = 0;
+    public static final int DASHBOARD_PANEL_PROFIL = 1;
     public static final int DASHBOARD_PANEL_PRESENSI = 2;
-    public static final int DASHBOARD_PANEL_TUNJANGAN = 3;
-    public static final int DASHBOARD_PANEL_CUTI = 4;
+    public static final int DASHBOARD_PANEL_CUTI = 3;
+    public static final int DASHBOARD_PANEL_JARINGAN = 4;
+    public static final int DASHBOARD_PANEL_TUNJANGAN = 5;
+
     //Dibawah ini merupakan Pengalamatan dimana Lokasi Skrip CRUD PHP disimpan
     //Pada tutorial Kali ini, karena kita membuat localhost maka alamatnya tertuju ke IP komputer
     //dimana File PHP tersebut berada

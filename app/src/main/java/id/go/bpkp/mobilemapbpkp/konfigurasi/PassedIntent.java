@@ -22,6 +22,7 @@ public class PassedIntent {
     public static final String INTENT_LDAP = "ldap";
     public static final String INTENT_ISLDAP = "is_ldap";
     public static final String INTENT_ISJAB = "is_jab";
+    public static final String INTENT_ISHUT = "is_hut";
     // no hp
     public static final String INTENT_NOHP = "no_hp";
     public static final String INTENT_IMEI = "imei";

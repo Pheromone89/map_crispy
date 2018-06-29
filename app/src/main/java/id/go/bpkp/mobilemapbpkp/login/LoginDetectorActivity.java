@@ -40,6 +40,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCAST
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_LDAP;
@@ -147,6 +148,7 @@ public class LoginDetectorActivity extends AppCompatActivity {
                                 boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
                                 boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
                                 boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
+                                boolean isHut = (jsonObject.getJSONObject("message").getString("is_hut").equals("true"));
                                 if (!tidakPunyaAtasanLangsung) {
                                     i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
                                     i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
@@ -154,7 +156,9 @@ public class LoginDetectorActivity extends AppCompatActivity {
                                 }
                                 i.putExtra(INTENT_ISLDAP, isLdap);
                                 i.putExtra(INTENT_ISJAB, isJab);
+                                i.putExtra(INTENT_ISHUT, isHut);
                                 // broadcast
+                                i.putExtra("is_broadcastable", true);
                                 i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
                                 i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
                                 i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));

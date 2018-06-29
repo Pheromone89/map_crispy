@@ -59,6 +59,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARD
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
@@ -126,7 +127,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private boolean
-            tidakPunyaAtasanLangsung, isLdap, isJab;
+            tidakPunyaAtasanLangsung, isLdap, isJab, isHut;
     private MenuItem helpButton;
     LinearLayout broadcastLayout;
     TextView broadcastTitleView, broadcastMessageView;
@@ -164,6 +165,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
         isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
         isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
+        isHut = dashboardIntent.getBooleanExtra(INTENT_ISHUT, false);
         mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
         mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
         // broadcast
@@ -298,6 +300,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         bundle.putString(INTENT_NOHP, mNoHp);
         bundle.putString(INTENT_IMEI, mImei);
         bundle.putString(INTENT_EMAIL, mEmail);
+        bundle.putBoolean(INTENT_ISHUT, isHut);
         bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
         dashboardFragment.setArguments(bundle);
         fragmentTransaction.add(R.id.content_fragment_area, dashboardFragment, titleDashboard);

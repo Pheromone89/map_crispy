@@ -11,6 +11,7 @@
     <color name="blueAccent">#3d5daa</color>
     <color name="blueAccentPale">#6f7fbe</color>>
     <color name="whiteAlternate">#dce3f3</color>
+    <color name="whiteAlternateDark">#c6d4f2</color>
     <!--Item Dashboard Color-->
     <color name="blue">@android:color/holo_blue_dark</color>
     <color name="red">@android:color/holo_red_dark</color>

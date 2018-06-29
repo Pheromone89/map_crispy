@@ -33,6 +33,17 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG;
+
 public class PhoneVerificationActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
@@ -40,9 +51,10 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private TextView simpanButton, confirmationMessageView, currentPhoneMessageView, messageView;
     private LinearLayout confirmationLayout;
     private CardView yesButton, noButton;
-    private String mNama, mNipBaru, mNipLama, mRoleId, mUserToken, mFoto, mAtasanLangsung, mNipAtasanLangsung, mNoHp, mEmail, currentPhoneMessage;
+    private String mNama, mNipBaru, mNipLama, mRoleId, mUserToken, mFoto, mAtasanLangsung, mNipAtasanLangsung, mNoHp, mEmail, currentPhoneMessage, broadcastStatus, broadcastTitle, broadcastImage, broadcastMessage;
     private int mRoleIdInt;
-    private boolean tidakPunyaAtasanLangsung;
+    private boolean
+            tidakPunyaAtasanLangsung, isLdap, isJab, isHut, isBroadcastable;
     private EditText phoneNumberInput;
     private boolean isRedirect;
     private ImageView warningImageView;
@@ -65,9 +77,18 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         mEmail = dashboardIntent.getStringExtra(PassedIntent.INTENT_EMAIL);
         mFoto = PassedIntent.getFoto(mNipLama);
         // data atasan langsung
-        tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, true);
-        mAtasanLangsung = dashboardIntent.getStringExtra(PassedIntent.INTENT_NAMAATASANLANGSUNG);
-        mNipAtasanLangsung = dashboardIntent.getStringExtra(PassedIntent.INTENT_NIPATASANLANGSUNG);
+        tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
+        isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
+        isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
+        isHut = dashboardIntent.getBooleanExtra(INTENT_ISHUT, false);
+        mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
+        mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
+        // broadcast
+        isBroadcastable = dashboardIntent.getBooleanExtra("is_broadcastable", false);
+        broadcastStatus = dashboardIntent.getStringExtra(INTENT_BROADCASTSTATUS);
+        broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
+        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
+        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
 
         // setting
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -137,6 +158,15 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                     // nip atasan langsung
                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                 }
+                i.putExtra(INTENT_ISLDAP, isLdap);
+                i.putExtra(INTENT_ISJAB, isJab);
+                i.putExtra(INTENT_ISHUT, isHut);
+                // broadcast
+                i.putExtra("is_broadcastable", isBroadcastable);
+                i.putExtra(INTENT_BROADCASTSTATUS, broadcastStatus);
+                i.putExtra(INTENT_BROADCASTIMAGE, broadcastImage);
+                i.putExtra(INTENT_BROADCASTTITLE, broadcastTitle);
+                i.putExtra(INTENT_BROADCASTMESSAGE, broadcastMessage);
                 startActivity(i);
             }
         });
@@ -159,6 +189,15 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                     // nip atasan langsung
                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                 }
+                i.putExtra(INTENT_ISLDAP, isLdap);
+                i.putExtra(INTENT_ISJAB, isJab);
+                i.putExtra(INTENT_ISHUT, isHut);
+                // broadcast
+                i.putExtra("is_broadcastable", isBroadcastable);
+                i.putExtra(INTENT_BROADCASTSTATUS, broadcastStatus);
+                i.putExtra(INTENT_BROADCASTIMAGE, broadcastImage);
+                i.putExtra(INTENT_BROADCASTTITLE, broadcastTitle);
+                i.putExtra(INTENT_BROADCASTMESSAGE, broadcastMessage);
                 editor.putBoolean(SettingPrefs.SETTING_BELUMSETNOHP, false);
                 editor.commit();
                 startActivity(i);
@@ -230,6 +269,15 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                                     i.putExtra(PassedIntent.INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
                                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                                 }
+                                i.putExtra(INTENT_ISLDAP, isLdap);
+                                i.putExtra(INTENT_ISJAB, isJab);
+                                i.putExtra(INTENT_ISHUT, isHut);
+                                // broadcast
+                                i.putExtra("is_broadcastable", isBroadcastable);
+                                i.putExtra(INTENT_BROADCASTSTATUS, broadcastStatus);
+                                i.putExtra(INTENT_BROADCASTIMAGE, broadcastImage);
+                                i.putExtra(INTENT_BROADCASTTITLE, broadcastTitle);
+                                i.putExtra(INTENT_BROADCASTMESSAGE, broadcastMessage);
                                 Toast.makeText(PhoneVerificationActivity.this, "Penyimpanan nomor handphone berhasil, data akan diupdate setelah jeda beberapa saat", Toast.LENGTH_LONG).show();
                                 editor.putBoolean(SettingPrefs.SETTING_BELUMSETNOHP, false);
                                 editor.commit();

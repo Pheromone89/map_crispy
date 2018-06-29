@@ -6,8 +6,8 @@ android {
         applicationId "id.go.bpkp.mobilemapbpkp"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 8
-        versionName "0.2.3"
+        versionCode 9
+        versionName "0.2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
