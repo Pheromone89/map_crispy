@@ -29,6 +29,7 @@ public class PassedIntent {
     // email
     public static final String INTENT_EMAIL = "email";
     // atasan langsung
+    public static final String INTENT_ISATASAN = "is_atasan";
     public static final String INTENT_TIDAKPUNYAATASANLANGSUNG = "tidak_punya_atasan_langsung";
     public static final String INTENT_NAMAATASANLANGSUNG = "nama_atasan_langsung";
     public static final String INTENT_NIPATASANLANGSUNG = "nip_atasan_langsung";

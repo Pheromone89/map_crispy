@@ -60,7 +60,8 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
 
         Picasso.with(context).load(pegawaiIzinKantor.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(pegawaiIzinKantor.getNama());
-        holder.nipBaruView.setText(pegawaiIzinKantor.getNipBaru());
+        String nip = pegawaiIzinKantor.getNipBaru() + " / " + pegawaiIzinKantor.getNipLama();
+        holder.nipBaruView.setText(nip);
 
         ropePegawaiIzinKantor = YoYo.with(Techniques.FadeIn)
                 .duration(1500)

@@ -63,7 +63,8 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
 
         Picasso.with(context).load(pegawaiCuti.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(pegawaiCuti.getNama());
-        holder.nipBaruView.setText(pegawaiCuti.getNipBaru());
+        String nip = pegawaiCuti.getNipBaru() + " / " + pegawaiCuti.getNipLama();
+        holder.nipBaruView.setText(nip);
 
         ropePegawaiCuti = YoYo.with(Techniques.FadeIn)
                 .duration(1500)

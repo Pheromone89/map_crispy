@@ -3,6 +3,7 @@ package id.go.bpkp.mobilemapbpkp.dashboard;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.text.Layout;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -17,63 +18,48 @@ public class DashboardPanel {
     public static List<DashboardPanel> dashboardPanelList = new ArrayList<DashboardPanel>(Arrays.<DashboardPanel>asList(
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_ULTAH,
-                    R.layout.i_dashboard_panel_ultah,
-                    "dashboard_panel_ultah"
+                    "ultah",
+                    R.layout.i_dashboard_panel_ultah
             ),
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_PROFIL,
-                    R.layout.i_dashboard_panel_profil,
-                    "dashboard_panel_profil",
-                    "dashboard_profil_layout",
-                    "dashboard_pegawai_profil_option"
+                    "profil",
+                    R.layout.i_dashboard_panel_profil
             ),
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_PRESENSI,
-                    R.layout.i_dashboard_panel_presensi,
-                    "dashboard_panel_presensi",
-                    "dashboard_presensi_layout",
-                    "dashboard_pegawai_presensi_option"
+                    "presensi",
+                    R.layout.i_dashboard_panel_presensi
             ),
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_CUTI,
-                    R.layout.i_dashboard_panel_cuti,
-                    "dashboard_panel_cuti",
-                    "dashboard_cuti_layout",
-                    "dashboard_pegawai_cuti_option"
+                    "cuti",
+                    R.layout.i_dashboard_panel_cuti
             ),
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_JARINGAN,
-                    R.layout.i_dashboard_panel_jaringan,
-                    "dashboard_panel_jaringan",
-                    "dashboard_jaringan_layout",
-                    "dashboard_pegawai_jaringan_option"
+                    "jaringan",
+                    R.layout.i_dashboard_panel_jaringan
             ),
             new DashboardPanel(
                     konfigurasi.DASHBOARD_PANEL_TUNJANGAN,
-                    R.layout.i_dashboard_panel_tunjangan,
-                    "dashboard_panel_tunjangan",
-                    "dashboard_tunjangan_layout",
-                    "dashboard_pegawai_tunjangan_option"
+                    "tunjangan",
+                    R.layout.i_dashboard_panel_tunjangan
+            ),
+            new DashboardPanel(
+                    konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN,
+                    "notifikasi_atasan",
+                    R.layout.i_dashboard_panel_notifikasi_atasan
             )
     ));
     int panelId;
     int panelLayout;
-    String panelCardView;
-    String panelBackground;
-    String panelOption;
+    String panelName;
 
-    public DashboardPanel(int panelId, int panelLayout, String panelCardView, String panelBackground, String panelOption) {
+    public DashboardPanel(int panelId, String panelName, int panelLayout) {
         this.panelId = panelId;
+        this.panelName = panelName;
         this.panelLayout = panelLayout;
-        this.panelCardView = panelCardView;
-        this.panelBackground = panelBackground;
-        this.panelOption = panelOption;
-    }
-
-    public DashboardPanel(int panelId, int panelLayout, String panelCardView) {
-        this.panelId = panelId;
-        this.panelLayout = panelLayout;
-        this.panelCardView = panelCardView;
     }
 
     public int getPanelId() {
@@ -84,19 +70,35 @@ public class DashboardPanel {
         return panelLayout;
     }
 
-    public String getPanelCardView() {
-        return panelCardView;
+    public static List<DashboardPanel> getDashboardPanelList() {
+        return dashboardPanelList;
     }
 
-    public String getPanelBackground() {
-        return panelBackground;
+    public LinearLayout getPanelCardView(Context context, View rootView) {
+        String panelCardIdString = "dashboard_panel_" + panelName;
+        int panelCardIdInt = context.getResources().getIdentifier(panelCardIdString, "id", DashboardPegawaiFragment.PACKAGE_NAME);
+        LinearLayout panelCard = rootView.findViewById(panelCardIdInt);
+        return panelCard;
     }
 
-    //////////////////////////
-    // dashboard panel list //
-    //////////////////////////
+    public LinearLayout getPanelBackground(Context context, View rootView) {
+        String backgroundIdString = "dashboard_pegawai_" + panelName + "_background";
+        int backgroundIdInt = context.getResources().getIdentifier(backgroundIdString, "id", DashboardPegawaiFragment.PACKAGE_NAME);
+        LinearLayout background = rootView.findViewById(backgroundIdInt);
+        return background;
+    }
 
-    public String getPanelOption() {
-        return panelOption;
+    public CardView getPanelOption(Context context, View rootView) {
+        String optionIdString = "dashboard_pegawai_" + panelName + "_option";
+        int optionIdInt = context.getResources().getIdentifier(optionIdString, "id", DashboardPegawaiFragment.PACKAGE_NAME);
+        CardView option = rootView.findViewById(optionIdInt);
+        return option;
+    }
+
+    public LinearLayout getPanelOptionProgressbar(Context context, View rootView) {
+        String progressBarIdString = "dashboard_pegawai_" + panelName + "_option_progressbar";
+        int progressBarIdInt = context.getResources().getIdentifier(progressBarIdString, "id", DashboardPegawaiFragment.PACKAGE_NAME);
+        LinearLayout progressBarView = rootView.findViewById(progressBarIdInt);
+        return progressBarView;
     }
 }

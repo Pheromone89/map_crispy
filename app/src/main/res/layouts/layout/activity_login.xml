@@ -109,45 +109,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/login_phone_number_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="@dimen/login_icon_size"
-                android:layout_height="match_parent"
-                android:background="@color/blueAccentPale"
-                android:contentDescription="phone icon"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_phone_number" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blueAccent"
-                android:paddingTop="5dp"
-                android:textColorHint="@color/blueBasicPale">
-
-                <EditText
-                    android:id="@+id/login_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:ems="10"
-                    android:hint="Nomor Telepon"
-                    android:inputType="phone"
-                    android:singleLine="true"
-                    android:textColor="@color/blueBasicPale"
-                    android:textColorHint="@color/blueBasicPale" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"

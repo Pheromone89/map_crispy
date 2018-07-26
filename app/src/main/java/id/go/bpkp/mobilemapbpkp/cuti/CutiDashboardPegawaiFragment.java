@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +49,8 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             rootView;
     private String
             JSON_STRING,
+            JSON_index,
+            JSON_BawahanLangsung,
             mUserToken,
             mNipLama,
             mNipBaru,
@@ -85,11 +90,18 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             pengajuanCutiButton,
             daftarCutiButton;
     private boolean
-            tidakPunyaAtasanLangsung;
+            tidakPunyaAtasanLangsung, isAtasan;
     private YoYo.YoYoString ropeCutiDashboard;
     private LinearLayout rootLayout;
-    private ProgressBar rootProgressBar, pengajuanProgressBar;
+    private ProgressBar rootProgressBar, pengajuanProgressBar, persetujuanProgressBar;
     private TextView pengajuanLabel;
+    // persetujuan
+    private CardView
+            persetujuanCutiButton;
+    private RelativeLayout
+            notifikasiIcon;
+    // saved
+    private TextView savedIndex, savedJson, notifikasi;
 
     @Nullable
     @Override
@@ -117,6 +129,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         //role id
 //        mRoleIdInt = this.getArguments().getInt("role_id");
         // bool atasan
+        isAtasan = this.getArguments().getBoolean(PassedIntent.INTENT_ISATASAN);
         tidakPunyaAtasanLangsung = this.getArguments().getBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG);
         // atasan langsung
         mAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NAMAATASANLANGSUNG);
@@ -135,6 +148,10 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         // harus terakhir
         getJSONDashboardCuti();
         initiateSetOnClickMethod();
+        if (isAtasan) {
+            persetujuanCutiButton.setVisibility(View.VISIBLE);
+            getJSONDaftarBawahanLangsung();
+        }
     }
 
     @Override
@@ -143,6 +160,9 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         searchMenuItem.setVisible(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
         super.onCreateOptionsMenu(menu, inflater);
+        if (isAtasan) {
+            getJSONDaftarBawahanLangsung();
+        }
     }
 
     private void initiateView() {
@@ -170,6 +190,9 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         pengajuanCutiButton = (CardView) rootView.findViewById(R.id.dashboard_cuti_pengajuan_cuti_button);
         pengajuanProgressBar = rootView.findViewById(R.id.cuti_pegawai_dashboard_pengajuan_progress_bar);
         pengajuanLabel = rootLayout.findViewById(R.id.cuti_pegawai_dashboard_pengajuan_label);
+        // persetujuan
+        persetujuanCutiButton = rootView.findViewById(R.id.dashboard_cuti_persetujuan_cuti_button);
+        persetujuanProgressBar = rootView.findViewById(R.id.cuti_pegawai_dashboard_persetujuan_progress_bar);
     }
 
     private void populateView() {
@@ -230,6 +253,22 @@ public class CutiDashboardPegawaiFragment extends Fragment {
                 getJSONAtasanLangsung();
             }
         });
+        persetujuanCutiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+
+                CutiDaftarPersetujuanFragment cutiDaftarPersetujuanFragment = new CutiDaftarPersetujuanFragment();
+                cutiDaftarPersetujuanFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarPersetujuanFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     private void parseJSONAtasanLangsung() {
@@ -262,7 +301,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.content_fragment_area, cutiPengajuanPegawaiFragment);
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.addToBackStack("fragment_dashboard_cuti");
             fragmentTransaction.commit();
             pengajuanLabel.setVisibility(View.VISIBLE);
             pengajuanProgressBar.setVisibility(View.GONE);
@@ -307,18 +346,15 @@ public class CutiDashboardPegawaiFragment extends Fragment {
 
     private void getJSONDashboardCuti() {
         class GetJSON extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-//                loading = ProgressDialog.show(getActivity(), null, "mohon tunggu", false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-//                loading.dismiss();
                 JSON_STRING = s;
                 parseJSONDashboardCuti();
             }
@@ -365,5 +401,64 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         } else {
             return string;
         }
+    }
+
+    private void parseJSONDaftarBawahanLangsung() {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            String result = jsonObject.getString(konfigurasi.TAG_JSON_ARRAY);
+            JSON_index = result;
+            if (!jsonObject.getString("success").equals("true")) {
+                JSON_index = "" + 0;
+            }
+            setJSONDaftarBawahanLangsung();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "JSON exception", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getJSONDaftarBawahanLangsung() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+//                rootProgressBar.setVisibility(View.VISIBLE);
+//                rootLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+//                rootProgressBar.setVisibility(View.GONE);
+//                rootLayout.setVisibility(View.VISIBLE);
+                JSON_STRING = s;
+                parseJSONDaftarBawahanLangsung();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_EMP_CUTIBAWAHANLANGSUNGCOUNT + mNipLama + "?api_token=" + mUserToken);
+
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void setJSONDaftarBawahanLangsung() {
+        notifikasiIcon = rootView.findViewById(R.id.cuti_pegawai_notifikasi);
+        notifikasiIcon.setVisibility(View.VISIBLE);
+        notifikasi = rootView.findViewById(R.id.cuti_pegawai_jumlah_notifikasi);
+        notifikasi.setText(JSON_index);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

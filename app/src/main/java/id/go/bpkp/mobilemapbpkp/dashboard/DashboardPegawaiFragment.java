@@ -1,6 +1,8 @@
 package id.go.bpkp.mobilemapbpkp.dashboard;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,9 +36,11 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,17 +51,33 @@ import java.util.TimerTask;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahan;
+import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahanFragment;
+import id.go.bpkp.mobilemapbpkp.cuti.CutiDaftarPersetujuanFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 import static id.go.bpkp.mobilemapbpkp.dashboard.DashboardPanel.dashboardPanelList;
+import static id.go.bpkp.mobilemapbpkp.dashboard.DashboardPanel.getDashboardPanelList;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPLAMA;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NOHP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEIDINT;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN;
 
 /**
  * Created by ASUS on 26/01/2018.
  */
 
 public class DashboardPegawaiFragment extends Fragment {
+
+    public static String PACKAGE_NAME;
 
     protected static final float LOCSOUTH = -6.19225f;
     protected static final float LOCEAST = 106.87157f;
@@ -68,38 +90,18 @@ public class DashboardPegawaiFragment extends Fragment {
     boolean isSudahAbsenPagi, isSudahAbsenSore;
     boolean coarseLoc, fineLoc, isLatitudeOnPosition, isLongitudeOnPosition;
     float userLat, userLong, devlatfloat, devlongfloat;
-    Button refreshButton;
-    CardView absenCardView, absenWarningCardView, absenLoadingCardView, absenInactiveCardView;
     int currentHour;
     private View rootView;
     private TextView
-            panelHeader,
-            jamDatangView,
             jamDatangAltView,
             jamPulangAltView,
-            jamPulangView,
-            jamEfektifView,
             macAdressView,
             profilNamaView,
-            profilNipView,
-            profilNipLamaView,
-            hariTanggalView,
-            statusMessageView,
-            statusDatangView,
-            statusPulangView;
+            profilNipView;
     private ImageView
-            profilFotoView,
-            refreshLocationButton,
-            historyButton,
-            fingerIcon,
-            infoButton;
-    private CardView
-            datangCardView,
-            pulangCardView,
-            statusCardView;
+            profilFotoView;
     private String
-            JSON_STRING;
-    private String
+            JSON_STRING,
             mNama,
             mNipBaru,
             mNipLama,
@@ -107,43 +109,27 @@ public class DashboardPegawaiFragment extends Fragment {
             mFoto,
             mImei,
             mContentUrl;
-    private boolean isHut;
+    private boolean isHut, isAtasan;
     private String
-            hari,
             jamDatang,
             jamPulang,
-            jamEfektif,
-            statusMessage,
-            hariTanggal,
             statusDatang,
-            statusPulang,
-            statusAbsen;
+            statusPulang;
     private int
-            mRoleId,
-            skenarioDatang,
-            skenarioPulang;
-    private SimpleDateFormat
-            format;
-    private LinearLayout rootLayout, datangBackground, pulangBackground;
+            mRoleId;
+    private LinearLayout rootLayout;
     private ProgressBar rootProgressBar;
-    private YoYo.YoYoString ropeDashboardPegawai;
     private FloatingActionButton fab;
-    private ScrollView panelOption;
+    private LinearLayout panelOption;
     // panel cardview
-    private int currentSelectedPanel = 999;
-    private boolean profilIsShown, presensiIsShown, jaringanIsShown, cutiIsShown, tunjanganIsShown, ultahIsShown = false;
-    private boolean profileIsClicked, presensiIsClicked, jaringanIsClicked, cutiIsClicked, tunjanganIsClicked, ultahIsClicked = false;
-    private LinearLayout panelProfilCardView, panelJaringanCardView, panelPresensiCardView, panelTunjanganCardView, panelCutiCardView;
-    private LinearLayout panelProfilBackground, panelJaringanBackground, panelPresensiBackground, panelTunjanganBackground, panelCutiBackground;
-    private ImageView panelProfilCloseButton, panelJaringanCloseButton, panelPresensiCloseButton, panelTunjanganCloseButton, panelCutiCloseButton;
-    private CardView profilOptionCardView, jaringanOptionCardView, presensiOptionCardView, tunjanganOptionCardView, cutiOptionCardView;
+    private int currentSelectedPanel = 999, currentPanelShowing;
+    private LinearLayout panelProfilCardView, panelJaringanCardView, panelPresensiCardView, panelTunjanganCardView, panelCutiCardView, panelNotifikasiAtasanCardView;
+    private LinearLayout panelProfilBackground, panelJaringanBackground, panelPresensiBackground, panelTunjanganBackground, panelCutiBackground, panelNotifikasiAtasanBackground;
     // khusus ultah
     private LinearLayout panelUltahCardView;
     private ImageView fotoUltah;
     // end ultah
-    private YoYo.YoYoString ropePanelEnable;
-    private YoYo.YoYoString ropePanelDisable;
-    private YoYo.YoYoString ropeCloseButton;
+    private YoYo.YoYoString ropeAnimation;
     private LayoutInflater panelLayouInflater;
     private LinearLayout panelLinearLayout;
     private String hakCutiT, hakCutiTMin1, hakCutiTMin2, jumlahHakCuti, saldoCuti, cutiTerpakai;
@@ -157,6 +143,13 @@ public class DashboardPegawaiFragment extends Fragment {
     // panel tukin
     private String tukinBulan, tukinTahun, tukinGrade, tukinPersenPotongan, tukinDasar, tukinPotongan, tukinBersih, tukinPeriode;
     private TextView tukinGradeTextView, tukinDasarTextView, tukinPotonganTextView, tukinBersihTextView, tukinPeriodeTextView;
+    // panel notif atasan
+    private String jumlahProsesCuti;
+    private TextView prosesPersetujuanCutiTextView, prosesPersetujuanIzinKantorTextView, presensiTextView;
+    private int jumlahDatang, jumlahBawahan;
+    // test backgourn array
+    private LinearLayout[] background;
+    private int[] panelDisabled;
 
     public DashboardPegawaiFragment() {
 
@@ -173,6 +166,7 @@ public class DashboardPegawaiFragment extends Fragment {
         rootView = view;
         setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_dashboard_pegawai);
+        PACKAGE_NAME = getActivity().getApplicationContext().getPackageName();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPreferences.edit();
@@ -196,6 +190,8 @@ public class DashboardPegawaiFragment extends Fragment {
         mImei = this.getArguments().getString(PassedIntent.INTENT_IMEI);
         // HUT?
         isHut = this.getArguments().getBoolean(PassedIntent.INTENT_ISHUT, false);
+        // atasan
+        isAtasan = this.getArguments().getBoolean(PassedIntent.INTENT_ISATASAN, false);
 
         // panel setting
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -206,23 +202,55 @@ public class DashboardPegawaiFragment extends Fragment {
         // bulan diindeks dari 0
         prevMonth = c.get(Calendar.MONTH) + 1;
         time = "/" + prevMonth + "/" + year;
-        Toast.makeText(getActivity(), time, Toast.LENGTH_SHORT).show();
 
         initiateView();
         populateView();
 
+        // list background ke array
+        background = new LinearLayout[dashboardPanelList.size()];
+        for (int i = 0; i < dashboardPanelList.size(); i++) {
+            background[i] = dashboardPanelList.get(i).getPanelBackground(getActivity(), rootView);
+        }
+
+        // panel didisable
+        // list panel yg ingin didisable
+        panelDisabled = new int[]{
+                konfigurasi.DASHBOARD_PANEL_JARINGAN
+        };
+
+        // initiate panel dan option panel (tombol hide/show) dari setting lokal
         for (int i = 0; i < dashboardPanelList.size(); i++) {
             Boolean status = sharedPreferences.getBoolean("dashboard_panel_" + i, true);
-            if (status == true) {
-                showPanel(
-                        dashboardPanelList.get(i).getPanelId()
-                );
+            CardView c;
+            LinearLayout progressBar;
+            for (int x = 0; x < panelDisabled.length; x++) {
+                if (dashboardPanelList.get(i).getPanelId() != panelDisabled[x]) {
+                    c = dashboardPanelList.get(i).getPanelOption(getActivity(), rootView);
+                    progressBar = dashboardPanelList.get(i).getPanelOptionProgressbar(getActivity(), rootView);
+                    if (status) {
+                        showPanel(dashboardPanelList.get(i).getPanelId());
+                    }
+                    if (c != null) {
+                        c.setVisibility(View.VISIBLE);
+                    }
+                    setPanelOption(dashboardPanelList.get(i).getPanelId());
+                    if (progressBar != null) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
             }
-            setPanelOption(
-                    dashboardPanelList.get(i).getPanelId(),
-                    dashboardPanelList.get(i).getPanelOption(),
-                    dashboardPanelList.get(i).getPanelCardView()
-            );
+        }
+
+        // hide option panel non-atasan
+        if (!isAtasan) {
+            // masukkan panel khusus atasan di sini:
+            int[] panelAtasan = new int[]{
+                    konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN
+            };
+            for (int i = 0; i < panelAtasan.length; i++) {
+                CardView c = dashboardPanelList.get(panelAtasan[i]).getPanelOption(getActivity(), rootView);
+                c.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -246,11 +274,6 @@ public class DashboardPegawaiFragment extends Fragment {
         fab = rootView.findViewById(R.id.dashboard_pegawai_fab);
         // panel option
         panelOption = rootView.findViewById(R.id.dashboard_pegawai_panel_option);
-        profilOptionCardView = rootView.findViewById(R.id.dashboard_pegawai_profil_option);
-        presensiOptionCardView = rootView.findViewById(R.id.dashboard_pegawai_presensi_option);
-        jaringanOptionCardView = rootView.findViewById(R.id.dashboard_pegawai_jaringan_option);
-        cutiOptionCardView = rootView.findViewById(R.id.dashboard_pegawai_cuti_option);
-        tunjanganOptionCardView = rootView.findViewById(R.id.dashboard_pegawai_tunjangan_option);
 
         rootProgressBar.setVisibility(View.VISIBLE);
         rootLayout.setVisibility(View.GONE);
@@ -259,7 +282,7 @@ public class DashboardPegawaiFragment extends Fragment {
     private void populateView() {
         rootLayout.setVisibility(View.VISIBLE);
         rootProgressBar.setVisibility(View.GONE);
-        ropeDashboardPegawai = YoYo.with(Techniques.FadeIn)
+        ropeAnimation = YoYo.with(Techniques.FadeIn)
                 .duration(animationDurationLong)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
@@ -269,33 +292,65 @@ public class DashboardPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 boolean isShown = panelOption.isShown();
                 if (isShown) {
-                    ropePanelDisable = YoYo.with(Techniques.SlideOutDown)
+                    ropeAnimation = YoYo.with(Techniques.SlideOutDown)
                             .duration(animationDurationShort)
                             .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                             .interpolate(new AccelerateDecelerateInterpolator())
                             .playOn(panelOption);
+                    ropeAnimation = YoYo.with(Techniques.ZoomOut)
+                            .duration(animationDurationShort)
+                            .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                            .interpolate(new AccelerateDecelerateInterpolator())
+                            .playOn(fab);
                     panelOption.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             panelOption.setVisibility(View.GONE);
+                            ropeAnimation = YoYo.with(Techniques.ZoomIn)
+                                    .duration(animationDurationShort)
+                                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                                    .interpolate(new AccelerateDecelerateInterpolator())
+                                    .playOn(fab);
                         }
 
                     }, animationDurationShort);
                 } else {
-                    panelOption.setVisibility(View.VISIBLE);
-                    ropePanelEnable = YoYo.with(Techniques.SlideInUp)
-                            .duration(animationDurationShort)
+                    ropeAnimation = YoYo.with(Techniques.ZoomOut)
+                            .duration(200)
                             .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                             .interpolate(new AccelerateDecelerateInterpolator())
-                            .playOn(panelOption);
+                            .playOn(fab);
+                    panelOption.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            panelOption.setVisibility(View.VISIBLE);
+                            ropeAnimation = YoYo.with(Techniques.SlideInUp)
+                                    .duration(animationDurationShort)
+                                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                                    .interpolate(new AccelerateDecelerateInterpolator())
+                                    .playOn(panelOption);
+                        }
+
+                    }, 200);
+                    panelOption.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ropeAnimation = YoYo.with(Techniques.ZoomIn)
+                                    .duration(animationDurationShort)
+                                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                                    .interpolate(new AccelerateDecelerateInterpolator())
+                                    .playOn(fab);
+                        }
+
+                    }, animationDurationShort);
                 }
             }
         });
     }
 
-    private String checkNull(String string) {
+    private String checkNull(String string, String placeholder) {
         if (string.equals("null")) {
-            return "-";
+            return placeholder;
         } else {
             return string;
         }
@@ -320,20 +375,18 @@ public class DashboardPegawaiFragment extends Fragment {
         }, animationDurationShort);
     }
 
-    private void setPanelOption(final int panelId, final String option, final String panelCardView) {
-        if (option != null) {
-            int panelOptionInt = this.getResources().getIdentifier(option, "id", getActivity().getPackageName());
-            int panelCardViewInt = this.getResources().getIdentifier(panelCardView, "id", getActivity().getPackageName());
-            final CardView cardViewOption = rootView.findViewById(panelOptionInt);
-            final LinearLayout cardViewPanel = rootView.findViewById(panelCardViewInt);
+    private void setPanelOption(final int panelId) {
+        final CardView option = dashboardPanelList.get(panelId).getPanelOption(getActivity(), rootView);
+        final LinearLayout panelCardView = dashboardPanelList.get(panelId).getPanelCardView(getActivity(), rootView);
 
-            cardViewOption.setOnClickListener(new View.OnClickListener() {
+        if (option != null) {
+            option.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (cardViewPanel == null) {
+                    if (panelCardView == null) {
                         showPanel(panelId);
-                    } else if (cardViewPanel.isShown()) {
-                        deletePanel(panelId, cardViewPanel, ropePanelDisable, cardViewOption);
+                    } else if (panelCardView.isShown()) {
+                        deletePanel(panelId);
                     } else {
                         showPanel(panelId);
                     }
@@ -345,10 +398,8 @@ public class DashboardPegawaiFragment extends Fragment {
 
     private void setHighlight(int panelId) {
         if (currentSelectedPanel < dashboardPanelList.size()) {
-            String panelBackgroundString = dashboardPanelList.get(currentSelectedPanel).getPanelBackground();
-            if (panelBackgroundString != null) {
-                int panelBackgroundInt = this.getResources().getIdentifier(panelBackgroundString, "id", getActivity().getPackageName());
-                LinearLayout background = rootView.findViewById(panelBackgroundInt);
+            LinearLayout background = dashboardPanelList.get(currentSelectedPanel).getPanelBackground(getActivity(), rootView);
+            if (background != null) {
                 background.setBackgroundResource(R.color.whiteAlternate);
             }
         }
@@ -356,24 +407,46 @@ public class DashboardPegawaiFragment extends Fragment {
         if (panelId != currentSelectedPanel) {
             switch (panelId) {
                 case konfigurasi.DASHBOARD_PANEL_PROFIL:
-                    panelProfilBackground.setBackgroundResource(R.color.whiteAlternateDark);
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_PROFIL;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
                     break;
                 case konfigurasi.DASHBOARD_PANEL_JARINGAN:
-                    panelJaringanBackground.setBackgroundResource(R.color.whiteAlternateDark);
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_JARINGAN;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
                     break;
                 case konfigurasi.DASHBOARD_PANEL_PRESENSI:
-                    panelPresensiBackground.setBackgroundResource(R.color.whiteAlternateDark);
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_PRESENSI;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
                     break;
                 case konfigurasi.DASHBOARD_PANEL_TUNJANGAN:
-                    panelTunjanganBackground.setBackgroundResource(R.color.whiteAlternateDark);
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_TUNJANGAN;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
                     break;
                 case konfigurasi.DASHBOARD_PANEL_CUTI:
-                    panelCutiBackground.setBackgroundResource(R.color.whiteAlternateDark);
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_CUTI;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
+                    break;
+                case konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN:
+                    currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
                     break;
                 case konfigurasi.DASHBOARD_PANEL_ULTAH:
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_ULTAH;
@@ -390,88 +463,91 @@ public class DashboardPegawaiFragment extends Fragment {
         return wifiInfo.getBSSID();
     }
 
-    private void showPanel(int panelId) {
+    private void showPanel(final int panelId) {
         panelLayouInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         panelLayouInflater = LayoutInflater.from(getActivity());
 
         switch (panelId) {
             case konfigurasi.DASHBOARD_PANEL_PROFIL:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_PROFIL;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
                 initiateViewPanelProfil();
                 populatePanelProfil();
-                profilIsShown = true;
-                profileIsClicked = false;
                 break;
             case konfigurasi.DASHBOARD_PANEL_JARINGAN:
-//                initiateViewPanelJaringan();
-//                populatePanelJaringan();
-//                jaringanIsShown = true;
-//                jaringanIsClicked = false;
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_JARINGAN;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
+                initiateViewPanelJaringan();
+                populatePanelJaringan();
                 break;
             case konfigurasi.DASHBOARD_PANEL_PRESENSI:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_PRESENSI;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
                 initiateViewPanelPresensi();
                 getJSONPresensi();
-                presensiIsShown = true;
-                presensiIsClicked = false;
                 break;
             case konfigurasi.DASHBOARD_PANEL_TUNJANGAN:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_TUNJANGAN;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
                 initiateViewPanelTunjangan();
                 getJSONTunjangan();
-                tunjanganIsShown = true;
-                tunjanganIsClicked = false;
                 break;
             case konfigurasi.DASHBOARD_PANEL_CUTI:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_CUTI;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
                 initiateViewPanelCuti();
                 getJSONCuti();
-                cutiIsShown = true;
-                cutiIsClicked = false;
                 break;
             case konfigurasi.DASHBOARD_PANEL_ULTAH:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_ULTAH;
                 if (isHut) {
                     initiateViewPanelUltah();
                     populatePanelUltah();
-                    cutiIsShown = true;
-                    cutiIsClicked = false;
+                }
+                break;
+            case konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN;
+                if (isAtasan) {
+                    dashboardPanelList
+                            .get(currentPanelShowing)
+                            .getPanelOption(getActivity(), rootView)
+                            .setVisibility(View.VISIBLE);
+                    initiateViewPanelNotifikasiAtasan();
+                    getJSONNotifikasiAtasan();
+                    getJSONNotifikasiAtasanPresensi();
                 }
                 break;
         }
 
-        setPanelOption(
-                dashboardPanelList.get(panelId).getPanelId(),
-                dashboardPanelList.get(panelId).getPanelOption(),
-                dashboardPanelList.get(panelId).getPanelCardView()
-        );
+        setPanelOption(dashboardPanelList.get(panelId).getPanelId());
 
         editor.putBoolean("dashboard_panel_" + panelId, true);
         editor.commit();
     }
 
-    private void animateCloseButton(final ImageView closeButton, YoYo.YoYoString closeRope) {
-        boolean isShown = closeButton.isShown();
-        if (isShown) {
-            closeRope = YoYo.with(Techniques.SlideOutRight)
-                    .duration(animationDurationShort)
-                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                    .interpolate(new AccelerateDecelerateInterpolator())
-                    .playOn(closeButton);
-            closeButton.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    closeButton.setVisibility(View.GONE);
-                }
+    private void deletePanel(int panelId) {
 
-            }, animationDurationShort);
-        } else {
-            closeButton.setVisibility(View.VISIBLE);
-            closeRope = YoYo.with(Techniques.SlideInRight)
-                    .duration(animationDurationShort)
-                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                    .interpolate(new AccelerateDecelerateInterpolator())
-                    .playOn(closeButton);
-        }
-    }
+        final LinearLayout panelProgressBar = dashboardPanelList.get(panelId).getPanelOptionProgressbar(getActivity(), rootView);
+        final LinearLayout panelCardView = dashboardPanelList.get(panelId).getPanelCardView(getActivity(), rootView);
+        final CardView optionPanel = dashboardPanelList.get(panelId).getPanelOption(getActivity(), rootView);
+        panelProgressBar.setVisibility(View.VISIBLE);
 
-    private void deletePanel(int panelId, final LinearLayout panelCardView, YoYo.YoYoString ropeClose, final CardView optionPanel) {
-        ropeClose = YoYo.with(Techniques.SlideOutRight)
+        ropeAnimation = YoYo.with(Techniques.SlideOutRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
@@ -481,31 +557,31 @@ public class DashboardPegawaiFragment extends Fragment {
             public void run() {
                 panelLinearLayout.removeView(panelCardView);
                 optionPanel.setCardBackgroundColor(getResources().getColor(R.color.blueBasic));
+                panelProgressBar.setVisibility(View.GONE);
             }
 
         }, animationDurationShort);
-        setPanelOption(
-                dashboardPanelList.get(panelId).getPanelId(),
-                dashboardPanelList.get(panelId).getPanelOption(),
-                dashboardPanelList.get(panelId).getPanelCardView()
-        );
+        setPanelOption(dashboardPanelList.get(panelId).getPanelId());
         // setting
         editor.putBoolean("dashboard_panel_" + panelId, false);
         editor.commit();
     }
+
+    ////////////////////////////
+    // dashboard panel profil //
+    ////////////////////////////
 
     private void initiateViewPanelProfil() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_profil, null);
         panelLinearLayout.addView(v);
 
         // profil
-        panelProfilBackground = rootView.findViewById(R.id.dashboard_profil_layout);
+        panelProfilBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_PROFIL).getPanelBackground(getActivity(), rootView);
         panelProfilCardView = rootView.findViewById(R.id.dashboard_panel_profil);
         panelProfilCardView.setVisibility(View.GONE);
         profilFotoView = rootView.findViewById(R.id.dashboard_profil_foto);
         profilNamaView = rootView.findViewById(R.id.dashboard_profil_nama_val);
         profilNipView = rootView.findViewById(R.id.dashboard_profil_nip_val);
-        panelProfilCloseButton = rootView.findViewById(R.id.dashboard_panel_profil_close);
     }
 
     private void populatePanelProfil() {
@@ -514,18 +590,11 @@ public class DashboardPegawaiFragment extends Fragment {
         String nipInfo = mNipBaru + " / " + mNipLama;
         profilNipView.setText(nipInfo);
         panelProfilCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelProfilCardView);
-
-        panelProfilCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deletePanel(konfigurasi.DASHBOARD_PANEL_PROFIL, panelProfilCardView, ropePanelDisable, profilOptionCardView);
-            }
-        });
 
         panelProfilBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -535,19 +604,25 @@ public class DashboardPegawaiFragment extends Fragment {
         });
 
         //panel
-        profilOptionCardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_PROFIL)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
+
+    //////////////////////////////
+    // dashboard panel jaringan //
+    //////////////////////////////
 
     private void initiateViewPanelJaringan() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_jaringan, null);
         panelLinearLayout.addView(v);
 
         // mac address
-        panelJaringanBackground = rootView.findViewById(R.id.dashboard_jaringan_layout);
+        panelJaringanBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_JARINGAN).getPanelBackground(getActivity(), rootView);
         panelJaringanCardView = rootView.findViewById(R.id.dashboard_panel_jaringan);
         panelJaringanCardView.setVisibility(View.GONE);
         macAdressView = rootView.findViewById(R.id.dashboard_presensi_mac_address_val);
-        panelJaringanCloseButton = rootView.findViewById(R.id.dashboard_panel_jaringan_close);
     }
 
     private void populatePanelJaringan() {
@@ -559,18 +634,11 @@ public class DashboardPegawaiFragment extends Fragment {
         }
         macAdressView.setText(macId);
         panelJaringanCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelJaringanCardView);
-
-        panelJaringanCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deletePanel(konfigurasi.DASHBOARD_PANEL_JARINGAN, panelJaringanCardView, ropePanelDisable, jaringanOptionCardView);
-            }
-        });
 
         panelJaringanBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -580,32 +648,31 @@ public class DashboardPegawaiFragment extends Fragment {
         });
 
         //panel
-        jaringanOptionCardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_JARINGAN)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
+
+    //////////////////////////////
+    // dashboard panel presensi //
+    //////////////////////////////
 
     private void initiateViewPanelPresensi() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_presensi, null);
         panelLinearLayout.addView(v);
 
         // alt presensi
-        panelPresensiBackground = rootView.findViewById(R.id.dashboard_presensi_layout);
+        panelPresensiBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_PRESENSI).getPanelBackground(getActivity(), rootView);
         panelPresensiCardView = rootView.findViewById(R.id.dashboard_panel_presensi);
         panelPresensiCardView.setVisibility(View.GONE);
         jamDatangAltView = rootView.findViewById(R.id.dashboard_presensi_datang_val_alt);
         jamPulangAltView = rootView.findViewById(R.id.dashboard_presensi_pulang_val_alt);
-        panelPresensiCloseButton = rootView.findViewById(R.id.dashboard_panel_presensi_close);
     }
 
     private void populatePanelPresensi() {
         jamDatangAltView.setText(jamDatang);
         jamPulangAltView.setText(jamPulang);
-
-        panelPresensiCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deletePanel(konfigurasi.DASHBOARD_PANEL_PRESENSI, panelPresensiCardView, ropePanelDisable, presensiOptionCardView);
-            }
-        });
 
         panelPresensiBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -617,61 +684,55 @@ public class DashboardPegawaiFragment extends Fragment {
         switch (statusDatang) {
             case "Anda Tidak Absen Datang":
                 jamDatangAltView.setTextColor(getResources().getColor(R.color.red));
-                statusDatang = "Anda belum merekam kehadiran";
                 break;
             case "Anda Hadir Tepat Waktu":
                 jamDatangAltView.setTextColor(getResources().getColor(R.color.green));
-                statusDatang = "Anda hadir tepat waktu";
                 break;
             case "Anda Datang Terlambat (DT)":
                 jamDatangAltView.setTextColor(getResources().getColor(R.color.orange));
-                statusDatang = "Anda datang terlambat (DT)";
                 break;
             default:
-                jamDatangAltView.setTextColor(getResources().getColor(android.R.color.black));
-                datangBackground.setVisibility(View.GONE);
+                jamDatangAltView.setTextColor(getResources().getColor(R.color.blueBasicDark));
                 break;
         }
         switch (statusPulang) {
             case "Anda Belum Absen Pulang":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.red));
-                statusPulang = "Anda belum merekam kepulangan";
                 break;
             case "Anda Tidak Absen Pulang":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.red));
-                statusPulang = "Anda tidak merekam kepulangan";
                 break;
             case "Anda Pulang Cepat (PC)":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.orange));
-                statusPulang = "Anda pulang lebih cepat (PC)";
                 break;
             case "Anda Pulang Tepat Waktu":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.green));
-                statusPulang = "Anda pulang tepat waktu";
                 break;
             default:
-                jamPulangAltView.setTextColor(getResources().getColor(android.R.color.black));
-                datangBackground.setVisibility(View.GONE);
+                jamPulangAltView.setTextColor(getResources().getColor(R.color.blueBasicDark));
                 break;
         }
 
         panelPresensiCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelPresensiCardView);
 
         //panel
-        presensiOptionCardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_PRESENSI)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
 
     private void getJSONPresensi() {
         class GetJSON extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -680,6 +741,7 @@ public class DashboardPegawaiFragment extends Fragment {
                 super.onPostExecute(s);
                 JSON_STRING = s;
                 parseJSONPresensi();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
             }
 
             @Override
@@ -698,13 +760,10 @@ public class DashboardPegawaiFragment extends Fragment {
         try {
             jsonObject = new JSONObject(JSON_STRING);
             jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            hariTanggal = hari + ", " + jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
-            jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
-            jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG));
-            jamEfektif = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA));
+            jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG), "-");
+            jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG), "-");
             statusDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSDATANG);
             statusPulang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSPULANG);
-            statusAbsen = jsonObject.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA);
 
             if (jamDatang.equals("-")) {
                 isSudahAbsenPagi = false;
@@ -724,15 +783,18 @@ public class DashboardPegawaiFragment extends Fragment {
         populatePanelPresensi();
     }
 
+    ///////////////////////////////
+    // dashboard panel tunjangan //
+    ///////////////////////////////
+
     private void initiateViewPanelTunjangan() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_tunjangan, null);
         panelLinearLayout.addView(v);
 
         // mac address
-        panelTunjanganBackground = rootView.findViewById(R.id.dashboard_tunjangan_layout);
+        panelTunjanganBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_TUNJANGAN).getPanelBackground(getActivity(), rootView);
         panelTunjanganCardView = rootView.findViewById(R.id.dashboard_panel_tunjangan);
         panelTunjanganCardView.setVisibility(View.GONE);
-        panelTunjanganCloseButton = rootView.findViewById(R.id.dashboard_panel_tunjangan_close);
 
         tukinGradeTextView = rootView.findViewById(R.id.dashboard_tunjangan_grade);
         tukinDasarTextView = rootView.findViewById(R.id.dashboard_tunjangan_dasar);
@@ -759,18 +821,11 @@ public class DashboardPegawaiFragment extends Fragment {
         tukinPeriodeTextView.setText(periode);
 
         panelTunjanganCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelTunjanganCardView);
-
-        panelTunjanganCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deletePanel(konfigurasi.DASHBOARD_PANEL_TUNJANGAN, panelTunjanganCardView, ropePanelDisable, tunjanganOptionCardView);
-            }
-        });
 
         panelTunjanganBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -780,15 +835,18 @@ public class DashboardPegawaiFragment extends Fragment {
         });
 
         //panel
-        tunjanganOptionCardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_TUNJANGAN)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
 
     private void getJSONTunjangan() {
         class GetJSON extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -797,6 +855,7 @@ public class DashboardPegawaiFragment extends Fragment {
                 super.onPostExecute(s);
                 JSON_STRING = s;
                 parseJSONTunjangan();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
             }
 
             @Override
@@ -816,13 +875,13 @@ public class DashboardPegawaiFragment extends Fragment {
             jsonObject = new JSONObject(JSON_STRING);
             if (jsonObject.getString("success").equals("true")) {
                 jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-                tukinBulan = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_BULAN));
-                tukinTahun = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TAHUN));
-                tukinGrade = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_GRADE));
-                tukinPersenPotongan = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_PERSENPOTONGAN));
-                tukinDasar = "Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TUKINDASAR));
-                tukinPotongan = "(Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_POTONGAN)) + ")";
-                tukinBersih = "Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TUKINBERSIH));
+                tukinBulan = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_BULAN), "-");
+                tukinTahun = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TAHUN), "-");
+                tukinGrade = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_GRADE), "-");
+                tukinPersenPotongan = checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_PERSENPOTONGAN), "-");
+                tukinDasar = "Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TUKINDASAR), "-");
+                tukinPotongan = "(Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_POTONGAN), "-") + ")";
+                tukinBersih = "Rp" + checkNull(jsonObject.getString(konfigurasi.TAG_TUNJANGAN_TUKINBERSIH), "-");
             } else {
                 Toast.makeText(getActivity(), "Gagal menarik data tunjangan kinerja", Toast.LENGTH_SHORT).show();
             }
@@ -833,38 +892,39 @@ public class DashboardPegawaiFragment extends Fragment {
         populatePanelTunjangan();
     }
 
+    //////////////////////////
+    // dashboard panel cuti //
+    //////////////////////////
+
     private void initiateViewPanelCuti() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_cuti, null);
         panelLinearLayout.addView(v);
 
         // cuti
-        panelCutiBackground = rootView.findViewById(R.id.dashboard_cuti_layout);
+        panelCutiBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_CUTI).getPanelBackground(getActivity(), rootView);
         panelCutiCardView = rootView.findViewById(R.id.dashboard_panel_cuti);
         panelCutiCardView.setVisibility(View.GONE);
         panelCutiSaldo = rootView.findViewById(R.id.dashboard_cuti_saldo);
         panelCutiHak = rootView.findViewById(R.id.dashboard_cuti_hak);
         panelCutiTerpakai = rootView.findViewById(R.id.dashboard_cuti_terpakai);
-        panelCutiCloseButton = rootView.findViewById(R.id.dashboard_panel_cuti_close);
     }
 
     private void populatePanelCuti() {
         panelCutiSaldo.setText(saldoCuti);
+        if (!saldoCuti.equals("0")) {
+            panelCutiSaldo.setTextColor(getResources().getColor(R.color.green));
+        } else {
+            panelCutiSaldo.setTextColor(getResources().getColor(R.color.red));
+        }
         panelCutiHak.setText(jumlahHakCuti);
         panelCutiTerpakai.setText(cutiTerpakai);
 
         panelCutiCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelCutiCardView);
-
-        panelCutiCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deletePanel(konfigurasi.DASHBOARD_PANEL_CUTI, panelCutiCardView, ropePanelDisable, cutiOptionCardView);
-            }
-        });
 
         panelCutiBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -874,15 +934,18 @@ public class DashboardPegawaiFragment extends Fragment {
         });
 
         //panel
-        cutiOptionCardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_CUTI)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
 
     private void getJSONCuti() {
         class GetJSON extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -891,6 +954,7 @@ public class DashboardPegawaiFragment extends Fragment {
                 super.onPostExecute(s);
                 JSON_STRING = s;
                 parseJSONCuti();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
             }
 
             @Override
@@ -910,22 +974,26 @@ public class DashboardPegawaiFragment extends Fragment {
             jsonObject = new JSONObject(JSON_STRING);
             jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
             // hak cuti tahun ini
-            hakCutiT = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO0));
+            hakCutiT = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO0), "0");
             // hak cuti tahun -1
-            hakCutiTMin1 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO1));
+            hakCutiTMin1 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO1), "0");
             // hak cuti tahun -2
-            hakCutiTMin2 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO2));
+            hakCutiTMin2 = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO2), "0");
             jumlahHakCuti = "" + (Integer.parseInt(hakCutiT) + Integer.parseInt(hakCutiTMin1) + Integer.parseInt(hakCutiTMin2));
-            saldoCuti = (Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI0))) +
-                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI1))) +
-                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI2)))) + "";
+            saldoCuti = (Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI0), "0")) +
+                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI1), "0")) +
+                    Integer.parseInt(checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_CUTI2), "0"))) + "";
             cutiTerpakai = (Integer.parseInt(jumlahHakCuti) - Integer.parseInt(saldoCuti)) + "";
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "JSON exception", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Gagal menarik data cuti", Toast.LENGTH_SHORT).show();
         }
         populatePanelCuti();
     }
+
+    ///////////////////////////
+    // dashboard panel ultah //
+    ///////////////////////////
 
     private void initiateViewPanelUltah() {
         final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_ultah, null);
@@ -940,10 +1008,205 @@ public class DashboardPegawaiFragment extends Fragment {
     private void populatePanelUltah() {
         Picasso.with(getActivity()).load(mFoto).into(fotoUltah);
         panelUltahCardView.setVisibility(View.VISIBLE);
-        ropePanelEnable = YoYo.with(Techniques.SlideInRight)
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
                 .duration(animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(panelUltahCardView);
+    }
+
+    ///////////////////////////////////////
+    // dashboard panel notifikasi atasan //
+    ///////////////////////////////////////
+
+    private void initiateViewPanelNotifikasiAtasan() {
+        final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_notifikasi_atasan, null);
+        panelLinearLayout.addView(v);
+
+        // panel notif atasan
+        panelNotifikasiAtasanBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN).getPanelBackground(getActivity(), rootView);
+        panelNotifikasiAtasanCardView = rootView.findViewById(R.id.dashboard_panel_notifikasi_atasan);
+        panelNotifikasiAtasanCardView.setVisibility(View.GONE);
+
+        // notifikasi
+        prosesPersetujuanCutiTextView = rootView.findViewById(R.id.dashboard_notifikasi_cuti);
+        prosesPersetujuanIzinKantorTextView = rootView.findViewById(R.id.dashboard_notifikasi_izin_kantor);
+        presensiTextView = rootView.findViewById(R.id.dashboard_notifikasi_presensi);
+
+
+        // onclick listener
+        LinearLayout cutiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_cuti_layout);
+        LinearLayout izinLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_izin_layout);
+        LinearLayout presensiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_presensi_layout);
+        cutiLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+
+                CutiDaftarPersetujuanFragment cutiDaftarPersetujuanFragment = new CutiDaftarPersetujuanFragment();
+                cutiDaftarPersetujuanFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarPersetujuanFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+        izinLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "fitur ini belum diimplementasikan", Toast.LENGTH_SHORT).show();
+            }
+        });
+        presensiLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(INTENT_USERTOKEN, mUserToken);
+                bundle.putString(INTENT_NAMA, mNama);
+                bundle.putString(INTENT_NIPLAMA, mNipLama);
+                bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_FOTO, mFoto);
+
+                AbsenBawahanFragment absenBawahanFragment = new AbsenBawahanFragment();
+                absenBawahanFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, absenBawahanFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void populatePanelNotifikasiAtasan() {
+        prosesPersetujuanCutiTextView.setText(jumlahProsesCuti);
+
+        panelNotifikasiAtasanCardView.setVisibility(View.VISIBLE);
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
+                .duration(animationDurationShort)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(panelNotifikasiAtasanCardView);
+
+        panelNotifikasiAtasanBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setHighlight(konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN);
+            }
+        });
+
+        //panel
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+    }
+
+    private void getJSONNotifikasiAtasan() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                JSON_STRING = s;
+                parseJSONNotifikasiAtasan();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_EMP_CUTIBAWAHANLANGSUNGCOUNT + mNipLama + "?api_token=" + mUserToken);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void parseJSONNotifikasiAtasan() {
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            String result = jsonObject.getString(konfigurasi.TAG_JSON_ARRAY);
+            jumlahProsesCuti = result;
+            if (!jsonObject.getString("success").equals("true")) {
+                jumlahProsesCuti = "" + 0;
+            }
+            populatePanelNotifikasiAtasan();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Kesalahan mengambil data proses pengajuan cuti", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getJSONNotifikasiAtasanPresensi() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                JSON_STRING = s;
+                parseJSONNotifikasiAtasanPresensi();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_ABSENBAWAHAN + mNipLama + "?api_token=" + mUserToken);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void parseJSONNotifikasiAtasanPresensi() {
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            if (jsonObject.getString("success").equals("true")) {
+                JSONArray result = jsonObject.getJSONArray("result");
+                jumlahBawahan = result.length();
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    if (!jo.getString(konfigurasi.TAG_ABSEN_DATANG).equals("null")) {
+                        jumlahDatang++;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Kesalahan mengambil data proses pengajuan cuti", Toast.LENGTH_SHORT).show();
+        }
+        populatePanelNotifikasiAtasanPresensi();
+    }
+
+    private void populatePanelNotifikasiAtasanPresensi() {
+        String notifikasiPresensi;
+        if (jumlahDatang == 0) {
+            notifikasiPresensi = "0%";
+        } else {
+            float persentasePresensi = ((1f * jumlahDatang) / (1f * jumlahBawahan)) * 100f;
+            notifikasiPresensi = Float.toString(persentasePresensi);
+            notifikasiPresensi = notifikasiPresensi.substring(0, 4) + "%";
+        }
+        presensiTextView.setText(notifikasiPresensi);
     }
 }

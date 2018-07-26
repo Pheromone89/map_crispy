@@ -32,7 +32,7 @@
                 android:tint="@color/whiteAlternate" />
 
             <LinearLayout
-                android:id="@+id/dashboard_cuti_layout"
+                android:id="@+id/dashboard_pegawai_cuti_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -48,7 +48,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="hak cuti" />
+                        android:text="hak cuti"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/dashboard_cuti_hak"
@@ -79,7 +80,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="terpakai" />
+                        android:text="terpakai"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/dashboard_cuti_terpakai"
@@ -110,7 +112,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="saldo" />
+                        android:text="saldo"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/dashboard_cuti_saldo"
@@ -125,15 +128,5 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dashboard_panel_cuti_close"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/red"
-            android:padding="4dp"
-            android:src="@drawable/ic_close_alt"
-            android:visibility="gone" />
     </android.support.v7.widget.CardView>
 </LinearLayout>

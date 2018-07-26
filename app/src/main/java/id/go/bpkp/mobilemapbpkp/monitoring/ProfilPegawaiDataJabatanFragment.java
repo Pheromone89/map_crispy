@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,6 +58,8 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
     private ArrayList<Jabatan>
             jabatanList;
     private ProgressBar loadingProgressBar;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -75,6 +78,10 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
         //ngambil judul dan ngeset judul fragment
         setHasOptionsMenu(true);
 
+        // set up setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
         //inisiasi rootView
         rootView = (View) view;
 
@@ -87,11 +94,16 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
         username = this.getArguments().getString("username");
         //nip lama tanpa spasi
         mNipLama = this.getArguments().getString("nip_lama");
+        JSON_STRING = sharedPreferences.getString("saved_json_data_jabatan", null);
 
         jabatanList = new ArrayList<>();
 
         initiateView();
-        getJSON();
+        if (JSON_STRING == null) {
+            getJSON();
+        } else {
+            parseJSON();
+        }
     }
 
     private void initiateView() {
@@ -104,6 +116,9 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
     private void populateView() {
         jabatanAdapter = new JabatanAdapter(getActivity(), jabatanList, this);
         dataJabatanRecyclerView.setAdapter(jabatanAdapter);
+
+        loadingProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, dataJabatanRecyclerView, 500);
     }
 
     private void getJSON() {
@@ -114,18 +129,18 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                dataJabatanRecyclerView.setVisibility(View.GONE);
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                dataJabatanRecyclerView.setVisibility(View.GONE);
 //                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loadingProgressBar.setVisibility(View.GONE);
-                dataJabatanRecyclerView.setVisibility(View.VISIBLE);
 //                loading.dismiss();
                 JSON_STRING = s;
+                editor.putString("saved_json_data_jabatan", s);
+                editor.apply();
                 parseJSON();
             }
 

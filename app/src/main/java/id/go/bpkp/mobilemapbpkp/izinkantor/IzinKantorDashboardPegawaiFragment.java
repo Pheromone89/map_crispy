@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.easing.linear.Linear;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -63,6 +65,8 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
             daftarIzinKantorButton;
     private boolean
             tidakPunyaAtasanLangsung;
+    private long animationDuration = 500;
+    private LinearLayout rootLayout;
 
     @Nullable
     @Override
@@ -111,6 +115,7 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
     }
 
     private void initiateView() {
+        rootLayout = rootView.findViewById(R.id.izin_kantor_pegawai_dashboard);
         // profic
         proficView = (ImageView) rootView.findViewById(R.id.dashboard_izin_kantor_profic);
         namaView = (TextView) rootView.findViewById(R.id.dashboard_izin_kantor_nama);
@@ -131,6 +136,8 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment {
         namaView.setText(mNama);
         nipView.setText(mNipBaru);
         jabatanView.setText(jabatan);
+
+        konfigurasi.fadeAnimation(true, rootLayout, animationDuration);
     }
 
     private void initiateSetOnClickMethod() {

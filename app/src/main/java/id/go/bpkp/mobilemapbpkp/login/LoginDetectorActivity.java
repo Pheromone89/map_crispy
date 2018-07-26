@@ -30,32 +30,10 @@ import java.util.Map;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.dashboard.DashboardActivity;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.splashscreen.SplashscreenActivity;
-
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_LDAP;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPLAMA;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NOHP;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_PASSWORD;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEID;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEIDINT;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERNAME;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN;
 
 public class LoginDetectorActivity extends AppCompatActivity {
 
@@ -74,26 +52,15 @@ public class LoginDetectorActivity extends AppCompatActivity {
         loading = findViewById(R.id.detector_loading);
         boolean isLoggedIn;
 
-        String username, password, imei, phoneNumber;
-
-        imei = "";
-        phoneNumber = "";
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            imei = telephonyManager.getDeviceId();
-            phoneNumber = tMgr.getLine1Number();
-        }
+        String username, password;
 
         username = sharedPreferences.getString(PassedIntent.INTENT_USERNAME, "");
         password = sharedPreferences.getString(PassedIntent.INTENT_PASSWORD, "");
         isLoggedIn = sharedPreferences.getBoolean(PassedIntent.ISLOGGEDIN, false);
 
-        Intent i;
         if (isLoggedIn) {
             showProgress(true);
-            lakukanLogin(username, password, imei, phoneNumber);
+            lakukanLogin(username, password);
         } else {
             Intent loginIntent = new Intent(LoginDetectorActivity.this, SplashscreenActivity.class);
             startActivity(loginIntent);
@@ -101,7 +68,7 @@ public class LoginDetectorActivity extends AppCompatActivity {
         }
     }
 
-    void lakukanLogin(final String username, final String password, final String imei, final String phoneNumber) {
+    void lakukanLogin(final String username, final String password) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, konfigurasi.URL_LOGIN,
                 new Response.Listener<String>() {
                     @Override
@@ -109,65 +76,13 @@ public class LoginDetectorActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("success").equals("true")) {
-                                int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
-                                boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
-
-                                int versiUpdate = 0;
-                                try {
-                                    versiUpdate = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionCode;
-                                } catch (PackageManager.NameNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-
-                                int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
-//                                versiLogin = 0;
-                                boolean isVersionValid = versiLogin == versiUpdate;
-                                Intent i = null;
-                                if (roleIdInt == 4 && belumRekamNoHp) {
-                                    i = new Intent(LoginDetectorActivity.this, PhoneVerificationActivity.class);
-                                } else {
-                                    i = new Intent(LoginDetectorActivity.this, DashboardActivity.class);
-                                }
-                                if (!isVersionValid) {
-                                    i = new Intent(LoginDetectorActivity.this, VersionCheckActivity.class);
-                                }
-                                // api_token
-                                i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
-                                i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
-                                i.putExtra(INTENT_USERNAME, username);
-                                i.putExtra(INTENT_PASSWORD, password);
-                                i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
-                                i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
-                                i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
-                                i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
-                                i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
-                                i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
-                                i.putExtra(INTENT_IMEI, imei);
-                                i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
-                                i.putExtra("is_redirect", false);
-                                boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
-                                boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
-                                boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
-                                boolean isHut = (jsonObject.getJSONObject("message").getString("is_hut").equals("true"));
-                                if (!tidakPunyaAtasanLangsung) {
-                                    i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-                                    i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
-                                    i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
-                                }
-                                i.putExtra(INTENT_ISLDAP, isLdap);
-                                i.putExtra(INTENT_ISJAB, isJab);
-                                i.putExtra(INTENT_ISHUT, isHut);
-                                // broadcast
-                                i.putExtra("is_broadcastable", true);
-                                i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
-                                i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
-                                i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
-                                i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
-                                editor.putString(INTENT_USERNAME, username);
-                                editor.putString(INTENT_PASSWORD, password);
-                                editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
-                                editor.commit();
-                                startActivity(i);
+                                PassingIntent.setUser(sharedPreferences, username, password);
+                                startActivity(PassingIntent.loginIntent(
+                                        LoginDetectorActivity.this,
+                                        jsonObject,
+                                        sharedPreferences,
+                                        true
+                                ));
                             } else {
                                 Intent loginIntent = new Intent(LoginDetectorActivity.this, LoginActivity.class);
                                 loginIntent.putExtra("username", "");

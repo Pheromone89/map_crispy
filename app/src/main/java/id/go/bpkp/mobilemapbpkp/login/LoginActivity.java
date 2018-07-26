@@ -55,6 +55,7 @@ import java.util.Map;
 import id.go.bpkp.mobilemapbpkp.dashboard.DashboardActivity;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
@@ -88,30 +89,12 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    public static final String API_TOKEN = "id.go.bpkp.mobilemapbpkp.extra.API_TOKEN";
-    public static final String NAMA = "id.go.bpkp.mobilemapbpkp.extra.NAMA";
-    public static final String USERNAME = "id.go.bpkp.mobilemapbpkp.extra.USERNAME";
-    public static final String ROLEID = "id.go.bpkp.mobilemapbpkp.extra.ROLEID";
-    public static final String NIPLAMA = "id.go.bpkp.mobilemapbpkp.extra.NIPLAMA";
-    public static final String KONTENDASHBOARD = "id.go.bpkp.mobilemapbpkp.extra.KONTENDASHBOARD";
-    public static final String NAMAATASANLANGSUNG = "id.go.bpkp.mobilemapbpkp.extra.NAMAATASANLANGSUNG";
-    public static final String NIPATASANLANGSUNG = "id.go.bpkp.mobilemapbpkp.extra.NIPATASANLANGSUNG";
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private String mPhoneNumber, mImei, JSON_KONTEN;
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -154,8 +137,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
 
-        phoneNumberEditText = findViewById(R.id.login_phone);
-
         loginButton = (TextView) findViewById(R.id.email_sign_in_button);
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -166,34 +147,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mPhoneInputView = findViewById(R.id.login_phone_number_input);
 
         String username = sharedPreferences.getString(INTENT_USERNAME, "");
         String password = sharedPreferences.getString(INTENT_PASSWORD, "");
 
         mUsername.setText(username);
         mPasswordView.setText(password);
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            mImei = telephonyManager.getDeviceId();
-            mPhoneNumber = tMgr.getLine1Number();
-            phoneNumberEditText.setText(mPhoneNumber);
-            if (mPhoneNumber.equals("")) {
-//                mPhoneInputView.setVisibility(View.VISIBLE);
-                mPhoneInputView.setVisibility(View.GONE);
-//                Toast.makeText(this, "permission granted but phonenum not found", Toast.LENGTH_SHORT).show();
-            } else {
-                mPhoneInputView.setVisibility(View.GONE);
-//                Toast.makeText(this, mPhoneNumber, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            mPhoneInputView.setVisibility(View.GONE);
-//            mPhoneInputView.setVisibility(View.VISIBLE);
-//            Toast.makeText(this, "permission not granted", Toast.LENGTH_SHORT).show();
-        }
-        phoneNumberEditText.setText("null");
     }
 
     /**
@@ -209,12 +168,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Reset errors.
         mUsername.setError(null);
         mPasswordView.setError(null);
-        phoneNumberEditText.setError(null);
 
         // Store values at the time of the login attempt.
         String username = mUsername.getText().toString();
         String password = mPasswordView.getText().toString();
-        String phoneNumber = phoneNumberEditText.getText().toString();
 
         boolean cancel = false;
 //        View focusView = null;
@@ -229,12 +186,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Check for a valid email address.
         if (TextUtils.isEmpty(username)) {
             mUsername.setError(getString(R.string.error_field_required));
-//            focusView = mUsername;
-            cancel = true;
-        }
-        // Check for a valid phone number.
-        if (TextUtils.isEmpty(phoneNumber)) {
-            phoneNumberEditText.setError(getString(R.string.error_field_required));
 //            focusView = mUsername;
             cancel = true;
         }
@@ -322,65 +273,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("success").equals("true")) {
-                                int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
-                                boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
-
-                                int versiUpdate = 0;
-                                try {
-                                    versiUpdate = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionCode;
-                                } catch (PackageManager.NameNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-
-                                int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
-//                                versiLogin = 0;
-                                boolean isVersionValid = versiLogin == versiUpdate;
-                                Intent i = null;
-                                if (roleIdInt == 4 && belumRekamNoHp) {
-                                    i = new Intent(LoginActivity.this, PhoneVerificationActivity.class);
-                                } else {
-                                    i = new Intent(LoginActivity.this, DashboardActivity.class);
-                                }
-                                if (!isVersionValid) {
-                                    i = new Intent(LoginActivity.this, VersionCheckActivity.class);
-                                }
-                                // api_token
-                                i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
-                                i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
-                                i.putExtra(INTENT_USERNAME, username);
-                                i.putExtra(INTENT_PASSWORD, password);
-                                i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
-                                i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
-                                i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
-                                i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
-                                i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
-                                i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
-                                i.putExtra(INTENT_IMEI, mImei);
-                                i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
-                                i.putExtra("is_redirect", false);
-                                boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
-                                boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
-                                boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
-                                boolean isHut = (jsonObject.getJSONObject("message").getString("is_hut").equals("true"));
-                                if (!tidakPunyaAtasanLangsung) {
-                                    i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-                                    i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
-                                    i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
-                                }
-                                i.putExtra(INTENT_ISLDAP, isLdap);
-                                i.putExtra(INTENT_ISJAB, isJab);
-                                i.putExtra(INTENT_ISHUT, isHut);
-                                // broadcast
-                                i.putExtra("is_broadcastable", true);
-                                i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
-                                i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
-                                i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
-                                i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
-                                editor.putString(INTENT_USERNAME, username);
-                                editor.putString(INTENT_PASSWORD, password);
-                                editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
-                                editor.apply();
-                                startActivity(i);
+                                PassingIntent.setUser(sharedPreferences, username, password);
+                                startActivity(
+                                        PassingIntent.loginIntent(
+                                                LoginActivity.this,
+                                                jsonObject,
+                                                sharedPreferences,
+                                                true
+                                        )
+                                );
                             } else {
                                 String failedLoginMessage = jsonObject.getString("message");
                                 if (failedLoginMessage.equals("Your username or password incorrect!")) {

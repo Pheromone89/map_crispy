@@ -26,28 +26,58 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
+                <RelativeLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="15dp"
-                    android:elevation="12dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardCornerRadius="40dp">
+                    android:layout_margin="15dp">
 
-                    <ImageView
-                        android:id="@+id/profil_individu_profic"
+                    <RelativeLayout
+                        android:id="@+id/profil_individu_profic_edit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:elevation="13dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleX="1.3"
+                            android:scaleY="1.3"
+                            android:src="@drawable/ic_circle"
+                            android:tint="@color/blueBasicDark" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_edit" />
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_login_user" />
+                        android:elevation="12dp"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:thicknessRatio="1.9"
+                        app:cardCornerRadius="40dp">
 
-                </android.support.v7.widget.CardView>
+                        <ImageView
+                            android:id="@+id/profil_individu_profic"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_login_user" />
+
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/profil_individu_proficnama"

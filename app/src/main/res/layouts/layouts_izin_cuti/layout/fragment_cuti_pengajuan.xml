@@ -439,85 +439,86 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/whiteAlternate"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Apakah Anda yakin?"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/whiteAlternate"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Apakah Anda yakin?"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cuti_pengajuan_konfirmasi_ya"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@android:color/holo_green_light"
-                    app:cardCornerRadius="5dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:gravity="center"
-                        android:text="YA"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cuti_pengajuan_konfirmasi_ya"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@android:color/holo_green_light"
+                        app:cardCornerRadius="5dp">
 
-                </android.support.v7.widget.CardView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="YA"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold" />
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cuti_pengajuan_konfirmasi_tidak"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@android:color/holo_red_light"
-                    app:cardCornerRadius="5dp">
+                    </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:gravity="center"
-                        android:text="TIDAK"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cuti_pengajuan_konfirmasi_tidak"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@android:color/holo_red_light"
+                        app:cardCornerRadius="5dp">
 
-                </android.support.v7.widget.CardView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="TIDAK"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold" />
 
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -545,7 +546,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/cuti_pengajuan_message_success"
         android:layout_width="match_parent"
@@ -562,11 +562,17 @@
             android:layout_weight="1"
             android:background="#c5006db2" />
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:background="@color/whiteAlternate"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -600,7 +606,9 @@
                     android:textStyle="bold" />
 
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -624,11 +632,17 @@
             android:layout_weight="1"
             android:background="#c5006db2" />
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:background="@color/whiteAlternate"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -663,6 +677,8 @@
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/dashboard_presensi_mac_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="150dp" />
+
+    <LinearLayout
+        android:id="@+id/dashboard_presensi_mac_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/dashboard_presensi_status_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:id="@+id/dashboard_presensi_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Anda terhubung dengan jaringan" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dashboard_presensi_mac_nama"
+                            style="@style/IndividuTextTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Presensi Nama" />
+
+                        <ImageView
+                            android:id="@+id/absen_info_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@color/blueBasicDark"
+                            android:paddingEnd="15dp"
+                            android:src="@drawable/ic_info" />
+
+                        <ImageView
+                            android:id="@+id/absen_history_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@color/blueBasicDark"
+                            android:paddingEnd="15dp"
+                            android:src="@drawable/ic_calendar_icon" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/dashboard_presensi_mac_hari_tanggal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            tools:text="Jumat, 11 Dektober 1989" />
+
+                        <TextView
+                            android:id="@+id/dashboard_presensi_mac_jam_efektif"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dashboard_presensi_mac_hari_tanggal"
+                            android:gravity="center"
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="jam kerja efektif" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@color/blueBasicDark"
+                            app:cardCornerRadius="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="datang"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/dashboard_presensi_mac_jam_datang"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:gravity="center"
+                                    android:text="--:--"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="30sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/dashboard_presensi_mac_status_datang"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:lines="2"
+                                    android:text="terlambat"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+
+                        </android.support.v7.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent" />
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@color/blueBasicDark"
+                            app:cardCornerRadius="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="pulang"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/dashboard_presensi_mac_jam_pulang"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:gravity="center"
+                                    android:text="--:--"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="30sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/dashboard_presensi_mac_status_pulang"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:lines="2"
+                                    android:text="terlambat"
+                                    android:textColor="@color/whiteAlternate"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        app:cardBackgroundColor="@color/blueBasicDark"
+                        app:cardCornerRadius="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="cek validitas presensi"
+                            android:textColor="@color/whiteAlternate" />
+
+                        <ImageView
+                            android:id="@+id/absen_question_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="15dp"
+                            android:src="@drawable/ic_bantuan" />
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="20dp"
+                            android:background="@color/blueBasicDark" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="70dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="20dp"
+                                android:src="@drawable/ic_peringatan"
+                                android:tint="@color/blueBasicDark" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Sepertinya Anda tidak terhubung dengan jaringan kantor BPKP. Sambungkan perangkat Anda dengan jaringan BPKP dan lakukan cek validitas ulang"
+                                android:textColor="@color/blueBasicDark"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="20dp"
+                            android:background="@color/blueBasicDark" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="70dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="20dp"
+                                android:src="@drawable/ic_info"
+                                android:tint="@color/blueBasicDark" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Anda telah merekam kehadiran untuk sesi berjalan"
+                                android:textColor="@color/blueBasicDark"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="20dp"
+                            android:background="@color/blueBasicDark" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp"
+                            android:text="Apakah Anda yakin akan merekam kehadiran di Perwakilan BPKP Prov. Jawa Barat?"
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="15sp" />
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="80dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="30dp"
+                            app:cardElevation="5dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+
+                        </android.support.v7.widget.CardView>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blueBasicDark"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="@string/copyright"
+                android:textColor="@color/whiteAlternate" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

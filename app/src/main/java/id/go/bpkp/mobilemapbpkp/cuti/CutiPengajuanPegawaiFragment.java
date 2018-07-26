@@ -143,6 +143,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
     private boolean
             tidakPunyaAtasanLangsung;
     private YoYo.YoYoString ropeCutiPengajuan;
+    private long animationDuration = 500;
 
     public CutiPengajuanPegawaiFragment() {
 
@@ -344,9 +345,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.GONE) {
-                    cutiPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
                 } else {
-                    cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
                 }
             }
         });
@@ -354,23 +355,29 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
                     cutiPengajuanProgressView.setVisibility(View.VISIBLE);
-                    cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
                 } else {
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
                     cutiPengajuanProgressView.setVisibility(View.GONE);
-                    cutiPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
                 }
-                String kodeJenisCutiString = jenisCutiSpinner.getSelectedItem().toString();
-                checkEmpty(kodeJenisCutiString);
+                final String kodeJenisCutiString = jenisCutiSpinner.getSelectedItem().toString();
+
+                v.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkEmpty(kodeJenisCutiString);
+                    }
+                }, animationDuration);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
                 } else {
-                    cutiPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
                 }
             }
         });
@@ -386,9 +393,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
+                konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
                 cutiPengajuanProgressView.setVisibility(View.GONE);
-                failOverheadMessage.setVisibility(View.VISIBLE);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
             }
         });
     }
@@ -669,7 +676,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
         failOverheadMessage.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
+            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
             cutiPengajuanProgressView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             progressBar.animate().setDuration(shortAnimTime).alpha(
@@ -680,11 +687,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
+            konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
             cutiPengajuanProgressView.setVisibility(View.GONE);
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            cutiPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -780,7 +785,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                 break;
         }
         if (cancel) {
-            cutiPengajuanKonfirmasiView.setVisibility(View.GONE);
+            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
             cutiPengajuanProgressView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "form pengajuan cuti belum lengkap", Toast.LENGTH_SHORT).show();
         } else {

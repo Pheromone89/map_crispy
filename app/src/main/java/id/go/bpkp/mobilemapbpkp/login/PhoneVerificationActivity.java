@@ -37,6 +37,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCAST
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
@@ -54,7 +55,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private String mNama, mNipBaru, mNipLama, mRoleId, mUserToken, mFoto, mAtasanLangsung, mNipAtasanLangsung, mNoHp, mEmail, currentPhoneMessage, broadcastStatus, broadcastTitle, broadcastImage, broadcastMessage;
     private int mRoleIdInt;
     private boolean
-            tidakPunyaAtasanLangsung, isLdap, isJab, isHut, isBroadcastable;
+            tidakPunyaAtasanLangsung, isAtasan, isLdap, isJab, isHut, isBroadcastable;
     private EditText phoneNumberInput;
     private boolean isRedirect;
     private ImageView warningImageView;
@@ -78,6 +79,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         mFoto = PassedIntent.getFoto(mNipLama);
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
+        isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);
         isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
         isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
         isHut = dashboardIntent.getBooleanExtra(INTENT_ISHUT, false);
@@ -158,6 +160,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                     // nip atasan langsung
                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                 }
+                i.putExtra(INTENT_ISATASAN, isAtasan);
                 i.putExtra(INTENT_ISLDAP, isLdap);
                 i.putExtra(INTENT_ISJAB, isJab);
                 i.putExtra(INTENT_ISHUT, isHut);
@@ -189,6 +192,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                     // nip atasan langsung
                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                 }
+                i.putExtra(INTENT_ISATASAN, isAtasan);
                 i.putExtra(INTENT_ISLDAP, isLdap);
                 i.putExtra(INTENT_ISJAB, isJab);
                 i.putExtra(INTENT_ISHUT, isHut);
@@ -269,6 +273,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                                     i.putExtra(PassedIntent.INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
                                     i.putExtra(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                                 }
+                                i.putExtra(INTENT_ISATASAN, isAtasan);
                                 i.putExtra(INTENT_ISLDAP, isLdap);
                                 i.putExtra(INTENT_ISJAB, isJab);
                                 i.putExtra(INTENT_ISHUT, isHut);

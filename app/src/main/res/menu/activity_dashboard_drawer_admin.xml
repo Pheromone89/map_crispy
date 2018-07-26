@@ -15,6 +15,11 @@
             android:icon="@drawable/ic_menu_absen"
             android:title="Presensi"
             android:visible="true" />
+        <item
+            android:id="@+id/nav_presensi_bawahan"
+            android:icon="@drawable/ic_menu_absen"
+            android:title="Presensi Bawahan Langsung (under construction)"
+            android:visible="false" />
     </group>
     <group
         android:id="@+id/navigation_drawer_personal"
@@ -65,6 +70,11 @@
     <group
         android:id="@+id/navigation_drawer_settings"
         android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tentang"
+            android:icon="@drawable/ic_info"
+            android:title="Tentang"
+            android:visible="true" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_pengaturan"

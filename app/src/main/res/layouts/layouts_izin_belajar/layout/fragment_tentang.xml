@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/tentang_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="150dp" />
+
+    <LinearLayout
+        android:id="@+id/tentang_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo_transparan" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/blueBasicDark"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:id="@+id/tentang_fitur_baru"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/LoginScreenText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="Yang baru di MAP Mobile"
+                        android:textColor="@color/whiteAlternate"
+                        android:textSize="17sp" />
+
+                    <ListView
+                        android:id="@+id/tentang_list_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:divider="#00ffffff"
+                        android:padding="5dp" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/tentang_back_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/whiteAlternate"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Kembali"
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tentang_umum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tentang_judul"
+                        style="@style/LoginScreenText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="@string/tentang_versi"
+                        android:textColor="@color/whiteAlternate"
+                        android:textSize="17sp" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/tentang_update_button"
+                        android:layout_below="@id/tentang_judul"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/tentang_konten"
+                            android:textColor="@color/whiteAlternate"
+                            android:textSize="15sp" />
+
+                    </ScrollView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/tentang_update_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        app:cardBackgroundColor="@color/whiteAlternate"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Yang baru di versi ini"
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blueBasicDark"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/IndividuTextTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="@string/copyright"
+                android:textColor="@color/whiteAlternate" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

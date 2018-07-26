@@ -60,7 +60,8 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
 
         Picasso.with(context).load(pegawaiSingkat.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(pegawaiSingkat.getNama());
-        holder.nipBaruView.setText(pegawaiSingkat.getNipBaru());
+        String nip = pegawaiSingkat.getNipBaru() + " / " + pegawaiSingkat.getNipLama();
+        holder.nipBaruView.setText(nip);
         holder.unitView.setText(pegawaiSingkat.getUnit());
         holder.jabatanSingkatView.setText(pegawaiSingkat.getJabatanSingkat());
 

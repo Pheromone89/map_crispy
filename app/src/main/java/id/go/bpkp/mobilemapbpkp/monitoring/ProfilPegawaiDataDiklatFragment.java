@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,6 +65,8 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
     private ArrayList<Diklat>
             diklatList;
     private ProgressBar loadingProgressBar;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -82,6 +85,10 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
         //ngambil judul dan ngeset judul fragment
         setHasOptionsMenu(true);
 
+        // set up setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
         //inisiasi rootView
         rootView = (View) view;
 
@@ -94,11 +101,16 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
         username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
         //nip lama tanpa spasi
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        JSON_STRING = sharedPreferences.getString("saved_json_data_diklat", null);
 
         diklatList = new ArrayList<>();
 
         initiateView();
-        getJSON();
+        if (JSON_STRING == null) {
+            getJSON();
+        } else {
+            parseJSON();
+        }
     }
 
     private void initiateView() {
@@ -111,6 +123,9 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
     private void populateView() {
         diklatAdapter = new DiklatAdapter(getActivity(), diklatList, this);
         dataDiklatRecyclerView.setAdapter(diklatAdapter);
+
+        loadingProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, dataDiklatRecyclerView, 500);
     }
 
     private void getJSON() {
@@ -121,16 +136,16 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                dataDiklatRecyclerView.setVisibility(View.GONE);
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                dataDiklatRecyclerView.setVisibility(View.GONE);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loadingProgressBar.setVisibility(View.GONE);
-                dataDiklatRecyclerView.setVisibility(View.VISIBLE);
                 JSON_STRING = s;
+                editor.putString("saved_json_data_diklat", s);
+                editor.apply();
                 parseJSON();
             }
 

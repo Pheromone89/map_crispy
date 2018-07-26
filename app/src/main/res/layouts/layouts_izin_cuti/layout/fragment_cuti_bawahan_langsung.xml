@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/search_extra_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/blueBasicDark"
+        android:textSize="15sp"
+        android:visibility="gone"
+        tools:text="Hasil Pencarian" />
+
+    <ProgressBar
+        android:id="@+id/cuti_bawahan_langsung_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_cuti_bawahan_langsung"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/blueBasic"
+        android:dividerHeight="1dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

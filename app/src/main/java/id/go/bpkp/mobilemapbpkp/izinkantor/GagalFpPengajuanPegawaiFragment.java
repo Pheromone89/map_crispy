@@ -21,13 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -50,7 +47,6 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -75,28 +71,27 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN
 public class GagalFpPengajuanPegawaiFragment extends Fragment {
 
     LinearLayout
-            izinKantorPengajuanPeringatanAtasanLangsungView,
-            izinKantorPengajuanKonfirmasiView,
+            gagalFpPengajuanPeringatanAtasanLangsungView,
+            gagalFpPengajuanKonfirmasiView,
             messageSuccessView,
             messageFailView,
-            izinKantorPengajuanProgressView,
+            gagalFpPengajuanProgressView,
             formPengajuan;
     ProgressBar pengajuanProgressBar;
     EditText
-            keteranganIzinKantorView,
-            tanggaIzinView,
+            tanggalGagalView,
             tanggalPengajuanView,
-            tanggalPengajuanAwalView,
-            tanggalPengajuanAkhirView,
             lokasiEditText,
-            jamIzinView;
+            jamGagalView;
     ProgressBar
             progressBar;
     int
             kodeJenisCuti;
     String
-            tanggalIzin,
+            tanggalGagal,
             tanggalPermohonan,
+            jamGagal,
+            lokasi,
             keterangan,
             tanggalPengajuan,
             noHp,
@@ -136,6 +131,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
             atasanLangsungView;
     private boolean
             tidakPunyaAtasanLangsung;
+    private long animationDuration = 500;
 
     public GagalFpPengajuanPegawaiFragment() {
 
@@ -183,7 +179,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem searchMenuItem = menu.getItem(0);
         searchMenuItem.setVisible(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_izin_kantor_pengajuan);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_gagal_fp_pengajuan);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -196,7 +192,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateTanggal(tanggaIzinView);
+                updateTanggal(tanggalGagalView);
             }
         };
         datePickerPermohonan = new DatePickerDialog.OnDateSetListener() {
@@ -210,28 +206,6 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                 updateTanggal(tanggalPengajuanView);
             }
         };
-        datePickerPermohonanAwal = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateTanggal(tanggalPengajuanAwalView);
-            }
-        };
-        datePickerPermohonanAkhir = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateTanggal(tanggalPengajuanAkhirView);
-            }
-        };
         // profile area
         namaView = rootView.findViewById(R.id.gagal_fp_pengajuan_profil_nama);
         nipView = rootView.findViewById(R.id.gagal_fp_pengajuan_profil_nip);
@@ -239,17 +213,17 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
         // data area
         formPengajuan = rootView.findViewById(R.id.gagal_fp_pengajuan_form_pengajuan_gagal_fp);
         tanggalPengajuanView = rootView.findViewById(R.id.gagal_fp_pengajuan_tanggal_pengajuan);
-        jamIzinView = rootView.findViewById(R.id.gagal_fp_pengajuan_jam_izin);
-        tanggaIzinView = rootView.findViewById(R.id.gagal_fp_pengajuan_tanggal_izin);
+        jamGagalView = rootView.findViewById(R.id.gagal_fp_pengajuan_jam_izin);
+        tanggalGagalView = rootView.findViewById(R.id.gagal_fp_pengajuan_tanggal_izin);
         lokasiEditText = rootView.findViewById(R.id.gagal_fp_pengajuan_lokasi);
         // warning form
-        izinKantorPengajuanPeringatanAtasanLangsungView = rootView.findViewById(R.id.gagal_fp_pengajuan_peringatan_atasan_langsung);
-        izinKantorPengajuanKonfirmasiView = rootView.findViewById(R.id.gagal_fp_pengajuan_konfirmasi);
+        gagalFpPengajuanPeringatanAtasanLangsungView = rootView.findViewById(R.id.gagal_fp_pengajuan_peringatan_atasan_langsung);
+        gagalFpPengajuanKonfirmasiView = rootView.findViewById(R.id.gagal_fp_pengajuan_konfirmasi);
         konfirmasiYesButton = rootView.findViewById(R.id.gagal_fp_pengajuan_konfirmasi_ya);
         konfirmasiNoButton = rootView.findViewById(R.id.gagal_fp_pengajuan_konfirmasi_tidak);
         // submit
         submitButton = rootView.findViewById(R.id.gagal_fp_pengajuan_submit_button);
-        izinKantorPengajuanProgressView = rootView.findViewById(R.id.gagal_fp_pengajuan_progress);
+        gagalFpPengajuanProgressView = rootView.findViewById(R.id.gagal_fp_pengajuan_progress);
         pengajuanProgressBar = rootView.findViewById(R.id.gagal_fp_pengajuan_progress_bar);
         // message
         messageSuccessView = rootView.findViewById(R.id.gagal_fp_pengajuan_message_success);
@@ -263,7 +237,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                jamIzinView.setText(hourFormat.format(calendar.getTime()));
+                jamGagalView.setText(hourFormat.format(calendar.getTime()));
             }
         };
     }
@@ -274,12 +248,10 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
         atasanLangsungView.setText(mAtasanLangsung);
 
         if (tidakPunyaAtasanLangsung) {
-            izinKantorPengajuanPeringatanAtasanLangsungView.setVisibility(View.VISIBLE);
+            gagalFpPengajuanPeringatanAtasanLangsungView.setVisibility(View.VISIBLE);
             atasanLangsungView.setText("atasan langsung belum diset");
-//            cutiPengajuanFormView.setVisibility(View.GONE);
         } else if (!tidakPunyaAtasanLangsung) {
-            izinKantorPengajuanPeringatanAtasanLangsungView.setVisibility(View.GONE);
-//            cutiPengajuanFormView.setVisibility(View.VISIBLE);
+            gagalFpPengajuanPeringatanAtasanLangsungView.setVisibility(View.GONE);
         } else {
             Toast.makeText(getActivity(), "error mencari atasan langsung", Toast.LENGTH_SHORT).show();
         }
@@ -287,7 +259,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
     }
 
     private void initiateSetOnClickMethod() {
-        tanggaIzinView.setOnClickListener(new View.OnClickListener() {
+        tanggalGagalView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(
@@ -309,7 +281,7 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        jamIzinView.setOnClickListener(new View.OnClickListener() {
+        jamGagalView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
@@ -325,33 +297,38 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.GONE) {
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+                if (gagalFpPengajuanKonfirmasiView.getVisibility() == View.GONE) {
+                    konfigurasi.fadeAnimation(true, gagalFpPengajuanKonfirmasiView, animationDuration);
                 } else {
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
+                    konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
                 }
             }
         });
         konfirmasiYesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    izinKantorPengajuanProgressView.setVisibility(View.VISIBLE);
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
+                if (gagalFpPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
+                    konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
+                    gagalFpPengajuanProgressView.setVisibility(View.VISIBLE);
                 } else {
-                    izinKantorPengajuanProgressView.setVisibility(View.GONE);
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+                    konfigurasi.fadeAnimation(true, gagalFpPengajuanKonfirmasiView, animationDuration);
+                    gagalFpPengajuanProgressView.setVisibility(View.GONE);
                 }
-                checkEmpty();
+                v.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkEmpty();
+                    }
+                }, animationDuration);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
+                if (gagalFpPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
+                    konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
                 } else {
-                    izinKantorPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+                    konfigurasi.fadeAnimation(true, gagalFpPengajuanKonfirmasiView, animationDuration);
                 }
             }
         });
@@ -367,9 +344,9 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-                izinKantorPengajuanProgressView.setVisibility(View.GONE);
-                failOverheadMessage.setVisibility(View.VISIBLE);
+                konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
+                gagalFpPengajuanProgressView.setVisibility(View.GONE);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
             }
         });
     }
@@ -428,40 +405,29 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
     }
 
     private void getData() {
+        tanggalPengajuan = tanggalPengajuanView.getText().toString();
+        jamGagal = jamGagalView.getText().toString();
+        tanggalGagal = tanggalGagalView.getText().toString();
+        lokasi = lokasiEditText.getText().toString();
 //        int kodeJenisIzinKantorSpinner = jenisIzinSpinner.getSelectedItemPosition();
-//        Date date = new Date();
-//        switch (kodeJenisIzinKantorSpinner) {
-//            case 0:
-//                Toast.makeText(getActivity(), "jenis izin: " + jenisIzinSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "tanggal izin: " + tanggaIzinView.getText(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "tanggal permohonan: " + tanggalPengajuanView.getText(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "jenis alasan: " + jenisAlasanSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "alasan: " + jenisAlasanPribadiSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                break;
-//            case 1:
-//                Toast.makeText(getActivity(), "jenis izin: " + jenisIzinSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "tanggal izin: " + tanggaIzinView.getText(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "tanggal permohonan: " + tanggalPengajuanView.getText(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "jenis alasan: " + jenisAlasanSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "alasan: " + jenisAlasanPenugasanSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                break;
-//        }
     }
 
     private void postPengajuanCuti() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, konfigurasi.URL_PENGAJUANCUTI + mUserToken,
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                konfigurasi.URL_PENGAJUANIZINKANTOR + mUserToken,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("success").equals("true")) {
-                                izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-                                izinKantorPengajuanProgressView.setVisibility(View.GONE);
+                                gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
+                                gagalFpPengajuanProgressView.setVisibility(View.GONE);
                                 messageSuccessView.setVisibility(View.VISIBLE);
                             } else {
-                                izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-                                izinKantorPengajuanProgressView.setVisibility(View.GONE);
+                                gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
+                                gagalFpPengajuanProgressView.setVisibility(View.GONE);
                                 messageFailView.setVisibility(View.VISIBLE);
                             }
                         } catch (JSONException e) {
@@ -472,8 +438,8 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-                        izinKantorPengajuanProgressView.setVisibility(View.GONE);
+                        gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
+                        gagalFpPengajuanProgressView.setVisibility(View.GONE);
                         messageFailView.setVisibility(View.VISIBLE);
                         if (error instanceof AuthFailureError) {
                             Snackbar.make(rootView, "Gagal mengotentifikasi", Snackbar.LENGTH_LONG).setAction("Message", null).show();
@@ -492,68 +458,17 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                switch (kodeJenisCuti) {
-                    case konfigurasi.KODE_CUTI_TAHUNAN:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasan", alasan);
-                        params.put("tgl_awal", tanggalIzin);
-                        params.put("tgl_akhir", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                    case konfigurasi.KODE_CUTI_BESAR:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasan", alasan);
-                        params.put("tgl_awal", tanggalIzin);
-                        params.put("tgl_akhir", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                    case konfigurasi.KODE_CUTI_SAKIT:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasansakit", alasan);
-                        params.put("tgl_awal1", tanggalIzin);
-                        params.put("tgl_akhir1", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                    case konfigurasi.KODE_CUTI_MELAHIRKAN:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasanbersalin", alasan);
-                        params.put("tgl_awal", tanggalIzin);
-                        params.put("tgl_akhir", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                    case konfigurasi.KODE_CUTI_ALASANPENTING:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasanpenting", alasan);
-                        params.put("tgl_awal", tanggalIzin);
-                        params.put("tgl_akhir", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                    case konfigurasi.KODE_CUTI_DILUARTANGGUNGANNEGARA:
-                        params.put("pegawai", mNipLama);
-                        params.put("kd_jenis_cuti", Integer.toString(kodeJenisCuti));
-                        params.put("alasan", alasan);
-                        params.put("tgl_awal", tanggalIzin);
-                        params.put("tgl_akhir", tanggalPermohonan);
-                        params.put("tgl_pengajuan", tanggalPengajuan);
-                        params.put("alamat_pemohon", keterangan);
-                        params.put("notelp_pemohon", noHp);
-                        break;
-                }
+
+                // parameter fingerprint
+                params.put("pegawai", mNipLama);
+                params.put("kd_kat_alasan", "3");
+                params.put("kd_jenisizin", "4");
+                params.put("kd_alasan", "8");
+                params.put("lokasi_fprint", lokasi);
+                params.put("waktu_fprint", jamGagal);
+                params.put("tgl_fprint", tanggalGagal);
+                params.put("tgl_srt_fprint", tanggalPengajuan);
+
                 return params;
             }
 
@@ -576,8 +491,8 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
         failOverheadMessage.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-            izinKantorPengajuanProgressView.setVisibility(View.VISIBLE);
+            konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
+            gagalFpPengajuanProgressView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             progressBar.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -587,11 +502,9 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            izinKantorPengajuanProgressView.setVisibility(View.GONE);
+            konfigurasi.fadeAnimation(true, gagalFpPengajuanKonfirmasiView, animationDuration);
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
+            gagalFpPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -602,74 +515,48 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
     }
 
     private void checkEmpty() {
-        keteranganIzinKantorView.setError(null);
-        tanggaIzinView.setError(null);
+        lokasiEditText.setError(null);
+        tanggalGagalView.setError(null);
         tanggalPengajuanView.setError(null);
-        tanggalIzin = tanggaIzinView.getText().toString();
-        tanggalPermohonan = tanggalPengajuanView.getText().toString();
+        jamGagalView.setError(null);
+        lokasi = lokasiEditText.getText().toString();
+        tanggalGagal = tanggalGagalView.getText().toString();
+        tanggalPengajuan = tanggalPengajuanView.getText().toString();
+        jamGagal = jamGagalView.getText().toString();
 
         boolean cancel = false;
-        if (TextUtils.isEmpty(keterangan) || keterangan.equals("")) {
-            keteranganIzinKantorView.setError("Kolom ini wajib diisi");
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(lokasi) || lokasi.equals("")) {
+            lokasiEditText.setError("Kolom ini wajib diisi");
+//            lokasiEditText.setError("lokasi");
+            gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
             cancel = true;
         }
-        boolean allDate = true;
-        if (TextUtils.isEmpty(tanggalIzin) || tanggalIzin.equals("")) {
-            tanggaIzinView.setError("Kolom ini wajib diisi");
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-            allDate = false;
+        if (TextUtils.isEmpty(tanggalGagal) || tanggalGagal.equals("")) {
+            tanggalGagalView.setError("Kolom ini wajib diisi");
+//            tanggalGagalView.setError("tanggal gagal");
+            gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
             cancel = true;
         }
-        if (TextUtils.isEmpty(tanggalPermohonan) || tanggalPermohonan.equals("")) {
+        if (TextUtils.isEmpty(tanggalPengajuan) || tanggalPengajuan.equals("")) {
             tanggalPengajuanView.setError("Kolom ini wajib diisi");
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-            allDate = false;
+//            tanggalPengajuanView.setError("tanggal pengajuan");
+            gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
             cancel = true;
         }
-
-        if (allDate) {
-            cancel = validasiTanggalIzin(tanggalIzin, tanggalPermohonan);
+        if (TextUtils.isEmpty(jamGagal) || jamGagalView.equals("")) {
+            jamGagalView.setError("Kolom ini wajib diisi");
+//            jamGagalView.setError("jam gagal");
+            gagalFpPengajuanKonfirmasiView.setVisibility(View.GONE);
+            cancel = true;
         }
 
         if (cancel) {
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.GONE);
-            izinKantorPengajuanProgressView.setVisibility(View.GONE);
+            konfigurasi.fadeAnimation(false, gagalFpPengajuanKonfirmasiView, animationDuration);
+            gagalFpPengajuanProgressView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "form pengajuan izin kantor belum lengkap", Toast.LENGTH_SHORT).show();
         } else {
             getData();
-//            postPengajuanCuti();
+            postPengajuanCuti();
         }
-    }
-
-    private boolean validasiTanggalIzin(String tanggalIzin, String tanggalPermohonan) {
-
-        String tanggalMulaiHari;
-        String tanggalMulaiBulan;
-        String tanggalMulaiTahun;
-        String tanggalSelesaiHari;
-        String tanggalSelesaiBulan;
-        String tanggalSelesaiTahun;
-
-        tanggalMulaiHari = tanggalIzin.substring(8, 10);
-        tanggalMulaiBulan = tanggalIzin.substring(5, 7);
-        tanggalMulaiTahun = tanggalIzin.substring(0, 4);
-        int tanggalMulaiInt = Integer.parseInt(tanggalMulaiTahun + tanggalMulaiBulan + tanggalMulaiHari);
-
-        tanggalSelesaiHari = tanggalPermohonan.substring(8, 10);
-        tanggalSelesaiBulan = tanggalPermohonan.substring(5, 7);
-        tanggalSelesaiTahun = tanggalPermohonan.substring(0, 4);
-        int tanggalSelesaiInt = Integer.parseInt(tanggalSelesaiTahun + tanggalSelesaiBulan + tanggalSelesaiHari);
-
-        boolean status;
-
-        if (tanggalSelesaiInt >= tanggalMulaiInt) {
-            status = false;
-        } else {
-            Toast.makeText(getActivity(), "tanggal tidak valid", Toast.LENGTH_SHORT).show();
-            status = true;
-        }
-
-        return status;
     }
 }

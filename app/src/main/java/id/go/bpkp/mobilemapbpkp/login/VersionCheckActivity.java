@@ -27,6 +27,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.dashboard.DashboardActivity;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
@@ -151,68 +152,68 @@ public class VersionCheckActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        signOut();
-//        super.onBackPressed();
+        PassingIntent.signOut(VersionCheckActivity.this, mUserToken, sharedPreferences);
+//        signOut();
     }
 
-    public void signOut() {
-        getJSON();
-    }
-
-    private void parseJSON() {
-        JSONObject jsonObject = null;
-        Intent logoutIntent = null;
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            String message = jsonObject.getString("success");
-            if (message.equals("true")) {
-                logoutMessage = "logout sukses";
-                editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
-                editor.apply();
-//                Toast.makeText(getApplicationContext(), logoutMessage, Toast.LENGTH_SHORT).show();
-                logoutIntent = new Intent(VersionCheckActivity.this, LoginActivity.class);
-                logoutIntent.putExtra(INTENT_USERNAME, mUsername);
-                logoutIntent.putExtra(INTENT_PASSWORD, mPassword);
-                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                finish();
-            } else {
-                logoutMessage = "logout gagal";
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        startActivity(logoutIntent);
-        finish();
-    }
-
-    private void getJSON() {
-        class GetJSON extends AsyncTask<Void, Void, String> {
-
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(VersionCheckActivity.this, null, null, false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                parseJSON();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(konfigurasi.URL_LOGOUT + mUserToken);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
+//    public void signOut() {
+//        getJSON();
+//    }
+//
+//    private void parseJSON() {
+//        JSONObject jsonObject = null;
+//        Intent logoutIntent = null;
+//        try {
+//            jsonObject = new JSONObject(JSON_STRING);
+//            String message = jsonObject.getString("success");
+//            if (message.equals("true")) {
+//                logoutMessage = "logout sukses";
+//                editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
+//                editor.apply();
+////                Toast.makeText(getApplicationContext(), logoutMessage, Toast.LENGTH_SHORT).show();
+//                logoutIntent = new Intent(VersionCheckActivity.this, LoginActivity.class);
+//                logoutIntent.putExtra(INTENT_USERNAME, mUsername);
+//                logoutIntent.putExtra(INTENT_PASSWORD, mPassword);
+//                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(logoutIntent);
+//                finish();
+//            } else {
+//                logoutMessage = "logout gagal";
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        startActivity(logoutIntent);
+//        finish();
+//    }
+//
+//    private void getJSON() {
+//        class GetJSON extends AsyncTask<Void, Void, String> {
+//
+//            ProgressDialog loading;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                loading = ProgressDialog.show(VersionCheckActivity.this, null, null, false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                loading.dismiss();
+//                JSON_STRING = s;
+//                parseJSON();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                RequestHandler rh = new RequestHandler();
+//                String s = rh.sendGetRequest(konfigurasi.URL_LOGOUT + mUserToken);
+//                return s;
+//            }
+//        }
+//        GetJSON gj = new GetJSON();
+//        gj.execute();
+//    }
 }

@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +25,7 @@
             android:name=".splashscreen.SplashscreenActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/NOActionBar"></activity>
+            android:theme="@style/NOActionBar" />
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
@@ -35,7 +36,7 @@
             android:name=".dashboard.DashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".login.PhoneVerificationActivity"
             android:label="@string/title_activity_dashboard"

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -108,10 +111,13 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
             toefl;
     private int akreInt, mRoleId;
     private LinearLayout hpLayout, emailLayout;
+    private RelativeLayout fotoEditButton;
     private DateFormat dateFormat;
     private ProgressBar loadingProgressBar;
     private ScrollView dataPokokScrollView;
     private YoYo.YoYoString ropeProfilIndividu;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public ProfilPegawaiDataPokokFragment() {
 
@@ -135,6 +141,10 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         //ngambil judul dan ngeset judul fragment
         setHasOptionsMenu(true);
 
+        // set up setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
         //inisiasi rootView
         rootView = (View) view;
 
@@ -150,43 +160,18 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         mNoHp = this.getArguments().getString(PassedIntent.INTENT_NOHP);
         mEmail = this.getArguments().getString(PassedIntent.INTENT_EMAIL);
         mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
+        JSON_STRING = sharedPreferences.getString("saved_json_data_pokok", null);
 
         // date format
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         initiateView(rootView);
-        getJSON();
-//        PassedIntent pdfDownload = new PassedIntent(getActivity(), PdfDownloadActivity.class);
-//        pdfDownload.putExtra("download_link", "http://118.97.51.140:10001/map/api/drh/"+mNipLama+"?api_token="+mUserToken);
-//        pdfDownload.putExtra("nip_baru", username);
-//        pdfDownload.putExtra("nama", username);
-//        startActivity(pdfDownload);
-
-//        proficPegawaiIndividuView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    // infalter obj
-//                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                    // inflate layout
-//                    View layout = inflater.inflate(
-//                            R.layout.profile_picture_layout,
-//                            (ViewGroup) rootView.findViewById(R.id.profic_popup_view));
-//                    // popup obj
-//                    DisplayMetrics displayMetrics = new DisplayMetrics();
-//                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//                    int pwh = displayMetrics.heightPixels;
-//                    int pww = displayMetrics.widthPixels;
-//                    PopupWindow pw = new PopupWindow(layout, pww, pwh, true);
-//                    // popup gen
-//                    pw.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-//                    ImageView popupProfic = (ImageView) layout.findViewById(R.id.profic_popup);
-//                    Picasso.with(getActivity()).load(mFoto).into(popupProfic);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        if (JSON_STRING == null) {
+            getJSON();
+        } else {
+            parseJSON();
+        }
+        setOnClick();
     }
 
     private void initiateView(View view){
@@ -194,6 +179,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         dataPokokScrollView = rootView.findViewById(R.id.profil_individu_data_pokok);
         dataPokokScrollView.setVisibility(View.GONE);
         proficPegawaiIndividuView = (ImageView) view.findViewById(R.id.profil_individu_profic);
+        fotoEditButton = (RelativeLayout) view.findViewById(R.id.profil_individu_profic_edit);
         namaGelarProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnama);
         nipProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnip);
         namaPegawaiIndividuView = (TextView) view.findViewById(R.id.profil_individu_nama);
@@ -223,13 +209,15 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         toeflProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_toefl);
     }
     private void populateView(){
+        // saved json
         // profile picture area
         Picasso
                 .with(getActivity())
                 .load(mFoto)
                 .into(proficPegawaiIndividuView);
         namaGelarProfilPictureView.setText(namaGelar);
-        nipProfilPictureView.setText(mNipBaru);
+        String nip = mNipBaru + " / " + mNipLama;
+        nipProfilPictureView.setText(nip);
         pangkatProfilPictureView.setText(pangkat);
         // profile data
         namaPegawaiIndividuView.setText(namaLengkap);
@@ -254,11 +242,9 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         jumlahanakProfilIndividuView.setText(jumlahanak);
         akreProfilIndividuView.setText(akre);
         toeflProfilIndividuView.setText(toefl);
-        ropeProfilIndividu = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
-                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                .interpolate(new AccelerateDecelerateInterpolator())
-                .playOn(dataPokokScrollView);
+
+        loadingProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, dataPokokScrollView, 500);
     }
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {
@@ -266,18 +252,17 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                dataPokokScrollView.setVisibility(View.GONE);
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                dataPokokScrollView.setVisibility(View.GONE);
 //                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loadingProgressBar.setVisibility(View.GONE);
-                dataPokokScrollView.setVisibility(View.VISIBLE);
-//                loading.dismiss();
                 JSON_STRING = s;
+                editor.putString("saved_json_data_pokok", s);
+                editor.apply();
                 parseJSON();
             }
 
@@ -318,7 +303,6 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
                     + checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_LAMABLUNIT)) + " bulan";
             lamakp = checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_LAMATHKP)) + " tahun "
                     + checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_LAMABLKP)) + " bulan";
-//            tmtpensiun = checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_TMTPENSIUN));
             sertpim = checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_DIKLATSTRUK));
             sertjfa = checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_SERTJFA));
             sertprof = checkNull(jsonObject.getJSONObject("result").getString(konfigurasi.TAG_SERTPROFESI));
@@ -416,5 +400,14 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         } else {
             return tanggal;
         }
+    }
+
+    private void setOnClick() {
+        fotoEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "upload foto baru", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

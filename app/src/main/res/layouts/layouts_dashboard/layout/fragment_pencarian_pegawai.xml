@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blueBasicPale"
+    android:background="@color/blueBasic"
     android:orientation="vertical">
 
     <LinearLayout
@@ -62,8 +62,7 @@
                 android:id="@+id/phone_verification_search_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/blueBasic"
-                app:cardCornerRadius="5dp">
+                app:cardBackgroundColor="@color/blueBasicDark">
 
                 <ImageView
                     android:layout_width="match_parent"

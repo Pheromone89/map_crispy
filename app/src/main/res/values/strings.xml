@@ -2,7 +2,7 @@
     <string name="app_name">MAP MOBILE BPKP</string>
     <string name="login_screen_title">Aplikasi Mobile\nProfil Pegawai\nBPKP</string>
     <string name="title_activity_dashboard">Beranda</string>
-    <string name="copyright">Copyright © 2017 BPKP Pusat</string>
+    <string name="copyright">Copyright © 2017 BPKP</string>
 
     <string name="navigation_drawer_open">Buka laci navigasi</string>
     <string name="navigation_drawer_close">Tutup laci navigasi</string>
@@ -12,12 +12,15 @@
     <!--Strings terkait fragment-->
     <string name="title_fragment_absen">Presensi</string>
     <string name="title_fragment_data_absen">Data Presensi</string>
+    <string name="title_fragment_data_absen_bawahan">Data Presensi Bawahan</string>
     <string name="title_fragment_dashboard_admin">Beranda Administrator</string>
     <string name="title_fragment_dashboard_pegawai">Beranda Pegawai</string>
     <string name="title_fragment_cuti_dashboard_pegawai">Beranda Cuti Pegawai</string>
     <string name="title_fragment_cuti_dashboard_admin">Beranda Cuti Admin</string>
     <string name="title_fragment_cuti_data">Data Cuti Pegawai</string>
     <string name="title_fragment_cuti_pengajuan">Pengajuan Cuti Pegawai</string>
+    <string name="title_fragment_cuti_persetujuan">Persetujuan Cuti Pegawai</string>
+    <string name="title_fragment_tentang">Tentang MAP Mobile</string>
     <!--Strings terkait dashboard-->
     <string-array name="absensi_status_message">
         <item>@string/datang_1</item>
@@ -77,6 +80,7 @@
     <string name="title_fragment_izin_kantor_dashboard_admin">Beranda Izin Kantor Admin</string>
     <string name="title_fragment_izin_kantor_data">Data Izin Kantor Pegawai</string>
     <string name="title_fragment_izin_kantor_pengajuan">Pengajuan Izin Kantor Pegawai</string>
+    <string name="title_fragment_gagal_fp_pengajuan">Pengajuan Pernyataan Fingerprint Pegawai</string>
     <!--jenis izin-->
     <string name="spinner_pengajuan_izin_kantor_tidak_masuk">Tidak masuk kantor</string>
     <string name="spinner_pengajuan_izin_kantor_terlambat">Datang terlambat</string>
@@ -134,4 +138,8 @@
     <string name="action_settings">Pengaturan</string>
     <string name="search_hint">Cari pegawai</string>
     <string name="search_title">Pencarian</string>
+
+    <!--about-->
+    <string name="tentang_versi">MAP MOBILE BPKP\nversi</string>
+    <string name="tentang_konten">MAP MOBILE BPKP merupakan sebuah aplikasi yang dikembangkan dengan tujuan meningkatkan pelayanan kepegawaian BPKP.</string>
 </resources>

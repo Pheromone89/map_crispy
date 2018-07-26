@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,6 +62,8 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
     private ArrayList<Unit>
             unitList;
     private ProgressBar loadingProgressBar;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -74,6 +77,10 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
         //ngambil judul dan ngeset judul fragment
         setHasOptionsMenu(true);
 
+        // set up setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
         //inisiasi rootView
         rootView = (View) view;
 
@@ -86,11 +93,16 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
         username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
         //nip lama tanpa spasi
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        JSON_STRING = sharedPreferences.getString("saved_json_data_unit", null);
 
         unitList = new ArrayList<>();
 
         initiateView();
-        getJSON();
+        if (JSON_STRING == null) {
+            getJSON();
+        } else {
+            parseJSON();
+        }
     }
 
     @Override
@@ -108,6 +120,9 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
     private void populateView() {
         unitAdapter = new UnitAdapter(getActivity(), unitList, this);
         dataUnitRecyclerView.setAdapter(unitAdapter);
+
+        loadingProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, dataUnitRecyclerView, 500);
     }
 
     private void getJSON() {
@@ -118,18 +133,18 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                dataUnitRecyclerView.setVisibility(View.GONE);
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                dataUnitRecyclerView.setVisibility(View.GONE);
 //                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loadingProgressBar.setVisibility(View.GONE);
-                dataUnitRecyclerView.setVisibility(View.VISIBLE);
 //                loading.dismiss();
                 JSON_STRING = s;
+                editor.putString("saved_json_data_unit", s);
+                editor.apply();
                 parseJSON();
             }
 

@@ -1,10 +1,19 @@
 package id.go.bpkp.mobilemapbpkp.konfigurasi;
 
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 /**
  * Created by ASUS on 19/01/2018.
  */
 
 public class konfigurasi {
+
+
+    public static final String URL_GET_EMP_CUTIBAWAHANLANGSUNG = "http://118.97.51.140:10001/map/api/transaksicuti/";
 
     //ALL PEGAWAI LENGKAP
     public static final String URL_GET_ALL = "http://118.97.51.140:10001/map/api/pegawai?api_token=";
@@ -35,7 +44,10 @@ public class konfigurasi {
     public static final String URL_DELETE_EMP = "none";
     // CUTI
     public static final String URL_GET_EMP_REKAPCUTI = "http://118.97.51.140:10001/map/api/rekapcuti/";
+    public static final String URL_GET_EMP_CUTIBAWAHANLANGSUNGCOUNT = "http://118.97.51.140:10001/map/api/transaksicuticount/";
+    public static final String URL_PERSETUJUANCUTI = "http://118.97.51.140:10001/map/api/persetujuancuti?api_token=";
     public static final String URL_PENGAJUANCUTI = "http://118.97.51.140:10001/map/api/setcuti?api_token=";
+    public static final String URL_GET_ABSENBAWAHAN = "http://118.97.51.140:10001/map/api/listAbsenBawahan/";
     // IZIN KANTOR
     public static final String URL_PENGAJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/setizin?api_token=";
     // PRESENSI
@@ -49,9 +61,11 @@ public class konfigurasi {
     public static final String TAG_ABSEN_STATUSPULANG = "statusPulang";
     // HISTORI PRESENSI
     public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
+    //JSON tags
+    public static final String TAG_ISATASAN = "is_atasan";
     // TUKIN
     public static final String URL_GET_TUKIN = "http://118.97.51.140:10001/map/api/tukin/";
-    //JSON tags
+    public static final int DASHBOARD_PANEL_NOTIFIKASIATASAN = 6;
     public static final String TAG_JSON_ARRAY = "result";
     public static final String TAG_ID = "id";
     public static final String TAG_NIPLAMA = "niplama";
@@ -255,6 +269,30 @@ public class konfigurasi {
     public static final int DASHBOARD_PANEL_CUTI = 3;
     public static final int DASHBOARD_PANEL_JARINGAN = 4;
     public static final int DASHBOARD_PANEL_TUNJANGAN = 5;
+
+    public static void fadeAnimation(boolean isFadeIn, final View v, long duration) {
+        YoYo.YoYoString ropeAnimation;
+        Techniques techniques;
+        if (isFadeIn) {
+            techniques = Techniques.FadeIn;
+            v.setVisibility(View.VISIBLE);
+        } else {
+            techniques = Techniques.FadeOut;
+        }
+        ropeAnimation = YoYo.with(techniques)
+                .duration(duration)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(v);
+        if (!isFadeIn) {
+            v.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    v.setVisibility(View.GONE);
+                }
+            }, duration);
+        }
+    }
 
     //Dibawah ini merupakan Pengalamatan dimana Lokasi Skrip CRUD PHP disimpan
     //Pada tutorial Kali ini, karena kita membuat localhost maka alamatnya tertuju ke IP komputer
