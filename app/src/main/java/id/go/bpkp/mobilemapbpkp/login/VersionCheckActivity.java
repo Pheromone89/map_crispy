@@ -115,7 +115,7 @@ public class VersionCheckActivity extends AppCompatActivity {
         mNipLama = dashboardIntent.getStringExtra(INTENT_NIPLAMA);
         mRoleIdInt = dashboardIntent.getIntExtra(INTENT_ROLEIDINT, 99);
         mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
-        mFoto = PassedIntent.getFoto(mNipLama);
+        mFoto = PassedIntent.getFoto(VersionCheckActivity.this, mNipLama);
         mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
         mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
         mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);

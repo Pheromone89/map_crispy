@@ -49,6 +49,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN
 public class PassingIntent {
 
     private static String JSON_STRING;
+    private static String fotoUrl;
 
     public static void setUser(SharedPreferences sharedPreferences, String username, String password) {
 
@@ -119,6 +120,14 @@ public class PassingIntent {
             i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
             i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
             i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
+            String jenisJabatan = null;
+            if (!jsonObject.getJSONObject("message").getString("pegawai").equals("null")) {
+                JSONObject pegawaiJson = jsonObject.getJSONObject("message").getJSONObject("pegawai");
+                jenisJabatan = pegawaiJson.getString("jenis_jab");
+            } else {
+                jenisJabatan = "tidak ada rincian pegawai";
+            }
+            i.putExtra("jenis_jabatan", jenisJabatan);
             i.putExtra(INTENT_IMEI, imei);
             i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
             i.putExtra("is_redirect", false);
@@ -142,6 +151,15 @@ public class PassingIntent {
             i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
             i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
             i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
+
+            // TEST FOTO //
+
+            fotoUrl = jsonObject.getJSONObject("message").getString("url_foto");
+//            Toast.makeText(context, fotoUrl, Toast.LENGTH_SHORT).show();
+            editor.putString("foto_url", fotoUrl);
+
+            // TEST FOTO //
+
             editor.putString(INTENT_USERNAME, username);
             editor.putString(INTENT_PASSWORD, password);
             editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
@@ -161,6 +179,7 @@ public class PassingIntent {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
+        editor.putString("foto_url", null);
         editor.apply();
         i = new Intent(context, LoginActivity.class);
         i.putExtra(INTENT_USERNAME, username);

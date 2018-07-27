@@ -34,6 +34,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -181,7 +182,7 @@ public class CutiDaftarPegawaiFragment extends Fragment implements RecyclerViewC
                 nipLama = jo.getString(konfigurasi.TAG_NIPLAMA);
                 nipBaru = jo.getString(konfigurasi.TAG_NIPBARU);
                 nipBaruPisah = jo.getString(konfigurasi.TAG_NIPBARUGABUNG);
-                foto = PassedIntent.getFoto(nipLama);
+                foto = PassedIntent.getFoto(getActivity(), nipLama);
 
                 pegawaiCutiList.add(
                         new PegawaiCuti(

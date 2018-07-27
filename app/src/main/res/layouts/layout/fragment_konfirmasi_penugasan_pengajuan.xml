@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/konfirmasi_penugasan_pengajuan_fail_overhead_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@android:color/holo_red_light"
+            app:cardCornerRadius="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Konfirmasi gagal. Silakan coba kembali"
+                android:textColor="@color/whiteAlternate"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/blueBasicDark"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_profil_nama"
+                                style="@style/LoginScreenText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Nama Pegawai"
+                                android:textColor="@color/whiteAlternate"
+                                android:textSize="17sp" />
+
+                            <TextView
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_profil_nip"
+                                style="@style/LoginScreenText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="19970707 201801 2 001"
+                                android:textColor="@color/whiteAlternate"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_profil_atasan_langsung"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingLeft="10dp"
+                                android:text="Atasan Langsung:"
+                                android:textColor="@color/whiteAlternate"
+                                android:textSize="13sp"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_profil_atasan_langsung_val"
+                                style="@style/LoginScreenText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingLeft="10dp"
+                                android:text="Masta"
+                                android:textColor="@color/whiteAlternate"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_form_pengajuan_konfirmasi_penugasan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:orientation="vertical"
+                                android:paddingEnd="15dp"
+                                android:paddingStart="15dp"
+                                android:paddingTop="5dp">
+
+                                <TextView
+                                    style="@style/IndividuTextContent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="Konfirmasi Penugasan"
+                                    android:textSize="17sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tanggal pengajuan" />
+
+                                <EditText
+                                    android:id="@+id/konfirmasi_penugasan_pengajuan_tanggal_pengajuan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:hint="Tanggal Pengajuan"
+                                    android:inputType="date"
+                                    android:singleLine="true"
+                                    android:textColor="@color/blueBasicDark"
+                                    android:textColorHint="@color/blueBasicDark"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Tanggal awal" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Tanggal akhir" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <EditText
+                                        android:id="@+id/konfirmasi_penugasan_pengajuan_tanggal_awal"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:clickable="false"
+                                        android:cursorVisible="false"
+                                        android:focusable="false"
+                                        android:focusableInTouchMode="false"
+                                        android:hint="Tanggal Mulai"
+                                        android:inputType="date"
+                                        android:singleLine="true"
+                                        android:textColor="@color/blueBasicDark"
+                                        android:textColorHint="@color/blueBasicDark"
+                                        android:textSize="16sp" />
+
+                                    <EditText
+                                        android:id="@+id/konfirmasi_penugasan_pengajuan_tanggal_akhir"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:clickable="false"
+                                        android:cursorVisible="false"
+                                        android:focusable="false"
+                                        android:focusableInTouchMode="false"
+                                        android:hint="Tanggal Selesai"
+                                        android:inputType="date"
+                                        android:singleLine="true"
+                                        android:textColor="@color/blueBasicDark"
+                                        android:textColorHint="@color/blueBasicDark"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Jenis Penugasan" />
+
+                                <Spinner
+                                    android:id="@+id/konfirmasi_penugasan_pengajuan_spinner_jenis"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@android:color/white"
+                                    android:dropDownSelector="@color/blueBasicDark"
+                                    android:entries="@array/spinner_placeholder"
+                                    android:padding="2dp"
+                                    android:prompt="@string/spinner_placeholder" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Keterangan" />
+
+                                <EditText
+                                    android:id="@+id/konfirmasi_penugasan_pengajuan_keterangan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:ems="10"
+                                    android:gravity="top"
+                                    android:hint="Keterangan"
+                                    android:inputType="textMultiLine"
+                                    android:lines="2"
+                                    android:textColor="@color/blueBasicDark"
+                                    android:textColorHint="@color/blueBasicDark"
+                                    android:textSize="16sp" />
+
+                            </LinearLayout>
+
+                            <ProgressBar
+                                android:id="@+id/konfirmasi_penugasan_pengajuan_progress_bar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="20dp"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/konfirmasi_penugasan_pengajuan_submit_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="150dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            app:cardBackgroundColor="@color/blueBasic"
+                            app:cardCornerRadius="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="KONFIRMASI"
+                                android:textColor="@color/whiteAlternate"
+                                android:textStyle="bold" />
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_peringatan_atasan_langsung"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c5006db2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="P E R I N G A T A N !"
+                android:textColor="@color/whiteAlternate"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteAlternate"
+                android:gravity="center"
+                android:padding="30dp"
+                android:text="Pegawai belum dapat mengkonfirmasi penugasan jika belum melakukan pengaturan atasan langsung. Silakan melakukan pengaturan atasan langsung melalui aplikasi desktop MAP BPKP."
+                android:textColor="@color/blueBasicDark" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_konfirmasi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c5006db2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Apakah Anda yakin?"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/konfirmasi_penugasan_pengajuan_konfirmasi_ya"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@android:color/holo_green_light"
+                        app:cardCornerRadius="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="YA"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/konfirmasi_penugasan_pengajuan_konfirmasi_tidak"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@android:color/holo_red_light"
+                        app:cardCornerRadius="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="TIDAK"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c5006db2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/konfirmasi_penugasan_pengajuan_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="150dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_message_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c5006db2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#c5006db2" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Konfirmasi penugasan berhasil"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/konfirmasi_penugasan_pengajuan_message_success_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="10dp"
+                    app:cardBackgroundColor="@android:color/holo_green_light"
+                    app:cardCornerRadius="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:text="OK"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/konfirmasi_penugasan_pengajuan_message_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c5006db2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#c5006db2" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/whiteAlternate"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/konfirmasi_penugasan_pengajuan_message_failed_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteAlternate"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Konfirmasi penugasan gagal, silakan coba lagi."
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/konfirmasi_penugasan_pengajuan_message_fail_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="10dp"
+                    app:cardBackgroundColor="@android:color/holo_red_light"
+                    app:cardCornerRadius="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:text="OK"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</FrameLayout>

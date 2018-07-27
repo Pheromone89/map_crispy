@@ -38,6 +38,7 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
+import id.go.bpkp.mobilemapbpkp.konfirmasipenugasan.KonfirmasiPenugasanDashboardPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.monitoring.PencarianPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilPegawaiPagerFragment;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilSeluruhPegawaiFragment;
@@ -52,6 +53,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCAST
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_DASHBOARDCONTENT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_EMAIL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTOURL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
@@ -79,10 +81,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             mNipLama,
             mRoleId,
             mUserToken,
+            mFotoUrl,
             mFoto,
             mNoHp,
             mImei,
             mEmail,
+            jenisJabatan,
             JSON_STRING,
             mContentUrl,
             openedDrawer,
@@ -153,10 +157,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mNipLama = dashboardIntent.getStringExtra(INTENT_NIPLAMA);
         mRoleIdInt = dashboardIntent.getIntExtra(INTENT_ROLEIDINT, 99);
         mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
-        mFoto = PassedIntent.getFoto(mNipLama);
+        mFotoUrl = dashboardIntent.getStringExtra(INTENT_FOTOURL);
+//        mFoto = dashboardIntent.getStringExtra(INTENT_FOTOURL) + mNipLama;
+        mFoto = PassedIntent.getFoto(DashboardActivity.this, mNipLama);
         mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
         mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
         mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);
+        jenisJabatan = dashboardIntent.getStringExtra("jenis_jabatan");
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
         isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);
@@ -254,6 +261,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         presensiBawahanPegawaiMenu = navigationView.getMenu().getItem(2);
         profilSemuaPegawaiMenu = navigationView.getMenu().getItem(3);
         profilPegawaiMenu = navigationView.getMenu().getItem(4);
+        if (jenisJabatan.equals("E.I.a") || jenisJabatan.equals("E.I.b")) {
+            profilSemuaPegawaiMenu.setTitle("Profil Semua Pegawai");
+        }
         //broadcast
         broadcastLayout = findViewById(R.id.dashboard_broadcast);
         broadcastImageView = findViewById(R.id.dashboard_broadcast_image);
@@ -292,7 +302,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 mRoleIdInt == UserRole.USER_ROLE_BAPERJAKAT ||
                 mRoleIdInt == 7) {
             mContentUrl = konfigurasi.URL_GET_DASHBOARD_CONTENT_ADMIN;
-//            dashboardFragment = new DashboardAdminFragment();
             dashboardFragment = new PencarianPegawaiFragment();
             titleDashboard = "Pencarian Pegawai";
             presensiPegawaiMenu.setVisible(false);
@@ -412,6 +421,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(INTENT_USERTOKEN, mUserToken);
+                bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(PassedIntent.INTENT_FRAGMENTCONTENT, url);
                 bundle.putString(INTENT_NIPLAMA, mNipLama);
                 bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
@@ -429,6 +439,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 bundle.putString(INTENT_NAMA, mNama);
                 bundle.putString(INTENT_NIPLAMA, mNipLama);
                 bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(INTENT_FOTO, mFoto);
                 bundle.putString(INTENT_NOHP, mNoHp);
                 bundle.putString(INTENT_IMEI, mImei);
@@ -449,6 +460,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 bundle.putString(INTENT_NAMA, mNama);
                 bundle.putString(INTENT_NIPLAMA, mNipLama);
                 bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(INTENT_FOTO, mFoto);
                 bundle.putString(INTENT_NOHP, mNoHp);
                 bundle.putString(INTENT_IMEI, mImei);
@@ -466,6 +478,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 bundle.putString(INTENT_USERTOKEN, mUserToken);
                 bundle.putString(INTENT_NIPLAMA, mNipLama);
                 bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(INTENT_FOTO, mFoto);
                 bundle.putString(INTENT_NOHP, mNoHp);
                 bundle.putString(INTENT_EMAIL, mEmail);
@@ -475,6 +488,25 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 fragment.setArguments(bundle);
                 fragmentTag = getResources().getString(R.string.title_fragment_profil_seluruh_pegawai);
                 openedDrawer = "nav_profile";
+            }
+        } else if (id == R.id.nav_konfirmasi_penugasan) {
+            if (openedDrawer != "nav_konfirmasi_penugasan") {
+                // pegawai
+                Bundle bundle = new Bundle();
+                bundle.putString(INTENT_USERTOKEN, mUserToken);
+                bundle.putString(INTENT_NIPLAMA, mNipLama);
+                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                bundle.putBoolean(INTENT_ISATASAN, isAtasan);
+                bundle.putString(INTENT_NAMA, mNama);
+                bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                bundle.putString(INTENT_FOTO, mFoto);
+                bundle.putString(INTENT_NIPBARU, mNipBaru);
+                bundle.putString(INTENT_NOHP, mNoHp);
+
+                fragment = new KonfirmasiPenugasanDashboardPegawaiFragment();
+                fragment.setArguments(bundle);
+                fragmentTag = getResources().getString(R.string.title_fragment_konfirmasi_penugasan);
+                openedDrawer = "nav_konfirmasi_penugasan";
             }
         } else if (id == R.id.nav_izin_cuti) {
             if (openedDrawer != "nav_izin_cuti") {
@@ -487,6 +519,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putString(INTENT_NIPLAMA, mNipLama);
                     bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
                     bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
                     bundle.putString(INTENT_NOHP, mNoHp);
@@ -506,6 +539,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
                     bundle.putBoolean(INTENT_ISATASAN, isAtasan);
                     bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
                     bundle.putString(INTENT_NOHP, mNoHp);
@@ -531,6 +565,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putString(INTENT_NIPLAMA, mNipLama);
                     bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
                     bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
                     bundle.putString(INTENT_NOHP, mNoHp);
@@ -549,6 +584,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putString(INTENT_NIPLAMA, mNipLama);
                     bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
                     bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
                     bundle.putString(INTENT_NOHP, mNoHp);

@@ -23,6 +23,7 @@ import java.util.List;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkatAdapter;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilPegawaiPagerFragment;
@@ -108,7 +109,7 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
             String empUsername = pegawaiCuti.getNipBaruPisah();
             String empNiplama = pegawaiCuti.getNipLama();
             String empNama = pegawaiCuti.getNama();
-            String empFoto = PassedIntent.getFoto(empNiplama);
+            String empFoto = PassedIntent.getFoto(context, empNiplama);
 
             Bundle bundle = new Bundle();
             bundle.putString(PassedIntent.INTENT_NAMA, empNama);

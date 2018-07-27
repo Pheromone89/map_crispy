@@ -197,7 +197,7 @@ public class ProfilSeluruhPegawaiFragment extends Fragment implements RecyclerVi
                 nipBaruPisah = jo.getString(konfigurasi.TAG_NIPBARUGABUNG);
                 jabatanSingkat = jo.getString(konfigurasi.TAG_JABATANSINGKAT);
                 unit = jo.getString(konfigurasi.TAG_UNIT);
-                foto = PassedIntent.getFoto(nipLama);
+                foto = PassedIntent.getFoto(getActivity(), nipLama);
 
                 pegawaiSingkatList.add(
                         new PegawaiSingkat(

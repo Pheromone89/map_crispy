@@ -62,7 +62,7 @@ public class BawahanLangsungCutiAdapter extends RecyclerView.Adapter<BawahanLang
         BawahanLangsungCuti bawahanLangsungCuti = pegawaiBawahanLangsungList.get(position);
 
 
-        String foto = PassedIntent.getFoto(bawahanLangsungCuti.getNipLama());
+        String foto = PassedIntent.getFoto(context, bawahanLangsungCuti.getNipLama());
         String nama = bawahanLangsungCuti.getNama();
         String tanggal = bawahanLangsungCuti.getTanggalAwal() + " s.d. " + bawahanLangsungCuti.getTanggalAkhir();
         String keterangan = bawahanLangsungCuti.getJenisCuti() + " (" + bawahanLangsungCuti.getJumlahHari() + " hari)";

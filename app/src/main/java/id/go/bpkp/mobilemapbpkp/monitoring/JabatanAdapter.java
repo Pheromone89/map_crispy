@@ -56,7 +56,7 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
         holder.tanggalSK.setText(tanggal);
 
         ropeJabatan = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(500)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

@@ -192,7 +192,7 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Terjadi kesalahan, silakan login kembali", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), "Absen Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "KonfirmasiPenugasan Error", Toast.LENGTH_SHORT).show();
             PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
         }
         populateView();

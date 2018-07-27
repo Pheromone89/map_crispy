@@ -160,7 +160,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         // data cuti yg akan disetujui
         idTransaksi = this.getArguments().getString("persetujuan_" + "id_transaksi");
         nipLamaBawahan = this.getArguments().getString("persetujuan_" + PassedIntent.INTENT_NIPLAMA);
-        fotoBawahan = PassedIntent.getFoto(nipLamaBawahan);
+        fotoBawahan = PassedIntent.getFoto(getActivity(), nipLamaBawahan);
         namaBawahan = this.getArguments().getString("persetujuan_" + PassedIntent.INTENT_NAMA);
         jenisCutiBawahan = this.getArguments().getString("persetujuan_" + "jenis_cuti");
         tanggalPengajuanBawahan = this.getArguments().getString("persetujuan_" + "tanggal_pengajuan");
@@ -333,7 +333,8 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         messageOKButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
+                // didisable request bu yani
+//                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
 
                 FragmentManager fm = getActivity().getFragmentManager();
                 fm.popBackStack("fragment_daftar_persetujuan_cuti", FragmentManager.POP_BACK_STACK_INCLUSIVE);

@@ -56,7 +56,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
         holder.tmtView.setText(tmt);
 
         ropeUnit = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(500)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

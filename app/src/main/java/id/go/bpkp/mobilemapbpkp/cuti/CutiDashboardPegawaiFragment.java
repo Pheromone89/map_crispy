@@ -58,6 +58,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             mFoto,
             mAtasanLangsung,
             mNipAtasanLangsung,
+            tahunLabel,
             tahunMin2Label,
             tahunMin1Label,
             hakCutiTMin2,
@@ -78,6 +79,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             namaView,
             nipView,
             jabatanView,
+            cutiTLabelView,
             cutiT2LabelView,
             cutiT1LabelView,
             hakCutiTMin2View,
@@ -139,9 +141,10 @@ public class CutiDashboardPegawaiFragment extends Fragment {
 
         tahunBerjalan = Calendar.getInstance().get(Calendar.YEAR);
         tahunMin2 = tahunBerjalan - 2;
-        tahunMin2Label = "Hak Cuti Tahun Lalu (" + tahunMin2 + ")";
+        tahunMin2Label = "" + tahunMin2;
         tahunMin1 = tahunBerjalan - 1;
-        tahunMin1Label = "Hak Cuti Tahun Lalu (" + tahunMin1 + ")";
+        tahunMin1Label = "" + tahunMin1;
+        tahunLabel = "" + tahunBerjalan;
 
         initiateView();
 
@@ -177,6 +180,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         nipView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nip);
         jabatanView = (TextView) rootView.findViewById(R.id.dashboard_cuti_jabatan);
         // data
+        cutiTLabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_label);
         cutiT2LabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_2_label);
         cutiT1LabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_1_label);
         hakCutiTMin2View = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_2_val);
@@ -205,6 +209,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         nipView.setText(mNipBaru);
         jabatanView.setText(jabatan);
         // data
+        cutiTLabelView.setText(tahunLabel);
         cutiT2LabelView.setText(tahunMin2Label);
         cutiT1LabelView.setText(tahunMin1Label);
         hakCutiTMin2 = hakCutiTMin2 + " hari";

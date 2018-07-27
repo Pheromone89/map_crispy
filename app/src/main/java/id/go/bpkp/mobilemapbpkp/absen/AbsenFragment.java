@@ -241,7 +241,7 @@ public class AbsenFragment extends Fragment {
         jamPulangView.setText(jamPulang);
 
         switch (statusDatang) {
-            case "Anda Tidak Absen Datang":
+            case "Anda Tidak KonfirmasiPenugasan Datang":
                 datangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusDatang = "Anda belum merekam kehadiran";
                 break;
@@ -255,11 +255,11 @@ public class AbsenFragment extends Fragment {
                 break;
         }
         switch (statusPulang) {
-            case "Anda Belum Absen Pulang":
+            case "Anda Belum KonfirmasiPenugasan Pulang":
                 pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusPulang = "Anda belum merekam kepulangan";
                 break;
-            case "Anda Tidak Absen Pulang":
+            case "Anda Tidak KonfirmasiPenugasan Pulang":
                 pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusPulang = "Anda tidak merekam kepulangan";
                 break;

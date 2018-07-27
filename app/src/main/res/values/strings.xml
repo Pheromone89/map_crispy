@@ -81,6 +81,8 @@
     <string name="title_fragment_izin_kantor_data">Data Izin Kantor Pegawai</string>
     <string name="title_fragment_izin_kantor_pengajuan">Pengajuan Izin Kantor Pegawai</string>
     <string name="title_fragment_gagal_fp_pengajuan">Pengajuan Pernyataan Fingerprint Pegawai</string>
+    <string name="title_fragment_konfirmasi_penugasan">Konfirmasi Penugasan</string>
+    <string name="title_fragment_konfirmasi_penugasan_pengajuan">Pengajuan Konfirmasi Penugasan</string>
     <!--jenis izin-->
     <string name="spinner_pengajuan_izin_kantor_tidak_masuk">Tidak masuk kantor</string>
     <string name="spinner_pengajuan_izin_kantor_terlambat">Datang terlambat</string>
@@ -122,6 +124,22 @@
         <item>@string/spinner_pengajuan_izin_kantor_alasan_penugasan_lain_lain</item>
     </string-array>
 
+    <!--string terkait konfirmasi penugasan-->
+    <string-array name="spinner_jenis_penugasan">
+        <item>@string/spinner_pengajuan_konfirmasi_penugasan_1</item>
+        <item>@string/spinner_pengajuan_konfirmasi_penugasan_2</item>
+        <item>@string/spinner_pengajuan_konfirmasi_penugasan_3</item>
+    </string-array>
+    <string name="spinner_pengajuan_konfirmasi_penugasan_1">Penugasan 1</string>
+    <string name="spinner_pengajuan_konfirmasi_penugasan_2">Penugasan 2</string>
+    <string name="spinner_pengajuan_konfirmasi_penugasan_3">Penugasan 3</string>
+
+    <!--spinenr placeholder-->
+    <string-array name="spinner_placeholder">
+        <item>@string/spinner_placeholder</item>
+    </string-array>
+    <string name="spinner_placeholder">-</string>
+
     <!--login-->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Kata sandi (opsional)</string>
@@ -141,5 +159,5 @@
 
     <!--about-->
     <string name="tentang_versi">MAP MOBILE BPKP\nversi</string>
-    <string name="tentang_konten">MAP MOBILE BPKP merupakan sebuah aplikasi yang dikembangkan dengan tujuan meningkatkan pelayanan kepegawaian BPKP.</string>
+    <string name="tentang_konten">MAP MOBILE BPKP merupakan sebuah aplikasi yang dikembangkan dengan tujuan meningkatkan pelayanan informasi BPKP.</string>
 </resources>

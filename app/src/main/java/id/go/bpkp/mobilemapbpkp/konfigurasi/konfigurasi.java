@@ -21,6 +21,9 @@ public class konfigurasi {
     public static final String URL_GET_ALLSMALL = "http://118.97.51.140:10001/map/api/pegawaiSingkat?api_token=";
     public static final String URL_GET_ALLBYUNIT = "http://118.97.51.140:10001/map/api/pegawaiUnit/";
     public static final String URL_GET_ALLBYQUERY = "http://118.97.51.140:10001/map/api/pegawaiLikeName/";
+    //GET ARRAY JENIS PENUGASAN
+    public static final String URL_GET_DAFTARKONFIRMASIPENUGASAN = "http://118.97.51.140:10001/map/api/listkonfirmasipenugasan/";
+    public static final String URL_GET_JENISPENUGASAN = "http://118.97.51.140:10001/map/api/jenispenugasan";
     //LOGIN
     public static final String URL_LOGIN = "http://118.97.51.140:10001/map/api/login";
     //LOGOUT
@@ -50,6 +53,8 @@ public class konfigurasi {
     public static final String URL_GET_ABSENBAWAHAN = "http://118.97.51.140:10001/map/api/listAbsenBawahan/";
     // IZIN KANTOR
     public static final String URL_PENGAJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/setizin?api_token=";
+    // IZIN KANTOR
+    public static final String URL_PENGAJUANKONFIRMASIPENUGASAN = "http://118.97.51.140:10001/map/api/setkonfirmasipenugasan?api_token=";
     // PRESENSI
     public static final String URL_GET_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen/";
     public static final String URL_POST_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen?api_token=";

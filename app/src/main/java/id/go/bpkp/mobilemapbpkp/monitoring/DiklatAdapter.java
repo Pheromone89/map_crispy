@@ -63,7 +63,7 @@ public class DiklatAdapter extends RecyclerView.Adapter<DiklatAdapter.DiklatView
         holder.kompetensiView.setText(kompetensi);
 
         ropeDiklat = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(500)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

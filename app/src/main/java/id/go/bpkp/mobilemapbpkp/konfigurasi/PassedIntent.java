@@ -1,5 +1,11 @@
 package id.go.bpkp.mobilemapbpkp.konfigurasi;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
+
 /**
  * Created by ASUS on 12/03/2018.
  */
@@ -48,7 +54,10 @@ public class PassedIntent {
     public static final String INTENT_FOTO = "foto";
     public static final String INTENT_FOTOURL = "http://118.97.51.140:10000/Sispedap/showImage.do?jk=Laki-laki&id=";
 
-    public static String getFoto(String nipLama) {
-        return INTENT_FOTOURL + nipLama;
+    public static String getFoto(Context context, String nipLama) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String fotoUrlShared = sharedPreferences.getString("foto_url", null);
+
+        return fotoUrlShared + nipLama;
     }
 }

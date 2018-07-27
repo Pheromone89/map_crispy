@@ -34,6 +34,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -49,7 +50,9 @@ public class IzinKantorDaftarPegawaiFragment extends Fragment implements Recycle
     private String
             mUserToken,
             mUrl,
-            mNipLama;
+            mNipLama,
+            mFotoUrl,
+            mFoto;
     private int
             mRoleId;
     // buat recyclerView
@@ -87,6 +90,8 @@ public class IzinKantorDaftarPegawaiFragment extends Fragment implements Recycle
         mUrl = this.getArguments().getString(PassedIntent.INTENT_FRAGMENTCONTENT);
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
         mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
+        mFotoUrl = this.getArguments().getString(PassedIntent.INTENT_FOTOURL);
+        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
         rootView = view;
 
         pegawaiIzinKantorList = new ArrayList<>();
@@ -181,7 +186,8 @@ public class IzinKantorDaftarPegawaiFragment extends Fragment implements Recycle
                 nipLama = jo.getString(konfigurasi.TAG_NIPLAMA);
                 nipBaru = jo.getString(konfigurasi.TAG_NIPBARU);
                 nipBaruPisah = jo.getString(konfigurasi.TAG_NIPBARUGABUNG);
-                foto = PassedIntent.getFoto(nipLama);
+                foto = PassedIntent.getFoto(getActivity(), nipLama);
+//                foto = mFotoUrl + nipLama;
 
                 pegawaiIzinKantorList.add(
                         new PegawaiIzinKantor(

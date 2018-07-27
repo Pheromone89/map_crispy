@@ -56,7 +56,7 @@ public class TentangFragment extends Fragment {
     private LinearLayout rootLayout;
     private ProgressBar rootProgressBar;
     // tentang
-    private TextView judulView;
+    private TextView judulView, judulUpdateView;
     private CardView updateButton, backButton;
     private RelativeLayout tentangUmumLayout;
     private LinearLayout tentangFiturBaruLayout;
@@ -95,6 +95,7 @@ public class TentangFragment extends Fragment {
         // layout
         tentangUmumLayout = rootView.findViewById(R.id.tentang_umum);
         tentangFiturBaruLayout = rootView.findViewById(R.id.tentang_fitur_baru);
+        judulUpdateView = rootView.findViewById(R.id.tentang_title_update);
         updateListView = rootView.findViewById(R.id.tentang_list_update);
         // data
         judulView = rootView.findViewById(R.id.tentang_judul);
@@ -105,6 +106,7 @@ public class TentangFragment extends Fragment {
 
     private void populateView() {
         // profic
+        String judulUpdate;
         String judul = getResources().getString(R.string.tentang_versi);
         String versi = null;
         String[] updateList = new String[]{
@@ -121,8 +123,10 @@ public class TentangFragment extends Fragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        judulUpdate = "Yang baru di MAP Mobile\nversi " + versi + " - Juli 2018";
         judul = judul + " " + versi;
         judulView.setText(judul);
+        judulUpdateView.setText(judulUpdate);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity(),

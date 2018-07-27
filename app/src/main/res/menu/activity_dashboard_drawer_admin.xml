@@ -10,6 +10,10 @@
             android:id="@+id/nav_drawer_dashboard"
             android:icon="@drawable/ic_menu_home"
             android:title="Beranda" />
+    </group>
+    <group
+        android:id="@+id/navigation_drawer_personal"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_presensi"
             android:icon="@drawable/ic_menu_absen"
@@ -20,14 +24,10 @@
             android:icon="@drawable/ic_menu_absen"
             android:title="Presensi Bawahan Langsung (under construction)"
             android:visible="false" />
-    </group>
-    <group
-        android:id="@+id/navigation_drawer_personal"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_profile_seluruh_pegawai"
             android:icon="@drawable/ic_menu_man"
-            android:title="Profil Seluruh Pegawai"/>
+            android:title="Profil Pegawai Unit" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_man"
@@ -36,6 +36,11 @@
     <group
         android:id="@+id/navigation_drawer_module"
         android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_konfirmasi_penugasan"
+            android:icon="@drawable/ic_konfirmasi_penugasan"
+            android:title="Konfirmasi Penugasan"
+            android:visible="true" />
         <item
             android:id="@+id/nav_izin_cuti"
             android:icon="@drawable/ic_menu_izin_cuti"

@@ -57,7 +57,7 @@ public class AbsenBawahanAdapter extends RecyclerView.Adapter<AbsenBawahanAdapte
         AbsenBawahan absenBawahan = absenBawahanList.get(position);
 
         String fotoUrl, nama, jamDatang, jamPulang, kodeDatang, kodePulang;
-        fotoUrl = PassedIntent.getFoto(absenBawahan.getNipLama());
+        fotoUrl = PassedIntent.getFoto(context, absenBawahan.getNipLama());
         nama = absenBawahan.getNama();
         jamDatang = absenBawahan.getJamDatang();
         jamPulang = absenBawahan.getJamPulang();

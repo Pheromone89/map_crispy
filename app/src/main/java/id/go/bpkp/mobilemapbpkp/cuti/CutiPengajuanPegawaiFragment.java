@@ -384,7 +384,8 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
         messageOKButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
+                // didisable request bu yani
+//                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
                 getActivity().getFragmentManager().popBackStack();
             }
         });

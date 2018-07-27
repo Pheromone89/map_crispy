@@ -105,7 +105,7 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
             String empUsername = pegawaiIzinKantor.getNipBaruPisah();
             String empNiplama = pegawaiIzinKantor.getNipLama();
             String empNama = pegawaiIzinKantor.getNama();
-            String empFoto = PassedIntent.getFoto(empNiplama);
+            String empFoto = PassedIntent.getFoto(context, empNiplama);
 
             Bundle bundle = new Bundle();
             bundle.putString(PassedIntent.INTENT_NAMA, empNama);

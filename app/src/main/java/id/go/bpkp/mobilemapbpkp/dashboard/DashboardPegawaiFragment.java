@@ -88,9 +88,6 @@ public class DashboardPegawaiFragment extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     boolean isSudahAbsenPagi, isSudahAbsenSore;
-    boolean coarseLoc, fineLoc, isLatitudeOnPosition, isLongitudeOnPosition;
-    float userLat, userLong, devlatfloat, devlongfloat;
-    int currentHour;
     private View rootView;
     private TextView
             jamDatangAltView,
@@ -682,7 +679,7 @@ public class DashboardPegawaiFragment extends Fragment {
         });
 
         switch (statusDatang) {
-            case "Anda Tidak Absen Datang":
+            case "Anda Tidak KonfirmasiPenugasan Datang":
                 jamDatangAltView.setTextColor(getResources().getColor(R.color.red));
                 break;
             case "Anda Hadir Tepat Waktu":
@@ -696,10 +693,10 @@ public class DashboardPegawaiFragment extends Fragment {
                 break;
         }
         switch (statusPulang) {
-            case "Anda Belum Absen Pulang":
+            case "Anda Belum KonfirmasiPenugasan Pulang":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.red));
                 break;
-            case "Anda Tidak Absen Pulang":
+            case "Anda Tidak KonfirmasiPenugasan Pulang":
                 jamPulangAltView.setTextColor(getResources().getColor(R.color.red));
                 break;
             case "Anda Pulang Cepat (PC)":
@@ -1032,13 +1029,14 @@ public class DashboardPegawaiFragment extends Fragment {
         prosesPersetujuanCutiTextView = rootView.findViewById(R.id.dashboard_notifikasi_cuti);
         prosesPersetujuanIzinKantorTextView = rootView.findViewById(R.id.dashboard_notifikasi_izin_kantor);
         presensiTextView = rootView.findViewById(R.id.dashboard_notifikasi_presensi);
+        ImageView info = rootView.findViewById(R.id.dashboard_notifikasi_presensi_info);
 
 
         // onclick listener
-        LinearLayout cutiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_cuti_layout);
-        LinearLayout izinLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_izin_layout);
-        LinearLayout presensiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_presensi_layout);
-        cutiLayout.setOnClickListener(new View.OnClickListener() {
+//        LinearLayout cutiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_cuti_layout);
+//        LinearLayout izinLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_izin_layout);
+//        LinearLayout presensiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_presensi_layout);
+        prosesPersetujuanCutiTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -1054,13 +1052,13 @@ public class DashboardPegawaiFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        izinLayout.setOnClickListener(new View.OnClickListener() {
+        prosesPersetujuanIzinKantorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "fitur ini belum diimplementasikan", Toast.LENGTH_SHORT).show();
             }
         });
-        presensiLayout.setOnClickListener(new View.OnClickListener() {
+        presensiTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -1077,6 +1075,12 @@ public class DashboardPegawaiFragment extends Fragment {
                 fragmentTransaction.add(R.id.content_fragment_area, absenBawahanFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+            }
+        });
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "khusus untuk bawahan yang telah melakukan setting atasan langsung", Toast.LENGTH_SHORT).show();
             }
         });
     }

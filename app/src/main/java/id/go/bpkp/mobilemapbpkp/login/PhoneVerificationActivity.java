@@ -76,7 +76,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         mUserToken = dashboardIntent.getStringExtra(PassedIntent.INTENT_USERTOKEN);
         mNoHp = dashboardIntent.getStringExtra(PassedIntent.INTENT_NOHP);
         mEmail = dashboardIntent.getStringExtra(PassedIntent.INTENT_EMAIL);
-        mFoto = PassedIntent.getFoto(mNipLama);
+        mFoto = PassedIntent.getFoto(PhoneVerificationActivity.this, mNipLama);
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
         isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);

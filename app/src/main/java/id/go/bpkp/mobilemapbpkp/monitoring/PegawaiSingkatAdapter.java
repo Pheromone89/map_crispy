@@ -66,7 +66,7 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
         holder.jabatanSingkatView.setText(pegawaiSingkat.getJabatanSingkat());
 
         ropePegawaiSingkat = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(500)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);
@@ -107,7 +107,7 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
             String empNipbaru = pegawaiSingkat.getNipBaru();
             String empUsername = pegawaiSingkat.getNipBaruPisah();
             String empNiplama = pegawaiSingkat.getNipLama();
-            String empFoto = PassedIntent.getFoto(empNiplama);
+            String empFoto = PassedIntent.getFoto(context, empNiplama);
 
             Bundle bundle = new Bundle();
             bundle.putString(PassedIntent.INTENT_NIPBARU, empNipbaru);

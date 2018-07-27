@@ -85,7 +85,7 @@ public class AbsenAdapter extends RecyclerView.Adapter<AbsenAdapter.AbsenViewHol
 
     private void checkStatus(String status, LinearLayout statusBarProgress, LinearLayout statusBarDetail, ImageView icon, LinearLayout buffer) {
         switch (status) {
-            case "Anda Tidak Absen Datang":
+            case "Anda Tidak KonfirmasiPenugasan Datang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);
@@ -106,14 +106,14 @@ public class AbsenAdapter extends RecyclerView.Adapter<AbsenAdapter.AbsenViewHol
                 buffer.setBackgroundResource(R.color.orange);
                 statusDatang = "Anda datang terlambat (DT)";
                 break;
-            case "Anda Belum Absen Pulang":
+            case "Anda Belum KonfirmasiPenugasan Pulang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);
                 buffer.setBackgroundResource(R.color.red);
                 statusPulang = "Anda belum merekam kepulangan";
                 break;
-            case "Anda Tidak Absen Pulang":
+            case "Anda Tidak KonfirmasiPenugasan Pulang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);
