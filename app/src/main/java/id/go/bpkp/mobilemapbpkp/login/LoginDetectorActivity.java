@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -49,18 +51,25 @@ public class LoginDetectorActivity extends AppCompatActivity {
         // set up setting
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
-        loading = findViewById(R.id.detector_loading);
+//        loading = findViewById(R.id.detector_loading);
         boolean isLoggedIn;
 
-        String username, password;
+        final String username, password;
 
         username = sharedPreferences.getString(PassedIntent.INTENT_USERNAME, "");
         password = sharedPreferences.getString(PassedIntent.INTENT_PASSWORD, "");
         isLoggedIn = sharedPreferences.getBoolean(PassedIntent.ISLOGGEDIN, false);
 
         if (isLoggedIn) {
-            showProgress(true);
-            lakukanLogin(username, password);
+//            showProgress(true);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Do something after 5s = 5000ms
+                    lakukanLogin(username, password);
+                }
+            }, 3000);
         } else {
             Intent loginIntent = new Intent(LoginDetectorActivity.this, SplashscreenActivity.class);
             startActivity(loginIntent);

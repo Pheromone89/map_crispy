@@ -17,6 +17,7 @@ import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 20/03/2018.
@@ -56,7 +57,7 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
         holder.tanggalSK.setText(tanggal);
 
         ropeJabatan = YoYo.with(Techniques.FadeIn)
-                .duration(500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

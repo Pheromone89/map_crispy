@@ -107,7 +107,7 @@ public class AbsenBawahanAdapter extends RecyclerView.Adapter<AbsenBawahanAdapte
         }
 
 //        ropeDataAbsen = YoYo.with(Techniques.FadeIn)
-//                .duration(500)
+//                .duration(konfigurasi.animationDurationShort)
 //                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
 //                .interpolate(new AccelerateDecelerateInterpolator())
 //                .playOn(holder.rootView);

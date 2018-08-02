@@ -4,12 +4,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,18 +37,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
+import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantor;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorAdapter;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 09/02/2018.
  */
 
-public class CutiDashboardPegawaiFragment extends Fragment {
+public class CutiDashboardPegawaiFragment extends Fragment implements RecyclerViewClickListener {
 
     private View
             rootView;
@@ -56,6 +67,8 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             mNipBaru,
             mNama,
             mFoto,
+            mFotoUrl,
+            mNoHp,
             mAtasanLangsung,
             mNipAtasanLangsung,
             tahunLabel,
@@ -67,7 +80,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             jumlahHakCuti,
             cutiTerpakai,
             saldoCuti,
-            jabatan;
+            saldoCutiSingkat;
     private int
             mRoleIdInt,
             tahunBerjalan,
@@ -78,7 +91,6 @@ public class CutiDashboardPegawaiFragment extends Fragment {
     private TextView
             namaView,
             nipView,
-            jabatanView,
             cutiTLabelView,
             cutiT2LabelView,
             cutiT1LabelView,
@@ -94,9 +106,9 @@ public class CutiDashboardPegawaiFragment extends Fragment {
     private boolean
             tidakPunyaAtasanLangsung, isAtasan;
     private YoYo.YoYoString ropeCutiDashboard;
-    private LinearLayout rootLayout;
+    private LinearLayout rootLayout, detailCutiLayout;
     private ProgressBar rootProgressBar, pengajuanProgressBar, persetujuanProgressBar;
-    private TextView pengajuanLabel;
+    private TextView pengajuanLabel, saldoCutiSingkatLabel;
     // persetujuan
     private CardView
             persetujuanCutiButton;
@@ -104,6 +116,17 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             notifikasiIcon;
     // saved
     private TextView savedIndex, savedJson, notifikasi;
+
+    private RecyclerView cutiRecyclerView;
+    private CutiAdapter cutiAdapter;
+    private List<Cuti>
+            cutiList;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private CardView cutiCardView, detailCloseButton;
+    private LinearLayout messageNoTransaksi;
+    private ProgressBar listProgressBar;
+
 
     @Nullable
     @Override
@@ -117,9 +140,14 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
 
+        // setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
         //bundle dari fragment sebelumnya
         //URL foto
         mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
+        mFotoUrl = this.getArguments().getString(PassedIntent.INTENT_FOTOURL);
         //login token
         mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
         //nip lama UNTUK PEGAWAI, BUKAN ADMIN
@@ -128,8 +156,9 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         mNipBaru = this.getArguments().getString(PassedIntent.INTENT_NIPBARU);
         //nama
         mNama = this.getArguments().getString(PassedIntent.INTENT_NAMA);
+        mNoHp = this.getArguments().getString(PassedIntent.INTENT_NOHP);
         //role id
-//        mRoleIdInt = this.getArguments().getInt("role_id");
+        mRoleIdInt = this.getArguments().getInt("role_id");
         // bool atasan
         isAtasan = this.getArguments().getBoolean(PassedIntent.INTENT_ISATASAN);
         tidakPunyaAtasanLangsung = this.getArguments().getBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG);
@@ -137,6 +166,8 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         mAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NAMAATASANLANGSUNG);
         // nip atasan langsung
         mNipAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NIPATASANLANGSUNG);
+
+        cutiList = new ArrayList<>();
 
 
         tahunBerjalan = Calendar.getInstance().get(Calendar.YEAR);
@@ -147,6 +178,10 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         tahunLabel = "" + tahunBerjalan;
 
         initiateView();
+
+        // list cuti
+        initiateViewListCuti();
+        getJSONListCuti();
 
         // harus terakhir
         getJSONDashboardCuti();
@@ -175,10 +210,9 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         rootLayout.setVisibility(View.GONE);
         rootProgressBar.setVisibility(View.VISIBLE);
         // profic
-        proficView = (ImageView) rootView.findViewById(R.id.dashboard_cuti_profic);
-        namaView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nama);
-        nipView = (TextView) rootView.findViewById(R.id.dashboard_cuti_nip);
-        jabatanView = (TextView) rootView.findViewById(R.id.dashboard_cuti_jabatan);
+        proficView = (ImageView) rootView.findViewById(R.id.dashboard_profic);
+        namaView = (TextView) rootView.findViewById(R.id.dashboard_nama);
+        nipView = (TextView) rootView.findViewById(R.id.dashboard_nip);
         // data
         cutiTLabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_label);
         cutiT2LabelView = (TextView) rootView.findViewById(R.id.dashboard_cuti_t_2_label);
@@ -197,17 +231,25 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         // persetujuan
         persetujuanCutiButton = rootView.findViewById(R.id.dashboard_cuti_persetujuan_cuti_button);
         persetujuanProgressBar = rootView.findViewById(R.id.cuti_pegawai_dashboard_persetujuan_progress_bar);
+
+        // terkait recycler view dan data detail
+        detailCutiLayout = rootView.findViewById(R.id.dashboard_cuti_detail_data_cuti);
+        saldoCutiSingkatLabel = rootView.findViewById(R.id.dashboard_cuti_saldo_singkat);
+        detailCloseButton = rootView.findViewById(R.id.dashboard_cuti_detail_close_button);
+        messageNoTransaksi = rootView.findViewById(R.id.message_tidak_ada_cuti);
+        listProgressBar = rootView.findViewById(R.id.list_progress_bar);
+
+        // data profil dipopulate duluan
+        // profic
+        Picasso.with(getActivity()).load(mFoto).into(proficView);
+        namaView.setText(mNama);
+        nipView.setText(mNipBaru);
+
+        rootProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
     }
 
     private void populateView() {
-        // profic
-        Picasso
-                .with(getActivity())
-                .load(mFoto)
-                .into(proficView);
-        namaView.setText(mNama);
-        nipView.setText(mNipBaru);
-        jabatanView.setText(jabatan);
         // data
         cutiTLabelView.setText(tahunLabel);
         cutiT2LabelView.setText(tahunMin2Label);
@@ -217,6 +259,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         hakCutiT = hakCutiT + " hari";
         jumlahHakCuti = jumlahHakCuti + " hari";
         cutiTerpakai = cutiTerpakai + " hari";
+        saldoCutiSingkat = saldoCuti;
         saldoCuti = saldoCuti + " hari";
         hakCutiTMin2View.setText(hakCutiTMin2);
         hakCutiTMin1View.setText(hakCutiTMin1);
@@ -224,17 +267,22 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         jumlahHakCutiView.setText(jumlahHakCuti);
         cutiTerpakaiView.setText(cutiTerpakai);
         saldoCutiView.setText(saldoCuti);
-
-        rootLayout.setVisibility(View.VISIBLE);
-        rootProgressBar.setVisibility(View.GONE);
-        ropeCutiDashboard = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
-                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                .interpolate(new AccelerateDecelerateInterpolator())
-                .playOn(rootLayout);
+        saldoCutiSingkatLabel.setText(saldoCutiSingkat);
     }
 
     private void initiateSetOnClickMethod() {
+        detailCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                konfigurasi.fadeAnimation(false, detailCutiLayout, konfigurasi.animationDurationShort);
+            }
+        });
+        saldoCutiSingkatLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                konfigurasi.fadeAnimation(true, detailCutiLayout, konfigurasi.animationDurationShort);
+            }
+        });
         daftarCutiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,7 +296,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarCutiFragment);
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack("fragment_dashboard_cuti");
                 fragmentTransaction.commit();
             }
         });
@@ -270,7 +318,7 @@ public class CutiDashboardPegawaiFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarPersetujuanFragment);
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack("fragment_dashboard_cuti");
                 fragmentTransaction.commit();
             }
         });
@@ -294,11 +342,14 @@ public class CutiDashboardPegawaiFragment extends Fragment {
             bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
             bundle.putString(PassedIntent.INTENT_NIPBARU, mNipBaru);
             bundle.putString(PassedIntent.INTENT_NAMA, mNama);
-//            bundle.putInt("role_id", mRoleIdInt);
+            bundle.putInt("role_id", mRoleIdInt);
             bundle.putString(PassedIntent.INTENT_FOTO, mFoto);
+            bundle.putString(PassedIntent.INTENT_FOTOURL, mFotoUrl);
+            bundle.putString(PassedIntent.INTENT_NOHP, mNoHp);
             bundle.putString(PassedIntent.INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
             bundle.putString(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
             bundle.putBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+            bundle.putBoolean(PassedIntent.INTENT_ISATASAN, isAtasan);
             bundle.putString("saldo_cuti", saldoCuti);
 
             CutiPengajuanPegawaiFragment cutiPengajuanPegawaiFragment = new CutiPengajuanPegawaiFragment();
@@ -380,8 +431,6 @@ public class CutiDashboardPegawaiFragment extends Fragment {
         try {
             jsonObject = new JSONObject(JSON_STRING);
             jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            // jabatan
-            jabatan = checkNull(jsonObject.getJSONObject(konfigurasi.TAG_CUTI_PEGAWAI).getString(konfigurasi.TAG_JABATANSINGKAT));
             // hak cuti tahun ini
             hakCutiT = checkNull(jsonObject.getString(konfigurasi.TAG_CUTI_SALDO0));
             // hak cuti tahun -1
@@ -465,5 +514,109 @@ public class CutiDashboardPegawaiFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+
+    // list cuti
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+
+    }
+
+    private void initiateViewListCuti() {
+        cutiCardView = rootView.findViewById(R.id.cuti_list_cardview);
+        cutiCardView.setVisibility(View.GONE);
+        cutiRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_cuti);
+        cutiRecyclerView.setHasFixedSize(true);
+        cutiRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        loadingProgressBar = rootView.findViewById(R.id.seluruh_pegawai_progress_bar);
+    }
+
+    private void populateViewListCuti() {
+        cutiAdapter = new CutiAdapter(getActivity(), cutiList, this);
+        cutiRecyclerView.setAdapter(cutiAdapter);
+        cutiRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL) {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                // Do not draw the divider
+            }
+        });
+
+        listProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, cutiCardView, konfigurasi.animationDurationShort);
+        if (cutiList.size() == 0) {
+            konfigurasi.fadeAnimation(true, messageNoTransaksi, konfigurasi.animationDurationShort);
+        }
+    }
+
+    private void parseJSONListCuti() {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            if (jsonObject.getString("success").equals("true")) {
+                JSONArray result = jsonObject.getJSONArray(konfigurasi.TAG_JSON_ARRAY);
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    String jenisCuti = jo.getString("jenis_cuti");
+                    String tanggalMulai = jo.getString("tanggal_awal");
+                    String tanggalSelesai = jo.getString("tanggal_akhir");
+                    String alasan = jo.getString("alasan");
+                    String jumlahHari = jo.getString("jumlah_hari");
+                    String kodeProses = jo.getString("kd_proses");
+                    String namaProses = jo.getString("nama_proses");
+
+                    cutiList.add(
+                            new Cuti(
+                                    i,
+                                    jenisCuti,
+                                    tanggalMulai,
+                                    tanggalSelesai,
+                                    alasan,
+                                    jumlahHari,
+                                    kodeProses,
+                                    namaProses
+                            )
+                    );
+                }
+            } else {
+//                Toast.makeText(getActivity(), jsonObject.getString(konfigurasi.TAG_JSON_ARRAY), Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Terjadi kesalahan, silakan login kembali", Toast.LENGTH_SHORT).show();
+            PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
+        }
+        populateViewListCuti();
+    }
+
+    private void getJSONListCuti() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                cutiCardView.setVisibility(View.GONE);
+                cutiRecyclerView.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                cutiCardView.setVisibility(View.VISIBLE);
+                cutiRecyclerView.setVisibility(View.VISIBLE);
+                JSON_STRING = s;
+                parseJSONListCuti();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_DAFTARCUTI + mNipLama + "?api_token=" + mUserToken);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
     }
 }

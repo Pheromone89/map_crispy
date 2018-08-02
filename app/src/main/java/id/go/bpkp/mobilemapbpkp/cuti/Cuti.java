@@ -3,37 +3,48 @@ package id.go.bpkp.mobilemapbpkp.cuti;
 public class Cuti {
 
     private int id;
-    private String
-            namaDiklat,
-            nomorDiklat,
-            tanggalDiklat,
-            jenisKompetensi;
+    private String jenisCuti, tanggalMulai, tanggalSelesai, alasan, jumlahHari, kodeProses, namaProses;
 
-    public Cuti(int id, String namaDiklat, String nomorDiklat, String tanggalDiklat, String jenisKompetensi) {
+    public Cuti(int id, String jenisCuti, String tanggalMulai, String tanggalSelesai, String alasan, String jumlahHari, String kodeProses, String namaProses) {
         this.id = id;
-        this.namaDiklat = namaDiklat;
-        this.nomorDiklat = nomorDiklat;
-        this.tanggalDiklat = tanggalDiklat;
-        this.jenisKompetensi = jenisKompetensi;
+        this.jenisCuti = jenisCuti;
+        this.tanggalMulai = tanggalMulai;
+        this.tanggalSelesai = tanggalSelesai;
+        this.alasan = alasan;
+        this.jumlahHari = jumlahHari;
+        this.kodeProses = kodeProses;
+        this.namaProses = namaProses;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getNamaDiklat() {
-        return namaDiklat;
+    public String getJenisCuti() {
+        return jenisCuti;
     }
 
-    public String getNomorDiklat() {
-        return nomorDiklat;
+    public String getTanggalMulai() {
+        return tanggalMulai;
     }
 
-    public String getTanggalDiklat() {
-        return tanggalDiklat;
+    public String getTanggalSelesai() {
+        return tanggalSelesai;
     }
 
-    public String getJenisKompetensi() {
-        return jenisKompetensi;
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public String getJumlahHari() {
+        return jumlahHari;
+    }
+
+    public String getKodeProses() {
+        return kodeProses;
+    }
+
+    public String getNamaProses() {
+        return namaProses;
     }
 }

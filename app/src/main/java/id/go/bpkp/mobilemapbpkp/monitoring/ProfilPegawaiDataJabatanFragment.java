@@ -118,7 +118,7 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
         dataJabatanRecyclerView.setAdapter(jabatanAdapter);
 
         loadingProgressBar.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, dataJabatanRecyclerView, 500);
+        konfigurasi.fadeAnimation(true, dataJabatanRecyclerView, konfigurasi.animationDurationShort);
     }
 
     private void getJSON() {

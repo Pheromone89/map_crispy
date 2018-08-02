@@ -35,5 +35,6 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="Mobile MAP BPKP versi "
-        android:textColor="@color/whiteAlternate" />
+        android:textColor="@color/whiteAlternate"
+        android:textSize="12sp" />
 </RelativeLayout>

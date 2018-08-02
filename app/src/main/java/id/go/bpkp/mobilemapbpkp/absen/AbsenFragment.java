@@ -62,6 +62,7 @@ import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDaftarCutiFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiPengajuanPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -241,7 +242,7 @@ public class AbsenFragment extends Fragment {
         jamPulangView.setText(jamPulang);
 
         switch (statusDatang) {
-            case "Anda Tidak KonfirmasiPenugasan Datang":
+            case "Anda Tidak Absen Datang":
                 datangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusDatang = "Anda belum merekam kehadiran";
                 break;
@@ -255,11 +256,11 @@ public class AbsenFragment extends Fragment {
                 break;
         }
         switch (statusPulang) {
-            case "Anda Belum KonfirmasiPenugasan Pulang":
+            case "Anda Belum Absen Pulang":
                 pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusPulang = "Anda belum merekam kepulangan";
                 break;
-            case "Anda Tidak KonfirmasiPenugasan Pulang":
+            case "Anda Tidak Absen Pulang":
                 pulangCardView.setCardBackgroundColor(getResources().getColor(R.color.red));
                 statusPulang = "Anda tidak merekam kepulangan";
                 break;
@@ -337,30 +338,36 @@ public class AbsenFragment extends Fragment {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(JSON_STRING);
-            jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
-            hariTanggal = hari + ", " + jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
-            jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
-            jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG));
-            statusDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSDATANG);
-            statusPulang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSPULANG);
-            statusAbsen = jsonObject.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA);
+            if (jsonObject.getString("success").equals("true")) {
+                jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
+                hariTanggal = hari + ", " + jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
+                jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
+                jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG));
+                statusDatang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSDATANG);
+                statusPulang = jsonObject.getString(konfigurasi.TAG_ABSEN_STATUSPULANG);
+                statusAbsen = jsonObject.getString(konfigurasi.TAG_ABSEN_WAKTUKERJA);
 
-            if (jamDatang.equals("-")) {
-                isSudahAbsenPagi = false;
+                if (jamDatang.equals("-")) {
+                    isSudahAbsenPagi = false;
+                } else {
+                    isSudahAbsenPagi = true;
+                }
+                if (jamPulang.equals("-")) {
+                    isSudahAbsenSore = false;
+                } else {
+                    isSudahAbsenSore = true;
+                }
+                populateView();
             } else {
-                isSudahAbsenPagi = true;
-            }
-            if (jamPulang.equals("-")) {
-                isSudahAbsenSore = false;
-            } else {
-                isSudahAbsenSore = true;
+                Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
+                PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
+            PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
         }
-        populateView();
     }
 
     private String checkNull(String string) {
@@ -604,7 +611,7 @@ public class AbsenFragment extends Fragment {
         rootLayout.setVisibility(View.VISIBLE);
         rootProgressBar.setVisibility(View.GONE);
         ropeDashboardPegawai = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(rootLayout);

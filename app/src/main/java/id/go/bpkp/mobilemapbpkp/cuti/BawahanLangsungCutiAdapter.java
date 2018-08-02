@@ -72,7 +72,7 @@ public class BawahanLangsungCutiAdapter extends RecyclerView.Adapter<BawahanLang
         holder.keteranganView.setText(keterangan);
 
 //        ropeBawahanLangsung = YoYo.with(Techniques.FadeIn)
-//                .duration(500)
+//                .duration(konfigurasi.animationDurationShort)
 //                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
 //                .interpolate(new AccelerateDecelerateInterpolator())
 //                .playOn(holder.rootview);

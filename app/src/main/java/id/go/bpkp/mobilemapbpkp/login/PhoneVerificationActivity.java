@@ -37,13 +37,16 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCAST
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTTITLE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_IMEI;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISHUT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISJAB;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISLDAP;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_PASSWORD;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERNAME;
 
 public class PhoneVerificationActivity extends AppCompatActivity {
 
@@ -52,7 +55,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private TextView simpanButton, confirmationMessageView, currentPhoneMessageView, messageView;
     private LinearLayout confirmationLayout;
     private CardView yesButton, noButton;
-    private String mNama, mNipBaru, mNipLama, mRoleId, mUserToken, mFoto, mAtasanLangsung, mNipAtasanLangsung, mNoHp, mEmail, currentPhoneMessage, broadcastStatus, broadcastTitle, broadcastImage, broadcastMessage;
+    private String mNama, mNipBaru, mNipLama, mRoleId, mUserToken, mFoto, mAtasanLangsung, mNipAtasanLangsung, mNoHp, mEmail, currentPhoneMessage, broadcastStatus, broadcastTitle, broadcastImage, broadcastMessage, jenisJabatan;
     private int mRoleIdInt;
     private boolean
             tidakPunyaAtasanLangsung, isAtasan, isLdap, isJab, isHut, isBroadcastable;
@@ -63,6 +66,10 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // setting
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
 
         //intent dashboard dari login activity
         Intent dashboardIntent = getIntent();
@@ -77,6 +84,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         mNoHp = dashboardIntent.getStringExtra(PassedIntent.INTENT_NOHP);
         mEmail = dashboardIntent.getStringExtra(PassedIntent.INTENT_EMAIL);
         mFoto = PassedIntent.getFoto(PhoneVerificationActivity.this, mNipLama);
+        jenisJabatan = dashboardIntent.getStringExtra("jenis_jabatan");
         // data atasan langsung
         tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
         isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);
@@ -92,9 +100,33 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
         broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
 
-        // setting
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharedPreferences.edit();
+//        //intent dashboard dari login activity
+//        Intent dashboardIntent = getIntent();
+//        String loginPrefix = "login_";
+//        mNama = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMA, "tidak ada");
+//        //nip baru yg digabung
+//        mNipBaru = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPBARU, "tidak ada");
+//        mNipLama = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPLAMA, "tidak ada");
+//        mRoleIdInt = sharedPreferences.getInt(loginPrefix + konfigurasi.TAG_ROLEID, 99);
+//        mUserToken = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMA, "tidak ada");
+//        mFoto = PassedIntent.getFoto(PhoneVerificationActivity.this, mNipLama);
+//        mNoHp = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NOHP, "tidak ada");
+//        mEmail = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_EMAIL, "tidak ada");
+//        jenisJabatan = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_JENISJABATAN, "tidak ada");
+//        // data atasan langsung
+//        tidakPunyaAtasanLangsung = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_TIDAKPUNYAATASANLANGSUNG, true);
+//        isAtasan = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISATASAN, false);
+//        isLdap = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISLDAP, false);
+//        isJab = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISJAB, false);
+//        isHut = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISHUT, false);
+//        mAtasanLangsung = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMAATASAN, "tidak ada");
+//        mNipAtasanLangsung = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPATASAN, "tidak ada");
+//        // broadcast
+//        isBroadcastable = sharedPreferences.getBoolean("is_broadcastable", false);
+//        broadcastStatus = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_STATUSBROADCAST, "tidak ada");
+//        broadcastImage = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_IMAGEBROADCAST, "tidak ada");
+//        broadcastTitle = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_TITLEBROADCAST, "tidak ada");
+//        broadcastMessage = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_MESSAGEBROADCAST, "tidak ada");
 
         isRedirect = dashboardIntent.getBooleanExtra("is_redirect", false);
 
@@ -152,6 +184,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                 i.putExtra(PassedIntent.INTENT_ROLEIDINT, mRoleIdInt);
                 i.putExtra(PassedIntent.INTENT_NOHP, "null");
                 i.putExtra(PassedIntent.INTENT_EMAIL, mEmail);
+                i.putExtra("jenis_jabatan", jenisJabatan);
                 i.putExtra("is_redirect", true);
                 if (!tidakPunyaAtasanLangsung) {
                     i.putExtra(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
@@ -185,6 +218,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                 i.putExtra(PassedIntent.INTENT_ROLEIDINT, mRoleIdInt);
                 i.putExtra(PassedIntent.INTENT_NOHP, mNoHp);
                 i.putExtra(PassedIntent.INTENT_EMAIL, mEmail);
+                i.putExtra("jenis_jabatan", jenisJabatan);
                 if (!tidakPunyaAtasanLangsung) {
                     i.putExtra(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
                     // nama atasan langsung

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
 
@@ -68,6 +70,7 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
     private ArrayList<Absen>
             absenList;
     private ProgressBar loadingProgressBar;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -85,6 +88,8 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
         super.onViewCreated(view, savedInstanceState);
         //ngambil judul dan ngeset judul fragment
         setHasOptionsMenu(true);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         //inisiasi rootView
         rootView = (View) view;
@@ -184,73 +189,75 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
                             )
                     );
                 }
+                populateView();
+            } else {
+                Toast.makeText(getActivity(), "Terjadi kesalahan mengambil data presensi, silakan login kembali", Toast.LENGTH_SHORT).show();
+                PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Terjadi kesalahan, silakan login kembali", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), "KonfirmasiPenugasan Error", Toast.LENGTH_SHORT).show();
-            signOut();
+            Toast.makeText(getActivity(), "Terjadi kesalahan mengambil data presensi, silakan login kembali", Toast.LENGTH_SHORT).show();
+            PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
         }
-        populateView();
     }
 
-    public void signOut() {
-        getJSONSignout();
-    }
-
-    private void parseJSONSignout() {
-        JSONObject jsonObject = null;
-        Intent logoutIntent = null;
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            String message = jsonObject.getString("success");
-            if (message.equals("true")) {
-                SharedPreferences prefs = getActivity().getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.remove(INTENT_NIPBARU);
-                editor.apply();
-                logoutIntent = new Intent(getActivity(), LoginActivity.class);
-                logoutIntent.putExtra(INTENT_NIPBARU, mNipBaru);
-                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                getActivity().finish();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        startActivity(logoutIntent);
-        getActivity().finish();
-    }
-
-    private void getJSONSignout() {
-        class GetJSON extends AsyncTask<Void, Void, String> {
-
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(getActivity(), null, null, false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                parseJSONSignout();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(konfigurasi.URL_LOGOUT + mUserToken);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
+//    public void signOut() {
+//        getJSONSignout();
+//    }
+//
+//    private void parseJSONSignout() {
+//        JSONObject jsonObject = null;
+//        Intent logoutIntent = null;
+//        try {
+//            jsonObject = new JSONObject(JSON_STRING);
+//            String message = jsonObject.getString("success");
+//            if (message.equals("true")) {
+//                SharedPreferences prefs = getActivity().getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.remove(INTENT_NIPBARU);
+//                editor.apply();
+//                logoutIntent = new Intent(getActivity(), LoginActivity.class);
+//                logoutIntent.putExtra(INTENT_NIPBARU, mNipBaru);
+//                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(logoutIntent);
+//                getActivity().finish();
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        startActivity(logoutIntent);
+//        getActivity().finish();
+//    }
+//
+//    private void getJSONSignout() {
+//        class GetJSON extends AsyncTask<Void, Void, String> {
+//
+//            ProgressDialog loading;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                loading = ProgressDialog.show(getActivity(), null, null, false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                loading.dismiss();
+//                JSON_STRING = s;
+//                parseJSONSignout();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                RequestHandler rh = new RequestHandler();
+//                String s = rh.sendGetRequest(konfigurasi.URL_LOGOUT + mUserToken);
+//                return s;
+//            }
+//        }
+//        GetJSON gj = new GetJSON();
+//        gj.execute();
+//    }
 
     private String checkNull(String string) {
         if (string.equals("null") || string.equals("NULL")) {

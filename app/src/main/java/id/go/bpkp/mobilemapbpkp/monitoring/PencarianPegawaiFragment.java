@@ -4,7 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -19,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import id.go.bpkp.mobilemapbpkp.R;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
@@ -56,6 +59,8 @@ public class PencarianPegawaiFragment extends Fragment {
             mRoleId;
     private EditText cariPegawaiQuery;
     private CardView searchButton;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public PencarianPegawaiFragment() {
 
@@ -73,19 +78,31 @@ public class PencarianPegawaiFragment extends Fragment {
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_dashboard_admin);
 
-        //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(INTENT_USERTOKEN);
-        //nip tanpa spasi
-        mNipBaru = this.getArguments().getString(INTENT_NIPBARU);
-        //nip lama tanpa spasi
-        mNipLama = this.getArguments().getString(INTENT_NIPLAMA);
-        //content url
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
+
+//        //bundle dari fragment sebelumnya
+//        //URL foto
+//        mFoto = this.getArguments().getString(INTENT_FOTO);
+//        //login token
+//        mUserToken = this.getArguments().getString(INTENT_USERTOKEN);
+//        //nip tanpa spasi
+//        mNipBaru = this.getArguments().getString(INTENT_NIPBARU);
+//        //nip lama tanpa spasi
+//        mNipLama = this.getArguments().getString(INTENT_NIPLAMA);
+//        //content url
+//        mDashboardContent = this.getArguments().getString(INTENT_DASHBOARDCONTENT);
+//        //role id
+//        mRoleId = this.getArguments().getInt(INTENT_ROLEIDINT);
+
+
+        mFoto = PassedIntent.getFoto(getActivity(), sharedPreferences.getString(FragmentBundles.BUNDLE_USERNIP_MESSAGE, "tidak ada"));
+        mUserToken = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
+        mNipBaru = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
+        mNipLama = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
+        mRoleId = sharedPreferences.getInt(FragmentBundles.BUNDLE_ROLEID_MESSAGE, 9999);
+
         mDashboardContent = this.getArguments().getString(INTENT_DASHBOARDCONTENT);
-        //role id
-        mRoleId = this.getArguments().getInt(INTENT_ROLEIDINT);
 
         initiateView();
         initiateSetOnClickMethod();

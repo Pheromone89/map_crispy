@@ -144,7 +144,7 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loadingProgressBar.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(true, dataAbsenBawahanRecyclerView, 500);
+                konfigurasi.fadeAnimation(true, dataAbsenBawahanRecyclerView, konfigurasi.animationDurationShort);
 //                dataAbsenBawahanRecyclerView.setVisibility(View.VISIBLE);
                 JSON_STRING = s;
                 parseJSON();
@@ -188,73 +188,17 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
                             )
                     );
                 }
+                populateView();
+            } else {
+                Toast.makeText(getActivity(), "Terjadi kesalahan mengambil data presensi, silakan login kembali", Toast.LENGTH_SHORT).show();
+                PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Terjadi kesalahan, silakan login kembali", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), "KonfirmasiPenugasan Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Terjadi kesalahan mengambil data presensi, silakan login kembali", Toast.LENGTH_SHORT).show();
             PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
         }
-        populateView();
     }
-
-//    public void signOut() {
-//        getJSONSignout();
-//    }
-//
-//    private void parseJSONSignout() {
-//        JSONObject jsonObject = null;
-//        Intent logoutIntent = null;
-//        try {
-//            jsonObject = new JSONObject(JSON_STRING);
-//            String message = jsonObject.getString("success");
-//            if (message.equals("true")) {
-//                SharedPreferences prefs = getActivity().getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = prefs.edit();
-//                editor.remove(INTENT_NIPBARU);
-//                editor.apply();
-//                logoutIntent = new Intent(getActivity(), LoginActivity.class);
-//                logoutIntent.putExtra(INTENT_NIPBARU, mNipBaru);
-//                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(logoutIntent);
-//                getActivity().finish();
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        startActivity(logoutIntent);
-//        getActivity().finish();
-//    }
-//
-//    private void getJSONSignout() {
-//        class GetJSON extends AsyncTask<Void, Void, String> {
-//
-//            ProgressDialog loading;
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                loading = ProgressDialog.show(getActivity(), null, null, false, false);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-//                super.onPostExecute(s);
-//                loading.dismiss();
-//                JSON_STRING = s;
-//                parseJSONSignout();
-//            }
-//
-//            @Override
-//            protected String doInBackground(Void... params) {
-//                RequestHandler rh = new RequestHandler();
-//                String s = rh.sendGetRequest(konfigurasi.URL_LOGOUT + mUserToken);
-//                return s;
-//            }
-//        }
-//        GetJSON gj = new GetJSON();
-//        gj.execute();
-//    }
 
     private String checkNull(String string) {
         if (string.equals("null") || string.equals("NULL")) {

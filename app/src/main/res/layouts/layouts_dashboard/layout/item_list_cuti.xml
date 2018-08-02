@@ -1,76 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cuti_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp"
-    app:cardBackgroundColor="@color/blueBasicPale"
-    app:cardCornerRadius="10dp">
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingEnd="5dp"
+    android:paddingStart="5dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cuti_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:cardBackgroundColor="@color/blueBasicDark"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/cuti_icon_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:padding="4dp"
+            android:src="@drawable/ic_check" />
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
-        android:id="@+id/profil_pegawai_data_diklat"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/whiteAlternate"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cuti_jenis_cuti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="jenis izin"
+            android:textColor="@color/blueBasicDark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="15dp">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/data_diklat_nama"
-                style="@style/LoginScreenText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="15sp"
-                tools:text="nama diklat" />
-
-            <TextView
-                android:id="@+id/data_diklat_tanggal"
+                android:id="@+id/cuti_tanggal_mulai"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp"
-                android:textSize="12sp"
-                tools:text="Tgl Sert.: " />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="20/20/1999"
+                android:textColor="@color/blueBasicDark" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/data_diklat_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:paddingStart="15dp"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/data_diklat_nomor"
-                style="@style/LoginScreenText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                tools:text="Nomor Sertifikat: " />
-
-            <TextView
-                android:id="@+id/data_diklat_jenis_kompetensi"
-                style="@style/LoginScreenText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="12sp"
-                tools:text="Jenis Kompetensi: " />
-
-        </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+</LinearLayout>

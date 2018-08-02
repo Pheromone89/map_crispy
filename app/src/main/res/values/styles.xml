@@ -29,7 +29,7 @@
     </style>
 
     <style name="IndividuTextContent" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/blueBasicDark</item>
         <item name="android:textSize">13sp</item>
     </style>
 

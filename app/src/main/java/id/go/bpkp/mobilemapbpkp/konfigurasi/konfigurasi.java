@@ -13,7 +13,6 @@ import com.daimajia.androidanimations.library.YoYo;
 public class konfigurasi {
 
 
-    public static final String URL_GET_EMP_CUTIBAWAHANLANGSUNG = "http://118.97.51.140:10001/map/api/transaksicuti/";
 
     //ALL PEGAWAI LENGKAP
     public static final String URL_GET_ALL = "http://118.97.51.140:10001/map/api/pegawai?api_token=";
@@ -47,13 +46,23 @@ public class konfigurasi {
     public static final String URL_DELETE_EMP = "none";
     // CUTI
     public static final String URL_GET_EMP_REKAPCUTI = "http://118.97.51.140:10001/map/api/rekapcuti/";
+    public static final String URL_GET_EMP_CUTIBAWAHANLANGSUNG = "http://118.97.51.140:10001/map/api/transaksicuti/";
     public static final String URL_GET_EMP_CUTIBAWAHANLANGSUNGCOUNT = "http://118.97.51.140:10001/map/api/transaksicuticount/";
     public static final String URL_PERSETUJUANCUTI = "http://118.97.51.140:10001/map/api/persetujuancuti?api_token=";
     public static final String URL_PENGAJUANCUTI = "http://118.97.51.140:10001/map/api/setcuti?api_token=";
     public static final String URL_GET_ABSENBAWAHAN = "http://118.97.51.140:10001/map/api/listAbsenBawahan/";
+    public static final String URL_GET_DAFTARCUTI = "http://118.97.51.140:10001/map/api/listcuti/";
     // IZIN KANTOR
     public static final String URL_PENGAJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/setizin?api_token=";
     // IZIN KANTOR
+    // list transaksi per pegawai
+    public static final String URL_GET_DAFTARIZINKANTOR = "http://118.97.51.140:10001/map/api/listizin/";
+    // melihat pengajuan bawahan
+    public static final String URL_GET_EMP_IZINKANTORBAWAHANLANGSUNG = "http://118.97.51.140:10001/map/api/transaksiizin/";
+    // melihat jumlah doang
+    public static final String URL_GET_EMP_IZINKANTORBAWAHANLANGSUNGCOUNT = "http://118.97.51.140:10001/map/api/transaksiizincount/";
+    // post persetujuan
+    public static final String URL_PERSETUJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/persetujuanizin?api_token=";
     public static final String URL_PENGAJUANKONFIRMASIPENUGASAN = "http://118.97.51.140:10001/map/api/setkonfirmasipenugasan?api_token=";
     // PRESENSI
     public static final String URL_GET_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen/";
@@ -66,15 +75,46 @@ public class konfigurasi {
     public static final String TAG_ABSEN_STATUSPULANG = "statusPulang";
     // HISTORI PRESENSI
     public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
-    //JSON tags
-    public static final String TAG_ISATASAN = "is_atasan";
     // TUKIN
     public static final String URL_GET_TUKIN = "http://118.97.51.140:10001/map/api/tukin/";
     public static final int DASHBOARD_PANEL_NOTIFIKASIATASAN = 6;
+
+
+    // TAG YG DIDAPET PAS LOGIN
+    // root
+    public static final String TAG_SUCCESS = "success";
+    public static final String TAG_USERTOKEN = "api_token";
     public static final String TAG_JSON_ARRAY = "result";
+    public static final String TAG_MESSAGE = "message";
+    public static final String TAG_PEGAWAI = "pegawai";
+    public static final String TAG_ATASAN = "atasan";
+    public static final String TAG_BROADCAST = "broadcast";
+    // child message
     public static final String TAG_ID = "id";
-    public static final String TAG_NIPLAMA = "niplama";
+    public static final String TAG_NAMA = "nama";
+    public static final String TAG_NAME = "name";
+    public static final String TAG_EMAIL = "email";
+    public static final String TAG_USERNAME = "username";
+    public static final String TAG_ROLEID = "role_id";
+    public static final String TAG_USERNIP = "user_nip";
+    public static final String TAG_CREATEDAT = "created_at";
+    public static final String TAG_UPDATEDAT = "updated_at";
+    public static final String TAG_NOHP = "nomorhp";
+    public static final String TAG_AKTIF = "aktif";
+    public static final String TAG_KEYSORTUNIT = "key_sort_unit";
     public static final String TAG_NIPBARU = "nipbaru";
+    public static final String TAG_ISLDAP = "is_ldap";
+    public static final String TAG_ISJAB = "is_jab";
+    public static final String TAG_VERSION = "version";
+    public static final String TAG_ISHUT = "is_hut";
+    public static final String TAG_URLFOTO = "url_foto";
+    public static final String TAG_ISATASAN = "is_atasan";
+    // child pegawai
+    // id
+    public static final String TAG_NIPLAMA = "niplama";
+    // nipbaru
+    public static final String TAG_NIPBARUGABUNG = "nip";
+    // nama
     public static final String TAG_NAMALENGKAP = "s_nama_lengkap";
     public static final String TAG_CARINAMANIP = "carinama_nip";
     public static final String TAG_TEMPATLAHIR = "s_tempat_lahir";
@@ -82,7 +122,7 @@ public class konfigurasi {
     public static final String TAG_JENISKELAMIN = "jenis_kelamin";
     public static final String TAG_AGAMA = "s_nama_agama";
     public static final String TAG_USIA = "usia";
-    public static final String TAG_TMTPENSIUN = "tmt_pensiun";
+    public static final String TAG_TMTPENSIUN = "tmtpensiun";
     public static final String TAG_GOLRUANG = "golruang";
     public static final String TAG_PANGKAT = "s_nama_pangkat";
     public static final String TAG_TMTSK = "d_tmt_sk";
@@ -100,21 +140,19 @@ public class konfigurasi {
     public static final String TAG_UNITORG = "s_nama_instansiunitorg";
     public static final String TAG_UNITORGSINGKAT = "s_skt_instansiunitorg";
     public static final String TAG_UNITORGLENGKAP = "namaunit_lengkap";
-    public static final String TAG_INSTANSISINGKAT = "s_skt_instansi";
     public static final String TAG_TMTUNIT = "tmt_unit";
     public static final String TAG_KDUNITORG = "s_kd_instansiunitorg";
     public static final String TAG_KDUNITORGKERJA = "s_kd_instansiunitkerjal1";
     public static final String TAG_LAMATHUNIT = "lamath_unit";
     public static final String TAG_LAMABLUNIT = "lamabl_unit";
     public static final String TAG_UNIT = "namaunit";
-    public static final String TAG_KEYSORTUNIT = "key_sort_unit";
+    // keysort unit
     public static final String TAG_PENDIDIKANSINGKAT = "s_skt_pendidikan";
     public static final String TAG_PENDIDIKANSTRATASINGKAT = "s_nama_strata_skt";
     public static final String TAG_PENDIDIKANFAKULTAS = "s_nama_fakultasbidang";
     public static final String TAG_PENDIDIKANJURUSAN = "s_nama_jurusan";
     public static final String TAG_PENDIDIKANLULUS = "d_tgl_lulus";
     public static final String TAG_TOTALPAK = "total_pak";
-    public static final String TAG_TOEFL = "scor";
     public static final String TAG_TGLAWALXX = "d_tgl_awal";
     public static final String TAG_TGLAKHIRXX = "d_tgl_akhir";
     public static final String TAG_NOSKKGB = "s_no_sk_kgb";
@@ -133,14 +171,24 @@ public class konfigurasi {
     public static final String TAG_ALAMAT = "s_alamat";
     public static final String TAG_SERTPROFESI = "sert_profesi";
     public static final String TAG_KELJABATAN = "kel_jab";
-    public static final String TAG_TGLUPDATE = "tgl_update";
     public static final String TAG_STATUS = "status";
     public static final String TAG_IDSORT = "id_sort";
-    public static final String TAG_NAMA = "nama";
-    public static final String TAG_NIPBARUGABUNG = "nip";
-    public static final String TAG_NOHP = "nomorhp";
-    public static final String TAG_EMAIL = "email";
+    public static final String TAG_TGLUPDATE = "tgl_update";
+    // child atasan
+    public static final String TAG_NIPATASAN = "s_nip";
+    public static final String TAG_NAMAATASAN = "nama";
+    public static final String TAG_NAMAGELARATASAN = "nama_lengkap";
+    // child atasan
+    public static final String TAG_STATUSBROADCAST = "status";
+    public static final String TAG_IMAGEBROADCAST = "images";
+    public static final String TAG_TITLEBROADCAST = "title";
+    public static final String TAG_MESSAGEBROADCAST = "message";
+
+    // ???
+    public static final String TAG_TIDAKPUNYAATASANLANGSUNG = "tidak_punya_atasan_langsung";
     public static final String TAG_FOTO = "foto";
+    public static final String TAG_INSTANSISINGKAT = "s_skt_instansi";
+    public static final String TAG_TOEFL = "scor";
     // TAG BUAT DIKLAT
     public static final String TAG_DIKLAT_NIPLAMA = "s_nip";
     public static final String TAG_DIKLAT_KODEJENISDIKLAT = "jenis_pelatihan";
@@ -164,7 +212,7 @@ public class konfigurasi {
     public static final String TAG_UNIT_NOSK = "s_no_sk";
     public static final String TAG_UNIT_TMTSK = "d_tgl_sk";
     public static final String TAG_UNIT_TMTUNIT = "d_tmt_sk";
-    public static final String TAG_UNIT_LAMAUNIT = "lamaunit";
+    public static final String TAG_UNIT_LAMAUNIT = "namaunit";
     public static final String TAG_UNIT_NAMAUNIT = "unit_singkat";
     public static final String TAG_UNIT_NAMAUNITSINGKAT = "unit";
     public static final String TAG_UNIT_NAMAUNITSEBELUMNYA = "ulalu";
@@ -185,72 +233,72 @@ public class konfigurasi {
     public static final String TAG_TUNJANGAN_TUKINDASAR = "tukin_full";
     public static final String TAG_TUNJANGAN_POTONGAN = "potongan";
     public static final String TAG_TUNJANGAN_TUKINBERSIH = "tukin_net";
-//    public static final String TAG_DIKLAT_NIPLAMA = "s_nip";
-    public static final String EMP_ID  = "id";
-    public static final String EMP_NIPLAMA  = "niplama";
-    public static final String EMP_NIPBARU  = "nipbaru";
-    public static final String EMP_NAMALENGKAP  = "s_nama_lengkap";
-    public static final String EMP_CARINAMANIP  = "carinama_nip";
-    public static final String EMP_TEMPATLAHIR  = "s_tempat_lahir";
-    public static final String EMP_TANGGALLAHIR  = "d_tgl_lahir";
-    public static final String EMP_JENISKELAMIN  = "jenis_kelamin";
-    public static final String EMP_AGAMA  = "s_nama_agama";
-    public static final String EMP_USIA  = "usia";
-    public static final String EMP_TMTPENSIUN  = "tmtpensiun";
-    public static final String EMP_GOLRUANG  = "golruang";
-    public static final String EMP_PANGKAT  = "s_nama_pangkat";
-    public static final String EMP_TMTSK  = "d_tmt_sk";
-    public static final String EMP_LAMATHKP  = "lamath_kp";
-    public static final String EMP_LAMABLKP  = "lamabl_kp";
-    public static final String EMP_JABATAN  = "jabatan";
-    public static final String EMP_JABATANSINGKAT  = "s_nmjabdetailskt";
-    public static final String EMP_TMTJABATAN  = "tmt_jab";
-    public static final String EMP_KDJABATANDETAIL  = "s_kd_jabdetail";
-    public static final String EMP_JENISJABATAN  = "jenis_jab";
-    public static final String EMP_JENISJABATANGRUP  = "jenis_jab_group";
-    public static final String EMP_LAMATHJABATAN  = "lamath_jab";
-    public static final String EMP_LAMABLJABATAN  = "lamabl_jab";
-    public static final String EMP_PERAN  = "peran";
-    public static final String EMP_UNITORG  = "s_nama_instansiunitorg";
-    public static final String EMP_UNITORGSINGKAT  = "s_skt_instansiunitorg";
-    public static final String EMP_UNITORGLENGKAP  = "namaunit_lengkap";
-    public static final String EMP_INSTANSISINGKAT  = "s_skt_instansi";
-    public static final String EMP_TMTUNIT  = "tmt_unit";
-    public static final String EMP_KDUNITORG  = "s_kd_instansiunitorg";
-    public static final String EMP_KDUNITORGKERJA  = "s_kd_instansiunitkerjal1";
-    public static final String EMP_LAMATHUNIT  = "lamath_unit";
-    public static final String EMP_LAMABLUNIT  = "lamabl_unit";
-    public static final String EMP_UNIT  = "namaunit";
-    public static final String EMP_KEYSORTUNIT  = "key_sort_unit";
-    public static final String EMP_PENDIDIKANSINGKAT  = "s_skt_pendidikan";
-    public static final String EMP_PENDIDIKANSTRATASINGKAT  = "s_nama_strata_skt";
-    public static final String EMP_PENDIDIKANFAKULTAS  = "s_nama_fakultasbidang";
-    public static final String EMP_PENDIDIKANJURUSAN  = "s_nama_jurusan";
-    public static final String EMP_PENDIDIKANLULUS  = "d_tgl_lulus";
-    public static final String EMP_TOTALPAK  = "total_pak";
-    public static final String EMP_TGLAWALXX  = "d_tgl_awal";
-    public static final String EMP_TGLAKHIRXX  = "d_tgl_akhir";
-    public static final String EMP_NOSKKGB  = "s_no_sk_kgb";
-    public static final String EMP_THKGB  = "i_maker_th_kgb";
-    public static final String EMP_BLKGB  = "i_maker_bl_kgb";
-    public static final String EMP_TMTKGB  = "d_tmt_kgb";
-    public static final String EMP_NAMADIKLATFUNG  = "s_nama_diklatfung";
-    public static final String EMP_NOSERTDIKLATFUNG  = "s_nosert_diklatfung";
-    public static final String EMP_TGLSERTDIKLATFUNG  = "d_tglser_diklatfung";
-    public static final String EMP_DIKLATSTRUK  = "diklat_struk";
-    public static final String EMP_NOSERTDIKLATSTRUK  = "s_nosert_diklatstruk";
-    public static final String EMP_TGLSERTDIKLATSTRUK  = "d_tglser_diklatstruk";
-    public static final String EMP_SERTJFA  = "sert_jfa";
-    public static final String EMP_NAMAPASANGAN  = "nama_pasangan";
-    public static final String EMP_UNITPASANGAN  = "unit_pasangan";
-    public static final String EMP_ALAMAT  = "s_alamat";
-    public static final String EMP_SERTPROFESI  = "sert_profesi";
-    public static final String EMP_KELJABATAN  = "kel_jab";
-    public static final String EMP_TGLUPDATE  = "tgl_update";
-    public static final String EMP_STATUS  = "status";
-    public static final String EMP_IDSORT  = "id_sort";
-    public static final String EMP_NAMA  = "nama";
-    public static final String EMP_NIPPISAH  = "nip";
+    ////    public static final String TAG_DIKLAT_NIPLAMA = "s_nip";
+//    public static final String EMP_ID  = "id";
+//    public static final String EMP_NIPLAMA  = "niplama";
+//    public static final String EMP_NIPBARU  = "nipbaru";
+//    public static final String EMP_NAMALENGKAP  = "s_nama_lengkap";
+//    public static final String EMP_CARINAMANIP  = "carinama_nip";
+//    public static final String EMP_TEMPATLAHIR  = "s_tempat_lahir";
+//    public static final String EMP_TANGGALLAHIR  = "d_tgl_lahir";
+//    public static final String EMP_JENISKELAMIN  = "jenis_kelamin";
+//    public static final String EMP_AGAMA  = "s_nama_agama";
+//    public static final String EMP_USIA  = "usia";
+//    public static final String EMP_TMTPENSIUN  = "tmtpensiun";
+//    public static final String EMP_GOLRUANG  = "golruang";
+//    public static final String EMP_PANGKAT  = "s_nama_pangkat";
+//    public static final String EMP_TMTSK  = "d_tmt_sk";
+//    public static final String EMP_LAMATHKP  = "lamath_kp";
+//    public static final String EMP_LAMABLKP  = "lamabl_kp";
+//    public static final String EMP_JABATAN  = "jabatan";
+//    public static final String EMP_JABATANSINGKAT  = "s_nmjabdetailskt";
+//    public static final String EMP_TMTJABATAN  = "tmt_jab";
+//    public static final String EMP_KDJABATANDETAIL  = "s_kd_jabdetail";
+//    public static final String EMP_JENISJABATAN  = "jenis_jab";
+//    public static final String EMP_JENISJABATANGRUP  = "jenis_jab_group";
+//    public static final String EMP_LAMATHJABATAN  = "lamath_jab";
+//    public static final String EMP_LAMABLJABATAN  = "lamabl_jab";
+//    public static final String EMP_PERAN  = "peran";
+//    public static final String EMP_UNITORG  = "s_nama_instansiunitorg";
+//    public static final String EMP_UNITORGSINGKAT  = "s_skt_instansiunitorg";
+//    public static final String EMP_UNITORGLENGKAP  = "namaunit_lengkap";
+//    public static final String EMP_INSTANSISINGKAT  = "s_skt_instansi";
+//    public static final String EMP_TMTUNIT  = "tmt_unit";
+//    public static final String EMP_KDUNITORG  = "s_kd_instansiunitorg";
+//    public static final String EMP_KDUNITORGKERJA  = "s_kd_instansiunitkerjal1";
+//    public static final String EMP_LAMATHUNIT  = "lamath_unit";
+//    public static final String EMP_LAMABLUNIT  = "lamabl_unit";
+//    public static final String EMP_UNIT  = "namaunit";
+//    public static final String EMP_KEYSORTUNIT  = "key_sort_unit";
+//    public static final String EMP_PENDIDIKANSINGKAT  = "s_skt_pendidikan";
+//    public static final String EMP_PENDIDIKANSTRATASINGKAT  = "s_nama_strata_skt";
+//    public static final String EMP_PENDIDIKANFAKULTAS  = "s_nama_fakultasbidang";
+//    public static final String EMP_PENDIDIKANJURUSAN  = "s_nama_jurusan";
+//    public static final String EMP_PENDIDIKANLULUS  = "d_tgl_lulus";
+//    public static final String EMP_TOTALPAK  = "total_pak";
+//    public static final String EMP_TGLAWALXX  = "d_tgl_awal";
+//    public static final String EMP_TGLAKHIRXX  = "d_tgl_akhir";
+//    public static final String EMP_NOSKKGB  = "s_no_sk_kgb";
+//    public static final String EMP_THKGB  = "i_maker_th_kgb";
+//    public static final String EMP_BLKGB  = "i_maker_bl_kgb";
+//    public static final String EMP_TMTKGB  = "d_tmt_kgb";
+//    public static final String EMP_NAMADIKLATFUNG  = "s_nama_diklatfung";
+//    public static final String EMP_NOSERTDIKLATFUNG  = "s_nosert_diklatfung";
+//    public static final String EMP_TGLSERTDIKLATFUNG  = "d_tglser_diklatfung";
+//    public static final String EMP_DIKLATSTRUK  = "diklat_struk";
+//    public static final String EMP_NOSERTDIKLATSTRUK  = "s_nosert_diklatstruk";
+//    public static final String EMP_TGLSERTDIKLATSTRUK  = "d_tglser_diklatstruk";
+//    public static final String EMP_SERTJFA  = "sert_jfa";
+//    public static final String EMP_NAMAPASANGAN  = "nama_pasangan";
+//    public static final String EMP_UNITPASANGAN  = "unit_pasangan";
+//    public static final String EMP_ALAMAT  = "s_alamat";
+//    public static final String EMP_SERTPROFESI  = "sert_profesi";
+//    public static final String EMP_KELJABATAN  = "kel_jab";
+//    public static final String EMP_TGLUPDATE  = "tgl_update";
+//    public static final String EMP_STATUS  = "status";
+//    public static final String EMP_IDSORT  = "id_sort";
+//    public static final String EMP_NAMA  = "nama";
+//    public static final String EMP_NIPPISAH  = "nip";
     public static final String CUTI_TAHUNAN = "Cuti Tahunan";
     public static final String CUTI_BESAR = "Cuti Besar";
     public static final String CUTI_DILUARTANGGUNGANNEGARA = "Cuti Di Luar Tanggungan Negara";
@@ -274,6 +322,8 @@ public class konfigurasi {
     public static final int DASHBOARD_PANEL_CUTI = 3;
     public static final int DASHBOARD_PANEL_JARINGAN = 4;
     public static final int DASHBOARD_PANEL_TUNJANGAN = 5;
+
+    public static final long animationDurationShort = 500;
 
     public static void fadeAnimation(boolean isFadeIn, final View v, long duration) {
         YoYo.YoYoString ropeAnimation;

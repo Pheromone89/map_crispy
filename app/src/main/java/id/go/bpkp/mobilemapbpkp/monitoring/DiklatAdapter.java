@@ -22,6 +22,7 @@ import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 11/02/2018.
@@ -63,7 +64,7 @@ public class DiklatAdapter extends RecyclerView.Adapter<DiklatAdapter.DiklatView
         holder.kompetensiView.setText(kompetensi);
 
         ropeDiklat = YoYo.with(Techniques.FadeIn)
-                .duration(500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

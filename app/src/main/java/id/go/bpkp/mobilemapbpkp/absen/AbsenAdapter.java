@@ -20,6 +20,7 @@ import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 08/05/2018.
@@ -72,7 +73,7 @@ public class AbsenAdapter extends RecyclerView.Adapter<AbsenAdapter.AbsenViewHol
         holder.statusPulangView.setText(statusPulang);
 
         ropeDataAbsen = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);
@@ -85,7 +86,7 @@ public class AbsenAdapter extends RecyclerView.Adapter<AbsenAdapter.AbsenViewHol
 
     private void checkStatus(String status, LinearLayout statusBarProgress, LinearLayout statusBarDetail, ImageView icon, LinearLayout buffer) {
         switch (status) {
-            case "Anda Tidak KonfirmasiPenugasan Datang":
+            case "Anda Tidak Absen Datang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);
@@ -106,14 +107,14 @@ public class AbsenAdapter extends RecyclerView.Adapter<AbsenAdapter.AbsenViewHol
                 buffer.setBackgroundResource(R.color.orange);
                 statusDatang = "Anda datang terlambat (DT)";
                 break;
-            case "Anda Belum KonfirmasiPenugasan Pulang":
+            case "Anda Belum Absen Pulang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);
                 buffer.setBackgroundResource(R.color.red);
                 statusPulang = "Anda belum merekam kepulangan";
                 break;
-            case "Anda Tidak KonfirmasiPenugasan Pulang":
+            case "Anda Tidak Absen Pulang":
                 statusBarProgress.setBackgroundResource(R.color.red);
                 statusBarDetail.setBackgroundResource(R.color.red);
                 icon.setBackgroundResource(R.color.red);

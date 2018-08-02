@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashboard_cuti_detail_data_cuti"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:background="#c5006db2"
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:cardBackgroundColor="@color/whiteAlternate"
         app:cardCornerRadius="10dp">
 
@@ -52,10 +56,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Hak Cuti Pegawai"
+                        android:text="Hak Cuti"
                         android:textColor="@color/blueBasicDark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textSize="13sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -70,7 +73,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.75"
                             android:text="Hak Cuti Tahun Lalu"
-                            android:textColor="@color/blueBasicDark" />
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/dashboard_cuti_t-1_label"
@@ -80,7 +84,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.75"
                             android:text="Hak Cuti Tahun Lalu"
-                            android:textColor="@color/blueBasicDark" />
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/dashboard_cuti_t_label"
@@ -90,7 +95,8 @@
                             android:layout_weight="0.75"
                             android:gravity="center"
                             android:text="Hak Cuti Tahun Ini"
-                            android:textColor="@color/blueBasicDark" />
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="13sp" />
 
                         <TextView
                             style="@style/IndividuTextContent"
@@ -99,7 +105,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Total"
-                            android:textColor="@color/blueBasicDark" />
+                            android:textColor="@color/blueBasicDark"
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -118,7 +125,7 @@
                             android:paddingLeft="5dp"
                             android:text="hari"
                             android:textColor="@color/blueBasicDark"
-                            android:textSize="20sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -131,7 +138,7 @@
                             android:paddingLeft="5dp"
                             android:text=" hari"
                             android:textColor="@color/blueBasicDark"
-                            android:textSize="20sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -144,7 +151,7 @@
                             android:paddingLeft="5dp"
                             android:text="hari"
                             android:textColor="@color/blueBasicDark"
-                            android:textSize="20sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -157,7 +164,7 @@
                             android:paddingLeft="5dp"
                             android:text="hari"
                             android:textColor="@color/blueBasicDark"
-                            android:textSize="20sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -174,8 +181,7 @@
                         android:gravity="center"
                         android:text="Terpakai"
                         android:textColor="@color/blueBasicDark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/dashboard_cuti_terpakai_val"
@@ -186,7 +192,7 @@
                         android:paddingLeft="5dp"
                         android:text="hari"
                         android:textColor="@color/blueBasicDark"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -201,8 +207,7 @@
                         android:gravity="center"
                         android:text="Saldo"
                         android:textColor="@color/blueBasicDark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/dashboard_cuti_sisa_val"
@@ -213,11 +218,30 @@
                         android:paddingLeft="5dp"
                         android:text="hari"
                         android:textColor="@color/blueBasicDark"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </ScrollView>
 
         </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/dashboard_cuti_detail_close_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="TUTUP"
+            android:textColor="@color/whiteAlternate"
+            android:textStyle="bold" />
+
     </android.support.v7.widget.CardView>
 </LinearLayout>

@@ -56,7 +56,7 @@ public class PassedIntent {
 
     public static String getFoto(Context context, String nipLama) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String fotoUrlShared = sharedPreferences.getString("foto_url", null);
+        String fotoUrlShared = sharedPreferences.getString("login_" + konfigurasi.TAG_URLFOTO + "_message", null);
 
         return fotoUrlShared + nipLama;
     }

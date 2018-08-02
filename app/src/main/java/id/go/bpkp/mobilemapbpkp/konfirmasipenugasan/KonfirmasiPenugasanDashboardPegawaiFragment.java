@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,23 +63,20 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
             mNama,
             mFoto,
             mAtasanLangsung,
-            mNipAtasanLangsung,
-            jabatan;
+            mNipAtasanLangsung;
     private int
             mRoleIdInt;
     private ImageView
             proficView;
     private TextView
             namaView,
-            nipView,
-            jabatanView;
+            nipView;
     private CardView
             pengajuanKonfirmasiPenugasanButton,
             pengajuanGagalFpButton,
             daftarKonfirmasiPenugasanButton;
     private boolean
             tidakPunyaAtasanLangsung;
-    private long animationDuration = 500;
     private LinearLayout rootLayout;
     private RecyclerView konfirmasiPenugasanRecyclerView;
     private KonfirmasiPenugasanAdapter konfirmasiPenugasanAdapter;
@@ -87,6 +85,9 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private CardView konfirmasiPenugasanCardView;
+    private ProgressBar rootProgressBar;
+    private LinearLayout messageNoTransaksi;
+    private ProgressBar listProgressBar;
 
     @Nullable
     @Override
@@ -145,27 +146,28 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
 
     private void initiateView() {
         rootLayout = rootView.findViewById(R.id.konfirmasi_penugasan_pegawai_dashboard);
+        rootProgressBar = rootView.findViewById(R.id.konfirmasi_penugasan_pegawai_progress_bar);
+        rootLayout.setVisibility(View.GONE);
+        rootProgressBar.setVisibility(View.VISIBLE);
         // profic
-        proficView = (ImageView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_profic);
-        namaView = (TextView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_nama);
-        nipView = (TextView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_nip);
-        jabatanView = (TextView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_jabatan);
+        proficView = (ImageView) rootView.findViewById(R.id.dashboard_profic);
+        namaView = (TextView) rootView.findViewById(R.id.dashboard_nama);
+        nipView = (TextView) rootView.findViewById(R.id.dashboard_nip);
         //  button
         daftarKonfirmasiPenugasanButton = (CardView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_daftar_konfirmasi_penugasan_button);
         pengajuanKonfirmasiPenugasanButton = (CardView) rootView.findViewById(R.id.dashboard_konfirmasi_penugasan_pengajuan_konfirmasi_penugasan_button);
+        messageNoTransaksi = rootView.findViewById(R.id.message_tidak_ada_konfirmasi_penugasan);
+        listProgressBar = rootView.findViewById(R.id.list_progress_bar);
     }
 
     private void populateView() {
         // profic
-        Picasso
-                .with(getActivity())
-                .load(mFoto)
-                .into(proficView);
+        Picasso.with(getActivity()).load(mFoto).into(proficView);
         namaView.setText(mNama);
         nipView.setText(mNipBaru);
-        jabatanView.setText(jabatan);
 
-        konfigurasi.fadeAnimation(true, rootLayout, animationDuration);
+        rootProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
     }
 
     private void initiateSetOnClickMethod() {
@@ -297,6 +299,7 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
 
     private void initiateViewListPenugasan() {
         konfirmasiPenugasanCardView = rootView.findViewById(R.id.konfirmasi_penugasan_list_cardview);
+        konfirmasiPenugasanCardView.setVisibility(View.GONE);
         konfirmasiPenugasanRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_konfirmasi_penugasan);
         konfirmasiPenugasanRecyclerView.setHasFixedSize(true);
         konfirmasiPenugasanRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -312,29 +315,39 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
                 // Do not draw the divider
             }
         });
+
+        listProgressBar.setVisibility(View.GONE);
+        konfigurasi.fadeAnimation(true, konfirmasiPenugasanCardView, konfigurasi.animationDurationShort);
+        if (konfirmasiPenugasanList.size() == 0) {
+            konfigurasi.fadeAnimation(true, messageNoTransaksi, konfigurasi.animationDurationShort);
+        }
     }
 
     private void parseJSONListPenugasan() {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray(konfigurasi.TAG_JSON_ARRAY);
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject jo = result.getJSONObject(i);
-                String jenisPenugasan = jo.getString("jenis_penugasan");
-                String tanggalMulai = jo.getString("tanggal_mulai");
-                String tanggalSelesai = jo.getString("tanggal_selesai");
-                String catatan = jo.getString("catatan");
+            if (jsonObject.getString("success").equals("true")) {
+                JSONArray result = jsonObject.getJSONArray(konfigurasi.TAG_JSON_ARRAY);
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    String jenisPenugasan = jo.getString("jenis_penugasan");
+                    String tanggalMulai = jo.getString("tanggal_mulai");
+                    String tanggalSelesai = jo.getString("tanggal_selesai");
+                    String catatan = jo.getString("catatan");
 
-                konfirmasiPenugasanList.add(
-                        new KonfirmasiPenugasan(
-                                i,
-                                jenisPenugasan,
-                                tanggalMulai,
-                                tanggalSelesai,
-                                catatan
-                        )
-                );
+                    konfirmasiPenugasanList.add(
+                            new KonfirmasiPenugasan(
+                                    i,
+                                    jenisPenugasan,
+                                    tanggalMulai,
+                                    tanggalSelesai,
+                                    catatan
+                            )
+                    );
+                }
+            } else {
+//                Toast.makeText(getActivity(), jsonObject.getString(konfigurasi.TAG_JSON_ARRAY), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -347,24 +360,18 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
     private void getJSONListPenugasan() {
         class GetJSON extends AsyncTask<Void, Void, String> {
 
-            ProgressDialog loading;
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 konfirmasiPenugasanCardView.setVisibility(View.GONE);
-//                loadingProgressBar.setVisibility(View.VISIBLE);
                 konfirmasiPenugasanRecyclerView.setVisibility(View.GONE);
-//                loading = ProgressDialog.show(getActivity(),null,null,false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 konfirmasiPenugasanCardView.setVisibility(View.VISIBLE);
-//                loadingProgressBar.setVisibility(View.GONE);
                 konfirmasiPenugasanRecyclerView.setVisibility(View.VISIBLE);
-//                loading.dismiss();
                 JSON_STRING = s;
                 parseJSONListPenugasan();
             }

@@ -46,6 +46,30 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.tentang.TentangFragment;
 
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_EMAIL_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_IMAGEBROADCAST_BROADCAST;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISATASAN_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISHUT_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISJAB_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISLDAP_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_JENISJABATAN_PEGAWAI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_MESSAGEBROADCAST_BROADCAST;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NAMAATASAN_ATASAN;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NAME_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPATASAN_ATASAN;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPBARU_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPLAMA_PEGAWAI;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NOHP_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ROLEID_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_STATUSBROADCAST_BROADCAST;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_TIDAKPUNYAATASANLANGSUNG_ATASAN;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_TITLEBROADCAST_BROADCAST;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_URLFOTO_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERNAME_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERNIP_MESSAGE;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERTOKEN;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.loginPrefix;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.messageSuffix;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
@@ -105,7 +129,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             presensiPegawaiMenu,
             presensiBawahanPegawaiMenu,
             profilSemuaPegawaiMenu,
-            profilPegawaiMenu;
+            profilPegawaiMenu,
+            konfirmasiPenugasanMenu;
     Menu
             rootMenu;
     boolean
@@ -135,7 +160,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private boolean
             tidakPunyaAtasanLangsung, isAtasan, isLdap, isJab, isHut;
     private YoYo.YoYoString ropeBroadcastImage, ropeKonfirmasiKeluar;
-    private long animationDuration = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,38 +170,66 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
 
-        //intent dashboard dari login activity
-        Intent dashboardIntent = getIntent();
-        //get mVar
-        mNama = dashboardIntent.getStringExtra(INTENT_NAMA);
-        mUsername = dashboardIntent.getStringExtra(INTENT_USERNAME);
-        mPassword = dashboardIntent.getStringExtra(INTENT_PASSWORD);
-        //nip baru yg digabung
-        mNipBaru = dashboardIntent.getStringExtra(INTENT_NIPBARU);
-        mNipLama = dashboardIntent.getStringExtra(INTENT_NIPLAMA);
-        mRoleIdInt = dashboardIntent.getIntExtra(INTENT_ROLEIDINT, 99);
-        mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
-        mFotoUrl = dashboardIntent.getStringExtra(INTENT_FOTOURL);
-//        mFoto = dashboardIntent.getStringExtra(INTENT_FOTOURL) + mNipLama;
+//        //intent dashboard dari login activity
+//        Intent dashboardIntent = getIntent();
+//        //get mVar
+//        mNama = dashboardIntent.getStringExtra(INTENT_NAMA);
+//        mUsername = dashboardIntent.getStringExtra(INTENT_USERNAME);
+//        mPassword = dashboardIntent.getStringExtra(INTENT_PASSWORD);
+//        //nip baru yg digabung
+//        mNipBaru = dashboardIntent.getStringExtra(INTENT_NIPBARU);
+//        mNipLama = dashboardIntent.getStringExtra(INTENT_NIPLAMA);
+//        mRoleIdInt = dashboardIntent.getIntExtra(INTENT_ROLEIDINT, 99);
+//        mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
+//        mFotoUrl = dashboardIntent.getStringExtra(INTENT_FOTOURL);
+////        mFoto = dashboardIntent.getStringExtra(INTENT_FOTOURL) + mNipLama;
+//        mFoto = PassedIntent.getFoto(DashboardActivity.this, mNipLama);
+//        mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
+//        mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
+//        mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);
+//        jenisJabatan = dashboardIntent.getStringExtra("jenis_jabatan");
+//        // data atasan langsung
+//        tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
+//        isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);
+//        isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
+//        isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
+//        isHut = dashboardIntent.getBooleanExtra(INTENT_ISHUT, false);
+//        mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
+//        mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
+//        // broadcast
+//        isBroadcastable = dashboardIntent.getBooleanExtra("is_broadcastable", false);
+//        broadcastStatus = dashboardIntent.getStringExtra(INTENT_BROADCASTSTATUS);
+//        broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
+//        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
+//        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
+
+        mUserToken = sharedPreferences.getString(BUNDLE_USERTOKEN, "tidak ada");
+        mFotoUrl = sharedPreferences.getString(BUNDLE_URLFOTO_MESSAGE, "tidak ada");
+        mNama = sharedPreferences.getString(BUNDLE_NAME_MESSAGE, "tidak ada");
+        mNipBaru = sharedPreferences.getString(BUNDLE_NIPBARU_MESSAGE, "tidak ada");
+        mEmail = sharedPreferences.getString(BUNDLE_EMAIL_MESSAGE, "tidak ada");
+        mRoleIdInt = sharedPreferences.getInt(BUNDLE_ROLEID_MESSAGE, 999);
+        mNoHp = sharedPreferences.getString(BUNDLE_NOHP_MESSAGE, "tidak ada");
+        mNipLama = sharedPreferences.getString(BUNDLE_USERNIP_MESSAGE, "tidak ada");
+        jenisJabatan = sharedPreferences.getString(BUNDLE_JENISJABATAN_PEGAWAI, "tidak ada");
         mFoto = PassedIntent.getFoto(DashboardActivity.this, mNipLama);
-        mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
-        mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
-        mEmail = dashboardIntent.getStringExtra(INTENT_EMAIL);
-        jenisJabatan = dashboardIntent.getStringExtra("jenis_jabatan");
+        mUsername = sharedPreferences.getString(INTENT_USERNAME, "tidak ada");
+        mPassword = sharedPreferences.getString(INTENT_PASSWORD, "tidak ada");
+        mImei = sharedPreferences.getString(INTENT_IMEI, "tidak ada");
         // data atasan langsung
-        tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
-        isAtasan = dashboardIntent.getBooleanExtra(INTENT_ISATASAN, false);
-        isLdap = dashboardIntent.getBooleanExtra(INTENT_ISLDAP, true);
-        isJab = dashboardIntent.getBooleanExtra(INTENT_ISJAB, false);
-        isHut = dashboardIntent.getBooleanExtra(INTENT_ISHUT, false);
-        mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
-        mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
+        tidakPunyaAtasanLangsung = sharedPreferences.getBoolean(BUNDLE_TIDAKPUNYAATASANLANGSUNG_ATASAN, true);
+        isAtasan = sharedPreferences.getBoolean(BUNDLE_ISATASAN_MESSAGE, false);
+        isLdap = sharedPreferences.getBoolean(BUNDLE_ISLDAP_MESSAGE, false);
+        isJab = sharedPreferences.getBoolean(BUNDLE_ISJAB_MESSAGE, false);
+        isHut = sharedPreferences.getBoolean(BUNDLE_ISHUT_MESSAGE, false);
+        mAtasanLangsung = sharedPreferences.getString(BUNDLE_NAMAATASAN_ATASAN, "tidak ada");
+        mNipAtasanLangsung = sharedPreferences.getString(BUNDLE_NIPATASAN_ATASAN, "tidak ada");
         // broadcast
-        isBroadcastable = dashboardIntent.getBooleanExtra("is_broadcastable", false);
-        broadcastStatus = dashboardIntent.getStringExtra(INTENT_BROADCASTSTATUS);
-        broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
-        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
-        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
+        isBroadcastable = sharedPreferences.getBoolean("is_broadcastable", false);
+        broadcastStatus = sharedPreferences.getString(BUNDLE_STATUSBROADCAST_BROADCAST, "tidak ada");
+        broadcastImage = sharedPreferences.getString(BUNDLE_IMAGEBROADCAST_BROADCAST, "tidak ada");
+        broadcastTitle = sharedPreferences.getString(BUNDLE_TITLEBROADCAST_BROADCAST, "tidak ada");
+        broadcastMessage = sharedPreferences.getString(BUNDLE_MESSAGEBROADCAST_BROADCAST, "tidak ada");
 
         initateView();
         populateView();
@@ -195,11 +247,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         if (!broadcastStatus.equals("0") && isBroadcastable) {
             broadcastLayout.setVisibility(View.VISIBLE);
 
-            ropeBroadcastImage = YoYo.with(Techniques.FadeIn)
-                    .duration(animationDuration)
-                    .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                    .interpolate(new AccelerateDecelerateInterpolator())
-                    .playOn(broadcastLayout);
+            konfigurasi.fadeAnimation(true, broadcastLayout, konfigurasi.animationDurationShort);
 
             broadcastTitleView.setText(broadcastTitle);
             broadcastMessageView.setText(broadcastMessage);
@@ -211,18 +259,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         broadcastClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ropeBroadcastImage = YoYo.with(Techniques.FadeOut)
-                        .duration(animationDuration)
-                        .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                        .interpolate(new AccelerateDecelerateInterpolator())
-                        .playOn(broadcastLayout);
-
-                broadcastLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        broadcastLayout.setVisibility(View.GONE);
-                    }
-                }, animationDuration);
+                konfigurasi.fadeAnimation(false, broadcastLayout, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiKeluarYaView.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +270,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         mUserToken,
                         sharedPreferences
                 );
-                konfigurasi.fadeAnimation(false, konfirmasiKeluarLayout, animationDuration);
+                konfigurasi.fadeAnimation(false, konfirmasiKeluarLayout, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiKeluarTidakView.setOnClickListener(new View.OnClickListener() {
@@ -246,16 +283,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     private void initateView() {
         //navigation view
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         //navigation header
         navigationHeader = navigationView.getHeaderView(0);
         navHeaderProficView = navigationHeader.findViewById(R.id.navigation_drawer_header_profile_picture);
         navHeaderNamaView = navigationHeader.findViewById(R.id.navigation_drawer_header_name);
         navHeaderNipView = navigationHeader.findViewById(R.id.navigation_drawer_header_nip);
         //drawer
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         //toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         //menu drawer
         presensiPegawaiMenu = navigationView.getMenu().getItem(1);
         presensiBawahanPegawaiMenu = navigationView.getMenu().getItem(2);
@@ -264,6 +301,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         if (jenisJabatan.equals("E.I.a") || jenisJabatan.equals("E.I.b")) {
             profilSemuaPegawaiMenu.setTitle("Profil Semua Pegawai");
         }
+        konfirmasiPenugasanMenu = navigationView.getMenu().getItem(5);
         //broadcast
         broadcastLayout = findViewById(R.id.dashboard_broadcast);
         broadcastImageView = findViewById(R.id.dashboard_broadcast_image);
@@ -284,18 +322,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         navHeaderNipView.setText(mNipBaru);
         // toolbar
         setSupportActionBar(toolbar);
-        // broadcast
-        ropeBroadcastImage = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
-                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                .interpolate(new AccelerateDecelerateInterpolator())
-                .playOn(broadcastImageView);
+        // broadcast imagenya aja
+        konfigurasi.fadeAnimation(true, broadcastImageView, konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN);
     }
 
     private void initiateDashboard() {
         //set content dan initiate dashboard berdasarkan role
-        Fragment dashboardFragment = null;
-        String titleDashboard = null;
+        Fragment dashboardFragment;
+        String titleDashboard;
         if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
                 mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT ||
                 mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT ||
@@ -307,6 +341,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             presensiPegawaiMenu.setVisible(false);
             profilSemuaPegawaiMenu.setVisible(true);
             profilPegawaiMenu.setVisible(false);
+            konfirmasiPenugasanMenu.setVisible(false);
         } else {
             mContentUrl = konfigurasi.URL_GET_DASHBOARD_CONTENT_USER;
             dashboardFragment = new DashboardPegawaiFragment();
@@ -332,18 +367,18 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         // set content dashboard
         Bundle bundle = new Bundle();
-        bundle.putString(INTENT_USERTOKEN, mUserToken);
+//        bundle.putString(INTENT_USERTOKEN, mUserToken);
         bundle.putString(INTENT_DASHBOARDCONTENT, mContentUrl);
-        bundle.putString(INTENT_NAMA, mNama);
-        bundle.putString(INTENT_NIPLAMA, mNipLama);
-        bundle.putString(INTENT_NIPBARU, mNipBaru);
-        bundle.putString(INTENT_FOTO, mFoto);
-        bundle.putString(INTENT_NOHP, mNoHp);
-        bundle.putString(INTENT_IMEI, mImei);
-        bundle.putString(INTENT_EMAIL, mEmail);
-        bundle.putBoolean(INTENT_ISHUT, isHut);
-        bundle.putBoolean(INTENT_ISATASAN, isAtasan);
-        bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+//        bundle.putString(INTENT_NAMA, mNama);
+//        bundle.putString(INTENT_NIPLAMA, mNipLama);
+//        bundle.putString(INTENT_NIPBARU, mNipBaru);
+//        bundle.putString(INTENT_FOTO, mFoto);
+//        bundle.putString(INTENT_NOHP, mNoHp);
+//        bundle.putString(INTENT_IMEI, mImei);
+//        bundle.putString(INTENT_EMAIL, mEmail);
+//        bundle.putBoolean(INTENT_ISHUT, isHut);
+//        bundle.putBoolean(INTENT_ISATASAN, isAtasan);
+//        bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
         dashboardFragment.setArguments(bundle);
         fragmentTransaction.add(R.id.content_fragment_area, dashboardFragment, titleDashboard);
         fragmentTag = "dashboard";
@@ -583,6 +618,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     bundle.putString(INTENT_USERTOKEN, mUserToken);
                     bundle.putString(INTENT_NIPLAMA, mNipLama);
                     bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putBoolean(INTENT_ISATASAN, isAtasan);
                     bundle.putString(INTENT_NAMA, mNama);
                     bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
@@ -636,9 +672,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     private void initiateExit(boolean status) {
         if (status) {
-            konfigurasi.fadeAnimation(true, konfirmasiKeluarLayout, animationDuration);
+            konfigurasi.fadeAnimation(true, konfirmasiKeluarLayout, konfigurasi.animationDurationShort);
         } else {
-            konfigurasi.fadeAnimation(false, konfirmasiKeluarLayout, animationDuration);
+            konfigurasi.fadeAnimation(false, konfirmasiKeluarLayout, konfigurasi.animationDurationShort);
         }
     }
 }

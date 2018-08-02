@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blueBasicPale"
+    android:background="@color/blueBasic"
     android:orientation="vertical">
 
     <TextView
@@ -28,9 +28,27 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_izin_kantor_seluruh_pegawai"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:divider="@color/blueBasic"
         android:dividerHeight="1dp"
         android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blueBasicDark"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/IndividuTextTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:text="@string/copyright"
+            android:textColor="@color/whiteAlternate"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </LinearLayout>

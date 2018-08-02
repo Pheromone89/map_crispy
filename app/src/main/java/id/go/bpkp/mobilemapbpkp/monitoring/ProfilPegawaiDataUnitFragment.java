@@ -122,7 +122,7 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
         dataUnitRecyclerView.setAdapter(unitAdapter);
 
         loadingProgressBar.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, dataUnitRecyclerView, 500);
+        konfigurasi.fadeAnimation(true, dataUnitRecyclerView, konfigurasi.animationDurationShort);
     }
 
     private void getJSON() {

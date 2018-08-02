@@ -125,7 +125,7 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
         dataDiklatRecyclerView.setAdapter(diklatAdapter);
 
         loadingProgressBar.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, dataDiklatRecyclerView, 500);
+        konfigurasi.fadeAnimation(true, dataDiklatRecyclerView, konfigurasi.animationDurationShort);
     }
 
     private void getJSON() {

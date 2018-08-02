@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
@@ -152,7 +153,6 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             jenisAlasanPenugasanSpinner;
     private boolean
             tidakPunyaAtasanLangsung;
-    private long animationDuration = 500;
     private LinearLayout rootLayout;
 
     public IzinKantorPengajuanPegawaiFragment() {
@@ -313,7 +313,7 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             Toast.makeText(getActivity(), "error mencari atasan langsung", Toast.LENGTH_SHORT).show();
         }
 
-        konfigurasi.fadeAnimation(true, rootLayout, animationDuration);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
     }
 
     private void populateViewAlamatHp() {
@@ -431,9 +431,9 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -441,10 +441,10 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     izinKantorPengajuanProgressView.setVisibility(View.VISIBLE);
                 } else {
-                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     izinKantorPengajuanProgressView.setVisibility(View.GONE);
                 }
                 int kodeJenisIzinKantorString = jenisIzinSpinner.getSelectedItemPosition();
@@ -454,16 +454,16 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
                     public void run() {
                         checkEmpty();
                     }
-                }, animationDuration);
+                }, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (izinKantorPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -472,6 +472,12 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 // didisable request bu yani
 //                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("fragment_dashboard_izin_kantor");
+                final FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+                ft.detach(fragment);
+                ft.attach(fragment);
+
                 getActivity().getFragmentManager().popBackStack();
             }
         });
@@ -480,9 +486,9 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
+                konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 izinKantorPengajuanProgressView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, konfigurasi.animationDurationShort);
             }
         });
     }
@@ -620,7 +626,6 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
                         } else if (error instanceof ParseError) {
                             Snackbar.make(rootView, "Gagal parsing data", Snackbar.LENGTH_LONG).setAction("Message", null).show();
                         }
-                        showProgress(false);
                     }
                 }) {
             @Override
@@ -673,31 +678,6 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        failOverheadMessage.setVisibility(View.GONE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
-            izinKantorPengajuanProgressView.setVisibility(View.VISIBLE);
-//            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-//            progressBar.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-//                }
-//            });
-        } else {
-            konfigurasi.fadeAnimation(true, izinKantorPengajuanKonfirmasiView, animationDuration);
-//            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            izinKantorPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void updateTanggal(EditText v) {
         String myFormat = "yyyy/MM/dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -747,7 +727,7 @@ public class IzinKantorPengajuanPegawaiFragment extends Fragment {
         }
 
         if (cancel) {
-            konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, animationDuration);
+            konfigurasi.fadeAnimation(false, izinKantorPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
             izinKantorPengajuanProgressView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "form pengajuan izin kantor belum lengkap", Toast.LENGTH_SHORT).show();
         } else {

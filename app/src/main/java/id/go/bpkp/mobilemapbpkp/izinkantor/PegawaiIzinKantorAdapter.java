@@ -23,6 +23,7 @@ import java.util.List;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 15/02/2018.
@@ -64,7 +65,7 @@ public class PegawaiIzinKantorAdapter extends RecyclerView.Adapter<PegawaiIzinKa
         holder.nipBaruView.setText(nip);
 
         ropePegawaiIzinKantor = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

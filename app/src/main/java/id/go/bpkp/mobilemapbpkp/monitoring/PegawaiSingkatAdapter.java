@@ -23,6 +23,7 @@ import java.util.List;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 22/01/2018.
@@ -49,9 +50,15 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
     @Override
     public PegawaiSingkatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_list_pegawai, null);
-        PegawaiSingkatViewHolder pegawaiSingkatViewHolder = new PegawaiSingkatViewHolder(view);
-        return pegawaiSingkatViewHolder;
+        View view = inflater.inflate(R.layout.item_list_pegawai, null, false);
+
+
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(lp);
+        return new PegawaiSingkatViewHolder(view);
+
+//        PegawaiSingkatViewHolder pegawaiSingkatViewHolder = new PegawaiSingkatViewHolder(view);
+//        return pegawaiSingkatViewHolder;
     }
 
     @Override
@@ -66,7 +73,7 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
         holder.jabatanSingkatView.setText(pegawaiSingkat.getJabatanSingkat());
 
         ropePegawaiSingkat = YoYo.with(Techniques.FadeIn)
-                .duration(500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

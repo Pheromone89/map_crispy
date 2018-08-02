@@ -142,7 +142,6 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             atasanLangsungView;
     private boolean
             tidakPunyaAtasanLangsung;
-    private long animationDuration = 500;
     private List<JenisPenugasan> jenisPenugasanList;
     private TextView resultGagalView;
 
@@ -283,7 +282,7 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
 //        }
 
         konfirmasiPenugasanPengajuanPeringatanAtasanLangsungView.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, rootLayout, animationDuration);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
 
     }
 
@@ -325,9 +324,9 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (konfirmasiPenugasanPengajuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -335,10 +334,10 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (konfirmasiPenugasanPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     konfirmasiPenugasanPengajuanProgressView.setVisibility(View.VISIBLE);
                 } else {
-                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     konfirmasiPenugasanPengajuanProgressView.setVisibility(View.GONE);
                 }
                 v.postDelayed(new Runnable() {
@@ -346,16 +345,16 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
                     public void run() {
                         checkEmpty();
                     }
-                }, animationDuration);
+                }, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (konfirmasiPenugasanPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -372,9 +371,9 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+                konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 konfirmasiPenugasanPengajuanProgressView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, konfigurasi.animationDurationShort);
             }
         });
     }
@@ -513,7 +512,7 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
         failOverheadMessage.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+            konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
             konfirmasiPenugasanPengajuanProgressView.setVisibility(View.VISIBLE);
 //            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
 //            progressBar.animate().setDuration(shortAnimTime).alpha(
@@ -524,7 +523,7 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
 //                }
 //            });
         } else {
-            konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+            konfigurasi.fadeAnimation(true, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
 //            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             konfirmasiPenugasanPengajuanKonfirmasiView.setVisibility(View.VISIBLE);
         }
@@ -578,7 +577,7 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
         }
 
         if (cancel) {
-            konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, animationDuration);
+            konfigurasi.fadeAnimation(false, konfirmasiPenugasanPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
             konfirmasiPenugasanPengajuanProgressView.setVisibility(View.GONE);
             if (!allDate) {
                 Toast.makeText(getActivity(), "form pengajuan izin kantor belum lengkap", Toast.LENGTH_SHORT).show();

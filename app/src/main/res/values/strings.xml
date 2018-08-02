@@ -20,6 +20,7 @@
     <string name="title_fragment_cuti_data">Data Cuti Pegawai</string>
     <string name="title_fragment_cuti_pengajuan">Pengajuan Cuti Pegawai</string>
     <string name="title_fragment_cuti_persetujuan">Persetujuan Cuti Pegawai</string>
+    <string name="title_fragment_izin_kantor_persetujuan">Persetujuan Izin Kantor Pegawai</string>
     <string name="title_fragment_tentang">Tentang MAP Mobile</string>
     <!--Strings terkait dashboard-->
     <string-array name="absensi_status_message">

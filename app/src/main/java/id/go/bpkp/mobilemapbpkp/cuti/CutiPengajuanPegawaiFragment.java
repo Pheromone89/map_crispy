@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -58,14 +60,19 @@ import java.util.Map;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTOURL;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPLAMA;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NOHP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEIDINT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN;
 
@@ -119,6 +126,8 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             mNipBaru,
             mNama,
             mFoto,
+            mFotoUrl,
+            mNoHp,
             mAtasanLangsung,
             mNipAtasanLangsung,
             mSaldoCuti,
@@ -141,9 +150,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             jenisCutiSpinner,
             alasanCutiSakitSpinner;
     private boolean
-            tidakPunyaAtasanLangsung;
+            tidakPunyaAtasanLangsung,
+            isAtasan;
     private YoYo.YoYoString ropeCutiPengajuan;
-    private long animationDuration = 500;
 
     public CutiPengajuanPegawaiFragment() {
 
@@ -163,13 +172,16 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
 
         //bundle dari fragment sebelumnya
         mFoto = this.getArguments().getString(INTENT_FOTO);
+        mFotoUrl = this.getArguments().getString(INTENT_FOTOURL);
         mUserToken = this.getArguments().getString(INTENT_USERTOKEN);
         mNipLama = this.getArguments().getString(INTENT_NIPLAMA);
         mNipBaru = this.getArguments().getString(INTENT_NIPBARU);
         mNama = this.getArguments().getString(INTENT_NAMA);
+        mNoHp = this.getArguments().getString(INTENT_NOHP);
         //role id
-//        mRoleIdInt = this.getArguments().getInt("role_id");
+        mRoleIdInt = this.getArguments().getInt("role_id");
         // bool atasan
+        isAtasan = this.getArguments().getBoolean(INTENT_ISATASAN);
         tidakPunyaAtasanLangsung = this.getArguments().getBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG);
         mAtasanLangsung = this.getArguments().getString(INTENT_NAMAATASANLANGSUNG);
         mNipAtasanLangsung = this.getArguments().getString(INTENT_NIPATASANLANGSUNG);
@@ -275,12 +287,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             Toast.makeText(getActivity(), "error mencari atasan langsung", Toast.LENGTH_SHORT).show();
         }
 
-        rootLayout.setVisibility(View.VISIBLE);
-        ropeCutiPengajuan = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
-                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-                .interpolate(new AccelerateDecelerateInterpolator())
-                .playOn(rootLayout);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
     }
 
     private void populateViewAlamatHp() {
@@ -345,9 +352,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -355,10 +362,10 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     cutiPengajuanProgressView.setVisibility(View.VISIBLE);
                 } else {
-                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                     cutiPengajuanProgressView.setVisibility(View.GONE);
                 }
                 final String kodeJenisCutiString = jenisCutiSpinner.getSelectedItem().toString();
@@ -368,16 +375,16 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                     public void run() {
                         checkEmpty(kodeJenisCutiString);
                     }
-                }, animationDuration);
+                }, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cutiPengajuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -386,7 +393,58 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 // didisable request bu yani
 //                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
-                getActivity().getFragmentManager().popBackStack();
+
+//                Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("fragment_dashboard_cuti");
+//                final FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+//                ft.detach(fragment);
+//                ft.attach(fragment);
+
+                Fragment fragment;
+                String fragmentTag;
+                if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT) {
+                    // admin
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NOHP, mNoHp);
+                    bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
+                    bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
+                    bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+
+                    fragment = new CutiDashboardAdminFragment();
+                    fragment.setArguments(bundle);
+//                    fragmentTag = getResources().getString(R.string.title_fragment_cuti_dashboard_pegawai);
+                } else {
+                    // pegawai
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putBoolean(INTENT_ISATASAN, isAtasan);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NOHP, mNoHp);
+
+                    fragment = new CutiDashboardPegawaiFragment();
+                    fragment.setArguments(bundle);
+//                    fragmentTag = getResources().getString(R.string.title_fragment_cuti_dashboard_pegawai);
+                }
+
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.add(R.id.content_fragment_area, fragment, fragmentTag);
+                fragmentTransaction.add(R.id.content_fragment_area, fragment);
+                fragmentManager.popBackStack("fragment_dashboard_cuti", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentTransaction.commit();
             }
         });
         messageFailButton.setOnClickListener(new View.OnClickListener() {
@@ -394,9 +452,9 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
+                konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
                 cutiPengajuanProgressView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, konfigurasi.animationDurationShort);
             }
         });
     }
@@ -587,7 +645,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                         } else if (error instanceof ParseError) {
                             Snackbar.make(rootView, "Gagal parsing data", Snackbar.LENGTH_LONG).setAction("Message", null).show();
                         }
-                        showProgress(false);
+//                        showProgress(false);
                     }
                 }) {
             @Override
@@ -669,30 +727,30 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        failOverheadMessage.setVisibility(View.GONE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
-            cutiPengajuanProgressView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressBar.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, animationDuration);
-            cutiPengajuanProgressView.setVisibility(View.GONE);
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+//    private void showProgress(final boolean show) {
+//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+//        // for very easy animations. If available, use these APIs to fade-in
+//        // the progress spinner.
+//        failOverheadMessage.setVisibility(View.GONE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
+//            cutiPengajuanProgressView.setVisibility(View.VISIBLE);
+//            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+//            progressBar.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+//                }
+//            });
+//        } else {
+//            konfigurasi.fadeAnimation(true, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
+//            cutiPengajuanProgressView.setVisibility(View.GONE);
+//            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+//        }
+//    }
 
     private void updateTanggalMulai() {
         String myFormat = "yyyy/MM/dd"; //In which you need put here
@@ -786,7 +844,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
                 break;
         }
         if (cancel) {
-            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, animationDuration);
+            konfigurasi.fadeAnimation(false, cutiPengajuanKonfirmasiView, konfigurasi.animationDurationShort);
             cutiPengajuanProgressView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "form pengajuan cuti belum lengkap", Toast.LENGTH_SHORT).show();
         } else {

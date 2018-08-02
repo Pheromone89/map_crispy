@@ -211,10 +211,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
     private void populateView(){
         // saved json
         // profile picture area
-        Picasso
-                .with(getActivity())
-                .load(mFoto)
-                .into(proficPegawaiIndividuView);
+        Picasso.with(getActivity()).load(mFoto).into(proficPegawaiIndividuView);
         namaGelarProfilPictureView.setText(namaGelar);
         String nip = mNipBaru + " / " + mNipLama;
         nipProfilPictureView.setText(nip);
@@ -244,7 +241,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         toeflProfilIndividuView.setText(toefl);
 
         loadingProgressBar.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, dataPokokScrollView, 500);
+        konfigurasi.fadeAnimation(true, dataPokokScrollView, konfigurasi.animationDurationShort);
     }
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {

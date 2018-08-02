@@ -1,12 +1,7 @@
 package id.go.bpkp.mobilemapbpkp.tentang;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,32 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Calendar;
 
 import id.go.bpkp.mobilemapbpkp.R;
-import id.go.bpkp.mobilemapbpkp.RequestHandler;
-import id.go.bpkp.mobilemapbpkp.cuti.CutiDaftarCutiFragment;
-import id.go.bpkp.mobilemapbpkp.cuti.CutiDaftarPersetujuanFragment;
-import id.go.bpkp.mobilemapbpkp.cuti.CutiPengajuanPegawaiFragment;
-import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -72,7 +49,7 @@ public class TentangFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         rootView = view;
         setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_tentang);
 
         initiateView();
         populateView();
@@ -82,7 +59,7 @@ public class TentangFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem searchMenuItem = menu.getItem(0);
         searchMenuItem.setVisible(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_cuti_dashboard_pegawai);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_tentang);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -114,6 +91,7 @@ public class TentangFragment extends Fragment {
                 "Penambahan fitur panel monitoring untuk akun atasan.",
                 "Penambahan fitur monitoring presensi untuk akun atasan.",
                 "Penambahan fitur persetujuan cuti untuk akun atasan.",
+                "Penambahan fitur modul konfirmasi penugasan.",
                 "Penambahan fitur \"about MAP MOBILE\".",
                 "Perbaikan \"bug\".",
                 "Perbaikan tampilan."
@@ -137,7 +115,7 @@ public class TentangFragment extends Fragment {
         updateListView.setAdapter(arrayAdapter);
 
         rootProgressBar.setVisibility(View.GONE);
-        konfigurasi.fadeAnimation(true, rootLayout, 1500);
+        konfigurasi.fadeAnimation(true, rootLayout, konfigurasi.animationDurationShort);
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override

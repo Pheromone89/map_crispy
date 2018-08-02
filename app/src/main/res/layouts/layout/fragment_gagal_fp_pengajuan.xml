@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/gagal_fp_pengajuan_layout"
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
@@ -254,7 +255,7 @@
                             android:layout_marginLeft="150dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
-                            app:cardBackgroundColor="@color/blueBasic"
+                            app:cardBackgroundColor="@color/blueBasicDark"
                             app:cardCornerRadius="5dp">
 
                             <TextView

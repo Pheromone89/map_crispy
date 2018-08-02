@@ -56,7 +56,7 @@ public class SplashscreenActivity extends AppCompatActivity {
         downtoup = AnimationUtils.loadAnimation(this, R.anim.downtoup);
         splashLogo.setAnimation(downtoup);
 //        splashLogo.setVisibility(View.GONE);
-//        konfigurasi.fadeAnimation(true, splashLogo, 1500);
+//        konfigurasi.fadeAnimation(true, splashLogo, konfigurasi.animationDurationShort);
 
 //        YoYo.YoYoString ropeAnimation;
 //        ropeAnimation = YoYo.with(Techniques.FadeIn)

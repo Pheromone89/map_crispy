@@ -24,6 +24,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkatAdapter;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilPegawaiPagerFragment;
@@ -68,7 +69,7 @@ public class PegawaiCutiAdapter extends RecyclerView.Adapter<PegawaiCutiAdapter.
         holder.nipBaruView.setText(nip);
 
         ropePegawaiCuti = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(holder.rootview);

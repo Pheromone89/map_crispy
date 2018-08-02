@@ -16,22 +16,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.CardView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
                 android:elevation="12dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 android:thicknessRatio="1.9"
-                app:cardCornerRadius="40dp">
+                app:cardCornerRadius="25dp">
 
                 <ImageView
-                    android:id="@+id/dashboard_cuti_profic"
+                    android:id="@+id/dashboard_profic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
@@ -45,33 +44,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dashboard_cuti_nama"
+                    android:id="@+id/dashboard_nama"
                     style="@style/LoginScreenText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nama Pegawai"
-                    android:textSize="19sp" />
+                    android:textColor="@color/blueBasicDark"
+                    android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/dashboard_cuti_nip"
+                    android:id="@+id/dashboard_nip"
                     style="@style/LoginScreenText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="19970707 201801 2 001"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/dashboard_cuti_jabatan"
-                    style="@style/LoginScreenText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="jabatan"
-                    android:textSize="17sp" />
+                    android:textColor="@color/blueBasicDark"
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

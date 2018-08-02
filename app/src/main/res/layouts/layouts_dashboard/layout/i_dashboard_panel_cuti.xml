@@ -29,7 +29,7 @@
                 android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_beach"
-                android:tint="@color/whiteAlternate" />
+                android:tint="#d4ffffff" />
 
             <LinearLayout
                 android:id="@+id/dashboard_pegawai_cuti_background"

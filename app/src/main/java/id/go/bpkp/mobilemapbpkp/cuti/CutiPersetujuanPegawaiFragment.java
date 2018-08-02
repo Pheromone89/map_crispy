@@ -69,7 +69,8 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             messageSuccessView,
             messageFailView,
             cutiPersetujuanProgressView,
-            formPersetujuan;
+            formPersetujuan,
+            catatanEditLayout;
     ProgressBar persetujuanProgressBar;
     ProgressBar
             progressBar;
@@ -130,7 +131,6 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
     // data persetujuan bawahan
     private String idTransaksi, fotoBawahan, namaBawahan, nipLamaBawahan, jenisCutiBawahan, tanggalPengajuanBawahan, tanggalAwalBawahan, tanggalAkhirBawahan, jumlahHariBawahan, alasanBawahan, alamatBawahan, catatanBawahan, pemrosesSebelumnya;
     private TextView jenisCutiView, tanggalMulaiView, tanggalSelesaiView, alasanView, alamatView, catatanView, catatanLabelView;
-    private long animationDuration = 500;
     private boolean isFinal;
     private int isAtasanSetuju;
     private EditText catatanEditText;
@@ -204,6 +204,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         catatanLayout = rootView.findViewById(R.id.cuti_persetujuan_catatan_layout);
         catatanLabelView = rootView.findViewById(R.id.cuti_persetujuan_catatan_label);
         catatanView = rootView.findViewById(R.id.cuti_persetujuan_catatan);
+        catatanEditLayout = rootView.findViewById(R.id.cuti_persetujuan_catatan_edit_layout);
         catatanEditText = rootView.findViewById(R.id.cuti_persetujuan_catatan_edittext);
         // warning form
         cutiPersetujuanKonfirmasiView = rootView.findViewById(R.id.cuti_persetujuan_konfirmasi);
@@ -227,10 +228,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
     }
 
     private void populateView() {
-        Picasso
-                .with(getActivity())
-                .load(fotoBawahan)
-                .into(fotoView);
+        Picasso.with(getActivity()).load(fotoBawahan).into(fotoView);
         namaView.setText(namaBawahan);
         jenisCutiView.setText(jenisCutiBawahan);
         tanggalMulaiView.setText(tanggalAkhirBawahan);
@@ -247,6 +245,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         catatanView.setText(catatanBawahan);
         // teruskan / tolak & setuju
         if (isFinal) {
+            catatanEditLayout.setVisibility(View.GONE);
             setujuLayout.setVisibility(View.VISIBLE);
             teruskanLayout.setVisibility(View.GONE);
         } else {
@@ -258,7 +257,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         persetujuanProgressBar.setVisibility(View.GONE);
         formPersetujuan.setVisibility(View.VISIBLE);
         ropeCutiPengajuan = YoYo.with(Techniques.FadeIn)
-                .duration(1500)
+                .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())
                 .playOn(rootLayout);
@@ -271,9 +270,9 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 isAtasanSetuju = 1;
                 if (cutiPersetujuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -282,9 +281,9 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 isAtasanSetuju = 0;
                 if (cutiPersetujuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
 
             }
@@ -294,9 +293,9 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 isAtasanSetuju = 3;
                 if (cutiPersetujuanKonfirmasiView.getVisibility() == View.GONE) {
-                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -305,10 +304,10 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 if (cutiPersetujuanKonfirmasiView.getVisibility() == View.VISIBLE) {
                     cutiPersetujuanProgressView.setVisibility(View.VISIBLE);
-                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
                     cutiPersetujuanProgressView.setVisibility(View.GONE);
-                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
 
                 catatan = catatanEditText.getText().toString();
@@ -317,16 +316,16 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                     public void run() {
                         postPengajuanCuti();
                     }
-                }, animationDuration);
+                }, konfigurasi.animationDurationShort);
             }
         });
         konfirmasiNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cutiPersetujuanKonfirmasiView.getVisibility() == View.VISIBLE) {
-                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 } else {
-                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
+                    konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 }
             }
         });
@@ -339,6 +338,11 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                 FragmentManager fm = getActivity().getFragmentManager();
                 fm.popBackStack("fragment_daftar_persetujuan_cuti", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
+                Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("fragment_dashboard_cuti");
+                final FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+                ft.detach(fragment);
+                ft.attach(fragment);
+
                 getActivity().getFragmentManager().popBackStack();
             }
         });
@@ -347,9 +351,9 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             public void onClick(View v) {
                 messageSuccessView.setVisibility(View.GONE);
                 messageFailView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
+                konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, konfigurasi.animationDurationShort);
                 cutiPersetujuanProgressView.setVisibility(View.GONE);
-                konfigurasi.fadeAnimation(true, failOverheadMessage, animationDuration);
+                konfigurasi.fadeAnimation(true, failOverheadMessage, konfigurasi.animationDurationShort);
             }
         });
     }
@@ -365,11 +369,11 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                                 cutiPersetujuanKonfirmasiView.setVisibility(View.GONE);
                                 cutiPersetujuanProgressView.setVisibility(View.GONE);
                                 successText.setText(jsonObject.getString("result"));
-                                konfigurasi.fadeAnimation(true, messageSuccessView, animationDuration);
+                                konfigurasi.fadeAnimation(true, messageSuccessView, konfigurasi.animationDurationShort);
                             } else {
                                 cutiPersetujuanKonfirmasiView.setVisibility(View.GONE);
                                 cutiPersetujuanProgressView.setVisibility(View.GONE);
-                                konfigurasi.fadeAnimation(true, messageFailView, animationDuration);
+                                konfigurasi.fadeAnimation(true, messageFailView, konfigurasi.animationDurationShort);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -381,7 +385,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         cutiPersetujuanKonfirmasiView.setVisibility(View.GONE);
                         cutiPersetujuanProgressView.setVisibility(View.GONE);
-                        konfigurasi.fadeAnimation(true, messageFailView, animationDuration);
+                        konfigurasi.fadeAnimation(true, messageFailView, konfigurasi.animationDurationShort);
 //                        messageFailView.setVisibility(View.VISIBLE);
                         if (error instanceof AuthFailureError) {
                             Snackbar.make(rootView, "Gagal mengotentifikasi", Snackbar.LENGTH_LONG).setAction("Message", null).show();
@@ -394,7 +398,6 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                         } else if (error instanceof ParseError) {
                             Snackbar.make(rootView, "Gagal parsing data", Snackbar.LENGTH_LONG).setAction("Message", null).show();
                         }
-//                        showProgress(false);
                     }
                 }) {
             @Override
@@ -418,25 +421,4 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        failOverheadMessage.setVisibility(View.GONE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            konfigurasi.fadeAnimation(false, cutiPersetujuanKonfirmasiView, animationDuration);
-            cutiPersetujuanProgressView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressBar.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            konfigurasi.fadeAnimation(true, cutiPersetujuanKonfirmasiView, animationDuration);
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            cutiPersetujuanKonfirmasiView.setVisibility(View.VISIBLE);
-        }
-    }
 }

@@ -69,6 +69,7 @@ public class PassingIntent {
 
         String username = sharedPreferences.getString(PassedIntent.INTENT_USERNAME, "");
         String password = sharedPreferences.getString(PassedIntent.INTENT_PASSWORD, "");
+        FragmentBundles.saveBundle(context, sharedPreferences, jsonObject);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String imei = "";
@@ -82,91 +83,40 @@ public class PassingIntent {
         }
 
         Intent i = null;
+        int roleIdInt = sharedPreferences.getInt(FragmentBundles.BUNDLE_ROLEID_MESSAGE, 999);
+        int versiLogin = sharedPreferences.getInt(FragmentBundles.BUNDLE_VERSION_MESSAGE, 999);
+        boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
+
+        int versiUpdate = 0;
         try {
-            int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
-            boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
-
-            int versiUpdate = 0;
-            try {
-                versiUpdate = context
-                        .getApplicationContext()
-                        .getPackageManager()
-                        .getPackageInfo(context
-                                .getApplicationContext()
-                                .getPackageName(), 0)
-                        .versionCode;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
-            boolean isVersionValid = versiLogin == versiUpdate;
-
-            if (roleIdInt == 4 && belumRekamNoHp) {
-                i = new Intent(context, PhoneVerificationActivity.class);
-            } else {
-                i = new Intent(context, DashboardActivity.class);
-            }
-            if (!isVersionValid) {
-                i = new Intent(context, VersionCheckActivity.class);
-            }
-            // api_token
-            i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
-            i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
-            i.putExtra(INTENT_USERNAME, username);
-            i.putExtra(INTENT_PASSWORD, password);
-            i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
-            i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
-            i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
-            i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
-            i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
-            i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
-            String jenisJabatan = null;
-            if (!jsonObject.getJSONObject("message").getString("pegawai").equals("null")) {
-                JSONObject pegawaiJson = jsonObject.getJSONObject("message").getJSONObject("pegawai");
-                jenisJabatan = pegawaiJson.getString("jenis_jab");
-            } else {
-                jenisJabatan = "tidak ada rincian pegawai";
-            }
-            i.putExtra("jenis_jabatan", jenisJabatan);
-            i.putExtra(INTENT_IMEI, imei);
-            i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
-            i.putExtra("is_redirect", false);
-            boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
-            boolean isAtasan = (jsonObject.getJSONObject("message").getString(konfigurasi.TAG_ISATASAN).equals("true"));
-            boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
-            boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
-            boolean isHut = (jsonObject.getJSONObject("message").getString("is_hut").equals("true"));
-            if (!tidakPunyaAtasanLangsung) {
-                i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
-                i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
-                i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
-            }
-            i.putExtra(INTENT_ISATASAN, isAtasan);
-            i.putExtra(INTENT_ISLDAP, isLdap);
-            i.putExtra(INTENT_ISJAB, isJab);
-            i.putExtra(INTENT_ISHUT, isHut);
-            // broadcast
-            i.putExtra("is_broadcastable", showBroadcast);
-            i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
-            i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
-            i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
-            i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
-
-            // TEST FOTO //
-
-            fotoUrl = jsonObject.getJSONObject("message").getString("url_foto");
-//            Toast.makeText(context, fotoUrl, Toast.LENGTH_SHORT).show();
-            editor.putString("foto_url", fotoUrl);
-
-            // TEST FOTO //
-
-            editor.putString(INTENT_USERNAME, username);
-            editor.putString(INTENT_PASSWORD, password);
-            editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
-            editor.apply();
-        } catch (JSONException e) {
+            versiUpdate = context
+                    .getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(context
+                            .getApplicationContext()
+                            .getPackageName(), 0)
+                    .versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        boolean isVersionValid = versiLogin == versiUpdate;
+
+        if (roleIdInt == 4 && belumRekamNoHp) {
+            i = new Intent(context, PhoneVerificationActivity.class);
+        } else {
+            i = new Intent(context, DashboardActivity.class);
+        }
+        if (!isVersionValid) {
+            i = new Intent(context, VersionCheckActivity.class);
+        }
+
+        editor.putString(INTENT_IMEI, imei);
+        editor.putBoolean("is_redirect", false);
+        editor.putBoolean("is_broadcastable", showBroadcast);
+        editor.putString(INTENT_USERNAME, username);
+        editor.putString(INTENT_PASSWORD, password);
+        editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
+        editor.apply();
         return i;
     }
 
@@ -177,6 +127,8 @@ public class PassingIntent {
         String username = sharedPreferences.getString(PassedIntent.INTENT_USERNAME, "");
         String password = sharedPreferences.getString(PassedIntent.INTENT_PASSWORD, "");
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        FragmentBundles.clearLogin(sharedPreferences);
 
         editor.putBoolean(PassedIntent.ISLOGGEDIN, false);
         editor.putString("foto_url", null);
@@ -235,4 +187,113 @@ public class PassingIntent {
         GetJSON gj = new GetJSON();
         gj.execute();
     }
+
+//    public static Intent loginIntent(
+//            Context context,
+//            JSONObject jsonObject,
+//            SharedPreferences sharedPreferences,
+//            boolean showBroadcast) {
+//
+//        String username = sharedPreferences.getString(PassedIntent.INTENT_USERNAME, "");
+//        String password = sharedPreferences.getString(PassedIntent.INTENT_PASSWORD, "");
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        String imei = "";
+//        String phoneNumber = "";
+//
+//        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+//            TelephonyManager tMgr = (TelephonyManager) context.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+//            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//            imei = telephonyManager.getDeviceId();
+//            phoneNumber = tMgr.getLine1Number();
+//        }
+//
+//        Intent i = null;
+//        try {
+//            int roleIdInt = Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id"));
+//            boolean belumRekamNoHp = sharedPreferences.getBoolean(SettingPrefs.SETTING_BELUMSETNOHP, true);
+//
+//            int versiUpdate = 0;
+//            try {
+//                versiUpdate = context
+//                        .getApplicationContext()
+//                        .getPackageManager()
+//                        .getPackageInfo(context
+//                                .getApplicationContext()
+//                                .getPackageName(), 0)
+//                        .versionCode;
+//            } catch (PackageManager.NameNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//            int versiLogin = Integer.parseInt(jsonObject.getJSONObject("message").getString("version"));
+//            boolean isVersionValid = versiLogin == versiUpdate;
+//
+//            if (roleIdInt == 4 && belumRekamNoHp) {
+//                i = new Intent(context, PhoneVerificationActivity.class);
+//            } else {
+//                i = new Intent(context, DashboardActivity.class);
+//            }
+//            if (!isVersionValid) {
+//                i = new Intent(context, VersionCheckActivity.class);
+//            }
+//            // api_token
+//            i.putExtra(INTENT_USERTOKEN, jsonObject.getString("api_token"));
+//            i.putExtra(INTENT_NAMA, jsonObject.getJSONObject("message").getString("name"));
+//            i.putExtra(INTENT_USERNAME, username);
+//            i.putExtra(INTENT_PASSWORD, password);
+//            i.putExtra(INTENT_NIPBARU, jsonObject.getJSONObject("message").getString("nipbaru"));
+//            i.putExtra(INTENT_NIPLAMA, jsonObject.getJSONObject("message").getString("user_nip"));
+//            i.putExtra(INTENT_ROLEID, jsonObject.getJSONObject("message").getString("role_id"));
+//            i.putExtra(INTENT_LDAP, jsonObject.getJSONObject("message").getString("is_ldap"));
+//            i.putExtra(INTENT_ROLEIDINT, Integer.parseInt(jsonObject.getJSONObject("message").getString("role_id")));
+//            i.putExtra(INTENT_NOHP, jsonObject.getJSONObject("message").getString("nomorhp"));
+//            String jenisJabatan = null;
+//            if (!jsonObject.getJSONObject("message").getString("pegawai").equals("null")) {
+//                JSONObject pegawaiJson = jsonObject.getJSONObject("message").getJSONObject("pegawai");
+//                jenisJabatan = pegawaiJson.getString("jenis_jab");
+//            } else {
+//                jenisJabatan = "tidak ada rincian pegawai";
+//            }
+//            i.putExtra("jenis_jabatan", jenisJabatan);
+//            i.putExtra(INTENT_IMEI, imei);
+//            i.putExtra(INTENT_EMAIL, jsonObject.getJSONObject("message").getString("email"));
+//            i.putExtra("is_redirect", false);
+//            boolean tidakPunyaAtasanLangsung = (jsonObject.getString("atasan").equals("null"));
+//            boolean isAtasan = (jsonObject.getJSONObject("message").getString(konfigurasi.TAG_ISATASAN).equals("true"));
+//            boolean isLdap = (jsonObject.getJSONObject("message").getString("is_ldap").equals("true"));
+//            boolean isJab = (jsonObject.getJSONObject("message").getString("is_jab").equals("true"));
+//            boolean isHut = (jsonObject.getJSONObject("message").getString("is_hut").equals("true"));
+//            if (!tidakPunyaAtasanLangsung) {
+//                i.putExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+//                i.putExtra(INTENT_NAMAATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("nama_lengkap"));
+//                i.putExtra(INTENT_NIPATASANLANGSUNG, jsonObject.getJSONObject("atasan").getString("s_nip"));
+//            }
+//            i.putExtra(INTENT_ISATASAN, isAtasan);
+//            i.putExtra(INTENT_ISLDAP, isLdap);
+//            i.putExtra(INTENT_ISJAB, isJab);
+//            i.putExtra(INTENT_ISHUT, isHut);
+//            // broadcast
+//            i.putExtra("is_broadcastable", showBroadcast);
+//            i.putExtra(INTENT_BROADCASTSTATUS, jsonObject.getJSONObject("broadcast").getString("status"));
+//            i.putExtra(INTENT_BROADCASTIMAGE, jsonObject.getJSONObject("broadcast").getString("images"));
+//            i.putExtra(INTENT_BROADCASTTITLE, jsonObject.getJSONObject("broadcast").getString("title"));
+//            i.putExtra(INTENT_BROADCASTMESSAGE, jsonObject.getJSONObject("broadcast").getString("message"));
+//
+//            // TEST FOTO //
+//
+//            fotoUrl = jsonObject.getJSONObject("message").getString("url_foto");
+////            Toast.makeText(context, fotoUrl, Toast.LENGTH_SHORT).show();
+//            editor.putString("foto_url", fotoUrl);
+//
+//            // TEST FOTO //
+//
+//            editor.putString(INTENT_USERNAME, username);
+//            editor.putString(INTENT_PASSWORD, password);
+//            editor.putBoolean(PassedIntent.ISLOGGEDIN, true);
+//            editor.apply();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return i;
+//    }
 }
