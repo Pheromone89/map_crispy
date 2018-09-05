@@ -31,6 +31,7 @@ import id.go.bpkp.mobilemapbpkp.absen.AbsenFragment;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenMACFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardPegawaiFragment;
+import id.go.bpkp.mobilemapbpkp.hotspot.HotspotFragment;
 import id.go.bpkp.mobilemapbpkp.informasistrategis.InformasiStrategisDashboardFragment;
 import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardPegawaiFragment;
@@ -590,6 +591,26 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_surat_keluar) {
             Toast.makeText(this, "Menu ini belum diimplemenetasikan", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_hotspot) {
+            if (openedDrawer != "nav_hotspot") {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NOHP, mNoHp);
+                    bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
+                    bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
+                    bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+
+                    fragment = new HotspotFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTag = getResources().getString(R.string.title_fragment_hotspot);
+                    openedDrawer = "nav_hotspot";
+            }
         } else if (id == R.id.nav_tentang) {
             if (openedDrawer != "nav_tentang") {
 

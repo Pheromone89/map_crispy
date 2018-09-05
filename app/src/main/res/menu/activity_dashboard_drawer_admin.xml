@@ -85,6 +85,11 @@
             android:icon="@drawable/ic_cetar"
             android:title="mCetar"
             android:visible="true" />
+        <item
+            android:id="@+id/nav_hotspot"
+            android:icon="@drawable/ic_wifi"
+            android:title="Hotspot"
+            android:visible="true" />
     </group>
     <group
         android:id="@+id/navigation_drawer_settings"

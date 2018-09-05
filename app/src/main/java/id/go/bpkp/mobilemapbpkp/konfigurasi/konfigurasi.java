@@ -85,6 +85,7 @@ public class konfigurasi {
     public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
     // TUKIN
     public static final String URL_GET_TUKIN = "http://118.97.51.140:10001/map/api/tukin/";
+    public static final String URL_GET_HOTSPOT = "http://118.97.51.140:10001/map/api/listkehadiran?api_token=";
     public static final int DASHBOARD_PANEL_NOTIFIKASIATASAN = 6;
 
 
@@ -154,6 +155,14 @@ public class konfigurasi {
     public static final String TAG_LAMATHUNIT = "lamath_unit";
     public static final String TAG_LAMABLUNIT = "lamabl_unit";
     public static final String TAG_UNIT = "namaunit";
+    public static final String TAG_NAMAUNIT = "unit";
+    public static final String TAG_TANGGAL_HOTSPOT = "tgl";
+    public static final String TAG_DATANG = "datang";
+    public static final String TAG_PULANG = "pulang";
+    public static final String TAG_NAMANIP = "namanip";
+    public static final String TAG_KODE_UNIT = "kode_unit";
+    public static final String TAG_ACCTID = "acctid";
+
     // keysort unit
     public static final String TAG_PENDIDIKANSINGKAT = "s_skt_pendidikan";
     public static final String TAG_PENDIDIKANSTRATASINGKAT = "s_nama_strata_skt";
