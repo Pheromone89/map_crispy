@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/indikator_distribusi_pkpt_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingEnd="5dp"
+    android:paddingStart="5dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/blueBasicDark"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:padding="4dp"
+            android:src="@drawable/ic_check" />
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/indikator_distribusi_pkpt_fokus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FOKUS 1"
+            android:textColor="@color/blueBasicDark"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/indikator_distribusi_pkpt_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="20/20/1999"
+            android:textColor="@color/blueBasicDark" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/indikator_distribusi_pkpt_persentase"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="95%"
+        android:textColor="@color/blueBasicDark"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -13,6 +13,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="50dp"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
         android:src="@drawable/map_logo_animated" />
 
     <LinearLayout

@@ -18,6 +18,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
@@ -33,7 +34,7 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
 
     private static RecyclerViewClickListener itemListener;
     private Context context;
-    private List<PegawaiSingkat> pegawaiSingkatList;
+    private List<PegawaiSingkat> pegawaiSingkatList, pegawaiSingkatListCopy;
     private String mUserToken;
     private YoYo.YoYoString ropePegawaiSingkat;
 
@@ -52,13 +53,9 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_list_pegawai, null, false);
 
-
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
         return new PegawaiSingkatViewHolder(view);
-
-//        PegawaiSingkatViewHolder pegawaiSingkatViewHolder = new PegawaiSingkatViewHolder(view);
-//        return pegawaiSingkatViewHolder;
     }
 
     @Override
@@ -132,5 +129,24 @@ public class PegawaiSingkatAdapter extends RecyclerView.Adapter<PegawaiSingkatAd
             fragmentTransaction.commit();
 
         }
+    }
+
+    public void filter(String text) {
+        pegawaiSingkatListCopy = new ArrayList<>();
+        pegawaiSingkatListCopy.addAll(PegawaiSingkat.pegawaiSingkatList);
+        pegawaiSingkatList.clear();
+        if (text.isEmpty()) {
+            pegawaiSingkatList.addAll(PegawaiSingkat.pegawaiSingkatList);
+            pegawaiSingkatListCopy.clear();
+        } else {
+            text = text.toLowerCase();
+            for (PegawaiSingkat pegawaiSingkat : pegawaiSingkatListCopy) {
+                if (pegawaiSingkat.getAllDetail().toLowerCase().contains(text)) {
+                    pegawaiSingkatList.add(pegawaiSingkat);
+                }
+            }
+            pegawaiSingkatListCopy.clear();
+        }
+        notifyDataSetChanged();
     }
 }

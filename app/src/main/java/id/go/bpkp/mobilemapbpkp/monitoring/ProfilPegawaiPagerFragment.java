@@ -15,11 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 
 /**
@@ -29,17 +29,9 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 public class ProfilPegawaiPagerFragment extends Fragment implements RecyclerViewClickListener {
 
     private String
-            mFoto,
-            mUserToken,
-            mNipLama,
-            mNoHp,
-            mEmail,
-            mNipBaru,
-            username;
+            mNipLama;
     private Bundle
             fragmentBundle;
-    private int
-            mRoledId;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -52,27 +44,11 @@ public class ProfilPegawaiPagerFragment extends Fragment implements RecyclerView
         editor = sharedPreferences.edit();
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
-        //nip lama tanpa spasi
+        //nip lama tanpa spasi, diambil dr fragment sebelumnya jika bukan admin
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
-        // nohp
-        mNoHp = this.getArguments().getString(PassedIntent.INTENT_NOHP);
-        mEmail = this.getArguments().getString(PassedIntent.INTENT_EMAIL);
-        mRoledId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
 
         fragmentBundle = new Bundle();
-        fragmentBundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
         fragmentBundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
-        fragmentBundle.putString(PassedIntent.INTENT_NIPBARU, mNipBaru);
-        fragmentBundle.putString(PassedIntent.INTENT_FOTO, mFoto);
-        fragmentBundle.putString(PassedIntent.INTENT_NOHP, mNoHp);
-        fragmentBundle.putString(PassedIntent.INTENT_EMAIL, mEmail);
-        fragmentBundle.putInt(PassedIntent.INTENT_ROLEIDINT, mRoledId);
 
         View result = inflater.inflate(R.layout.pager_profil_pegawai, container, false);
         ViewPager profilPegawaiViewPager = (ViewPager) result.findViewById(R.id.pager_profil_pegawai);

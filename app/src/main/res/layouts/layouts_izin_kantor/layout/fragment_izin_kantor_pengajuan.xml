@@ -402,7 +402,7 @@
         android:id="@+id/izin_kantor_pengajuan_peringatan_atasan_langsung"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -452,7 +452,7 @@
         android:id="@+id/izin_kantor_pengajuan_konfirmasi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -555,18 +555,26 @@
         android:id="@+id/izin_kantor_pengajuan_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ProgressBar
+        <!--<ProgressBar-->
+        <!--android:id="@+id/izin_kantor_pengajuan_progressbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:padding="150dp" />-->
+
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/izin_kantor_pengajuan_progressbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:padding="150dp" />
+            android:padding="100dp"
+            android:src="@drawable/map_logo_animated" />
 
     </LinearLayout>
 
@@ -574,7 +582,7 @@
         android:id="@+id/izin_kantor_pengajuan_message_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -584,7 +592,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#c5006db2" />
+            android:background="@color/blueBasicTransparent" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -644,7 +652,7 @@
         android:id="@+id/izin_kantor_pengajuan_message_failed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -654,7 +662,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#c5006db2" />
+            android:background="@color/blueBasicTransparent" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

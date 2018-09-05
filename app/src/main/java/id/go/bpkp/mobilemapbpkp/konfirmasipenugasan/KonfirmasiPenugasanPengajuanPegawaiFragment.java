@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -58,14 +60,21 @@ import java.util.Map;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardAdminFragment;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardPegawaiFragment;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTOURL;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMA;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NAMAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPLAMA;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NOHP;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEIDINT;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN;
 
@@ -97,7 +106,8 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
     ProgressBar
             progressBar;
     int
-            kodeJenisCuti;
+            kodeJenisCuti,
+            mRoleIdInt;
     String
             tanggalGagal,
             tanggalPermohonan,
@@ -133,6 +143,7 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             mNipBaru,
             mNama,
             mFoto,
+            mFotoUrl,
             mAtasanLangsung,
             mNipAtasanLangsung,
             JSON_STRING;
@@ -141,7 +152,8 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
             nipView,
             atasanLangsungView;
     private boolean
-            tidakPunyaAtasanLangsung;
+            tidakPunyaAtasanLangsung,
+            isAtasan;
     private List<JenisPenugasan> jenisPenugasanList;
     private TextView resultGagalView;
 
@@ -163,16 +175,19 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
 
         //bundle dari fragment sebelumnya
         mFoto = this.getArguments().getString(INTENT_FOTO);
+        mFotoUrl = this.getArguments().getString(INTENT_FOTOURL);
         mUserToken = this.getArguments().getString(INTENT_USERTOKEN);
         mNipLama = this.getArguments().getString(INTENT_NIPLAMA);
         mNipBaru = this.getArguments().getString(INTENT_NIPBARU);
         mNama = this.getArguments().getString(INTENT_NAMA);
         //role id
-//        mRoleIdInt = this.getArguments().getInt("role_id");
+        mRoleIdInt = this.getArguments().getInt("role_id");
         // bool atasan
         tidakPunyaAtasanLangsung = this.getArguments().getBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG);
         mAtasanLangsung = this.getArguments().getString(INTENT_NAMAATASANLANGSUNG);
         mNipAtasanLangsung = this.getArguments().getString(INTENT_NIPATASANLANGSUNG);
+        // is atasan
+        isAtasan = this.getArguments().getBoolean(INTENT_ISATASAN);
 
         // date
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -364,6 +379,50 @@ public class KonfirmasiPenugasanPengajuanPegawaiFragment extends Fragment {
                 // didisable request bu yani
 //                Toast.makeText(getActivity(), "sukses", Toast.LENGTH_SHORT).show();
                 getActivity().getFragmentManager().popBackStack();
+
+                Fragment fragment;
+                String fragmentTag;
+                if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT ||
+                        mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT) {
+                    // admin
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+                    bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
+                    bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
+                    bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
+
+                    fragment = new KonfirmasiPenugasanDashboardPegawaiFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTag = getResources().getString(R.string.title_fragment_konfirmasi_penugasan);
+                } else {
+                    // pegawai
+                    Bundle bundle = new Bundle();
+                    bundle.putString(INTENT_USERTOKEN, mUserToken);
+                    bundle.putString(INTENT_NIPLAMA, mNipLama);
+                    bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                    bundle.putBoolean(INTENT_ISATASAN, isAtasan);
+                    bundle.putString(INTENT_NAMA, mNama);
+                    bundle.putString(INTENT_FOTOURL, mFotoUrl);
+                    bundle.putString(INTENT_FOTO, mFoto);
+                    bundle.putString(INTENT_NIPBARU, mNipBaru);
+
+                    fragment = new KonfirmasiPenugasanDashboardPegawaiFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTag = getResources().getString(R.string.title_fragment_konfirmasi_penugasan);
+                }
+
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, fragment);
+                fragmentManager.popBackStack("fragment_dashboard_konfirmasi_penugasan", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentTransaction.commit();
             }
         });
         messageFailButton.setOnClickListener(new View.OnClickListener() {

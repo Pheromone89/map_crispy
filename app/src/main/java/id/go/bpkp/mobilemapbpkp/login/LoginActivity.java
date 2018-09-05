@@ -58,6 +58,7 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
@@ -103,11 +104,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             phoneNumberEditText,
             mPasswordView;
     private View
-            mProgressView,
             mLoginFormView,
             mPhoneInputView;
     private TextView
             loginButton;
+    private GifImageView
+            mProgressView;
 
     public static void setUsername(Context context, String username) {
         SharedPreferences prefs = context.getSharedPreferences(Activity.class.getSimpleName(), Context.MODE_PRIVATE);
@@ -197,7 +199,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+//            showProgress(true);
+            konfigurasi.fadeAnimation(true, mProgressView, konfigurasi.animationDurationShort);
 //            mAuthTask = new UserLoginTask(username, password);
 //            mAuthTask.execute((Void) null);
             lakukanLogin(username, password);
@@ -218,26 +221,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
+//    private void showProgress(final boolean show) {
+//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+//        // for very easy animations. If available, use these APIs to fade-in
+//        // the progress spinner.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mProgressView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//                }
+//            });
+//        } else {
+//            // The ViewPropertyAnimator APIs are not available, so simply show
+//            // and hide the relevant UI components.
+//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//        }
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -291,7 +294,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 } else {
                                     Snackbar.make(loginButton, "Gagal melakukan Login", Snackbar.LENGTH_LONG).setAction("Message", null).show();
                                 }
-                                showProgress(false);
+                                konfigurasi.fadeAnimation(false, mProgressView, konfigurasi.animationDurationShort);
+//                                showProgress(false);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -312,7 +316,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } else if (error instanceof ParseError) {
                             Snackbar.make(loginButton, "Gagal parsing data", Snackbar.LENGTH_LONG).setAction("Message", null).show();
                         }
-                        showProgress(false);
+                        konfigurasi.fadeAnimation(false, mProgressView, konfigurasi.animationDurationShort);
+//                        showProgress(false);
                     }
                 }) {
             @Override
@@ -384,7 +389,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            konfigurasi.fadeAnimation(false, mProgressView, konfigurasi.animationDurationShort);
+//            showProgress(false);
 
             if (success) {
                 finish();
@@ -397,7 +403,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+            konfigurasi.fadeAnimation(false, mProgressView, konfigurasi.animationDurationShort);
+//            showProgress(false);
         }
     }
 }

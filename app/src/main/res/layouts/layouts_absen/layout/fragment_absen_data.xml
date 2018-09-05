@@ -6,12 +6,13 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/absen_progress_bar"
+    <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/absen_progress_bar"
         android:scaleX="0.3"
         android:scaleY="0.3"
+        android:src="@drawable/map_logo_animated"
         android:visibility="gone" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

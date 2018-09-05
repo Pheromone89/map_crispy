@@ -338,7 +338,7 @@ public class AbsenFragment extends Fragment {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(JSON_STRING);
-            if (jsonObject.getString("success").equals("true")) {
+//            if (jsonObject.getString("success").equals("true")) {
                 jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
                 hariTanggal = hari + ", " + jsonObject.getString(konfigurasi.TAG_ABSEN_TANGGAL);
                 jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG));
@@ -358,10 +358,10 @@ public class AbsenFragment extends Fragment {
                     isSudahAbsenSore = true;
                 }
                 populateView();
-            } else {
-                Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
-                PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
-            }
+//            } else {
+//                Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
+//                PassingIntent.signOut(getActivity(), mUserToken, sharedPreferences);
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -382,12 +382,12 @@ public class AbsenFragment extends Fragment {
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
-                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+//                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
 
                 AbsenDataFragment absenDataFragment = new AbsenDataFragment();
-                absenDataFragment.setArguments(bundle);
+//                absenDataFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.content_fragment_area, absenDataFragment);

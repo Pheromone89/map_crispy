@@ -39,8 +39,11 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import id.go.bpkp.mobilemapbpkp.konfirmasipenugasan.KonfirmasiPenugasan;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -76,7 +79,7 @@ public class ProfilSeluruhPegawaiFragment extends Fragment implements RecyclerVi
             pegawaiSingkatAdapter;
     private List<PegawaiSingkat>
             pegawaiSingkatList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
 
     public ProfilSeluruhPegawaiFragment() {
 
@@ -92,10 +95,9 @@ public class ProfilSeluruhPegawaiFragment extends Fragment implements RecyclerVi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
+        mUserToken = SavedInstances.userToken;
         mUrl = this.getArguments().getString(PassedIntent.INTENT_FRAGMENTCONTENT);
-        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
-        mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
+        mNipLama = SavedInstances.nipLama;
         rootView = view;
 
         pegawaiSingkatList = new ArrayList<>();
@@ -125,7 +127,13 @@ public class ProfilSeluruhPegawaiFragment extends Fragment implements RecyclerVi
     }
 
     private void populateView() {
-        pegawaiSingkatAdapter = new PegawaiSingkatAdapter(getActivity(), pegawaiSingkatList, this, mUserToken);
+        PegawaiSingkat.pegawaiSingkatList.addAll(pegawaiSingkatList);
+        pegawaiSingkatAdapter = new PegawaiSingkatAdapter(
+                getActivity(),
+                pegawaiSingkatList,
+                this,
+                mUserToken
+        );
         pegawaiSingkatRecyclerView.setAdapter(pegawaiSingkatAdapter);
         pegawaiSingkatRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL) {
             @Override
@@ -147,28 +155,15 @@ public class ProfilSeluruhPegawaiFragment extends Fragment implements RecyclerVi
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             searchView.setIconifiedByDefault(true);
         }
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+        final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String newText) {
+                pegawaiSingkatAdapter.filter(newText);
                 return true;
             }
 
             public boolean onQueryTextSubmit(String query) {
-                String url = konfigurasi.URL_GET_ALLBYQUERY + (query.trim()) + "?api_token=";
-                ProfilSeluruhPegawaiFragment fragment = new ProfilSeluruhPegawaiFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
-                bundle.putString(PassedIntent.INTENT_FRAGMENTCONTENT, url);
-                bundle.putInt(PassedIntent.INTENT_ROLEIDINT, mRoleId);
-                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
-                fragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.content_fragment_area, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-                return false;
+                pegawaiSingkatAdapter.filter(query);
+                return true;
             }
         };
         searchView.setOnQueryTextListener(queryTextListener);

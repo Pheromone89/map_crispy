@@ -2,14 +2,21 @@
 <resources>
     <color name="colorPrimary">#0b1634</color>
     <color name="colorPrimaryDark">#020308</color>
+    <!--<color name="colorAccent">#b43939</color>-->
     <color name="colorAccent">#2bbd7e</color>
     <color name="transparent">#00ff4081</color>
     <!--Custom color palette-->
+    <!--<color name="blueBasicDark">#222223</color>-->
+    <!--<color name="blueBasic">#3d3d3e</color>-->
+    <!--<color name="blueBasicTransparent">#d23d3d3e</color>-->
+    <!--<color name="blueAccent">#6e6e7e</color>-->
+    <!--<color name="blueBasicPale">#9b9b9b</color>-->
     <color name="blueBasicDark">#006db3</color>
     <color name="blueBasic">#2596d2</color>
-    <color name="blueBasicPale">#63ccff</color>
+    <color name="blueBasicTransparent">#c5006db2</color>
     <color name="blueAccent">#3d5daa</color>
-    <color name="blueAccentPale">#6f7fbe</color>>
+    <color name="blueBasicPale">#63ccff</color>
+    <color name="blueAccentPale">#6f7fbe</color>
     <color name="whiteAlternate">#dce3f3</color>
     <color name="whiteAlternateDark">#c6d4f2</color>
     <!--Item Dashboard Color-->

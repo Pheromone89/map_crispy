@@ -12,7 +12,14 @@ import com.daimajia.androidanimations.library.YoYo;
 
 public class konfigurasi {
 
-
+    // INFORMASI STRATEGIS
+    public static final String URL_GET_REALISASIPKPT = "http://118.97.51.140:10001/map/api/pkpt_realisasi?api_token=";
+    // indikator
+    public static final String URL_GET_JUMLAHPP = "http://118.97.51.140:10001/map/api/pkpt_fokuspengawasan?api_token=";
+    public static final String URL_GET_INDIKATORPEMDA = "http://118.97.51.140:10001/map/api/indikator_pemda?api_token=";
+    public static final String URL_GET_INDIKATORKL = "http://118.97.51.140:10001/map/api/indikator_kl?api_token=";
+    // pkpt
+    // fp
 
     //ALL PEGAWAI LENGKAP
     public static final String URL_GET_ALL = "http://118.97.51.140:10001/map/api/pegawai?api_token=";
@@ -52,6 +59,7 @@ public class konfigurasi {
     public static final String URL_PENGAJUANCUTI = "http://118.97.51.140:10001/map/api/setcuti?api_token=";
     public static final String URL_GET_ABSENBAWAHAN = "http://118.97.51.140:10001/map/api/listAbsenBawahan/";
     public static final String URL_GET_DAFTARCUTI = "http://118.97.51.140:10001/map/api/listcuti/";
+    public static final String URL_POST_VALIDASIPRESENSI = "http://118.97.51.140:10001/map/api/cekmacaddress?api_token=";
     // IZIN KANTOR
     public static final String URL_PENGAJUANIZINKANTOR = "http://118.97.51.140:10001/map/api/setizin?api_token=";
     // IZIN KANTOR

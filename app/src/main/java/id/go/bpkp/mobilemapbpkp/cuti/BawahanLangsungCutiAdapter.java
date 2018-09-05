@@ -121,6 +121,7 @@ public class BawahanLangsungCutiAdapter extends RecyclerView.Adapter<BawahanLang
             String empAlasan = bawahanLangsungCuti.getAlasan();
             String empCatatan = bawahanLangsungCuti.getCatatan();
             String empPemrosesSebelumnya = bawahanLangsungCuti.getPemrosesSebelumnya();
+            String emptanggalPemrosesSebelumnya = bawahanLangsungCuti.getTanggalPemrosesSebelumnya();
             boolean empIsFinal = bawahanLangsungCuti.isFinal();
 
             Bundle bundle = new Bundle();
@@ -138,6 +139,7 @@ public class BawahanLangsungCutiAdapter extends RecyclerView.Adapter<BawahanLang
             bundle.putString("persetujuan_" + "alamat", empAlamat);
             bundle.putString("persetujuan_" + "catatan", empCatatan);
             bundle.putString("persetujuan_" + "pemroses_sebelumnya", empPemrosesSebelumnya);
+            bundle.putString("persetujuan_" + "tanggal_pemroses_sebelumnya", emptanggalPemrosesSebelumnya);
             bundle.putBoolean("persetujuan_" + "is_final", empIsFinal);
 
             CutiPersetujuanPegawaiFragment fragment = new CutiPersetujuanPegawaiFragment();

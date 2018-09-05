@@ -19,10 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
 
@@ -48,15 +50,6 @@ public class PencarianPegawaiFragment extends Fragment {
 
     private View
             rootView;
-    private String
-            mFoto,
-            mNipLama,
-            mNipBaru,
-            username,
-            mUserToken,
-            mDashboardContent;
-    private int
-            mRoleId;
     private EditText cariPegawaiQuery;
     private CardView searchButton;
     private SharedPreferences sharedPreferences;
@@ -80,29 +73,6 @@ public class PencarianPegawaiFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPreferences.edit();
-
-//        //bundle dari fragment sebelumnya
-//        //URL foto
-//        mFoto = this.getArguments().getString(INTENT_FOTO);
-//        //login token
-//        mUserToken = this.getArguments().getString(INTENT_USERTOKEN);
-//        //nip tanpa spasi
-//        mNipBaru = this.getArguments().getString(INTENT_NIPBARU);
-//        //nip lama tanpa spasi
-//        mNipLama = this.getArguments().getString(INTENT_NIPLAMA);
-//        //content url
-//        mDashboardContent = this.getArguments().getString(INTENT_DASHBOARDCONTENT);
-//        //role id
-//        mRoleId = this.getArguments().getInt(INTENT_ROLEIDINT);
-
-
-        mFoto = PassedIntent.getFoto(getActivity(), sharedPreferences.getString(FragmentBundles.BUNDLE_USERNIP_MESSAGE, "tidak ada"));
-        mUserToken = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
-        mNipBaru = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
-        mNipLama = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
-        mRoleId = sharedPreferences.getInt(FragmentBundles.BUNDLE_ROLEID_MESSAGE, 9999);
-
-        mDashboardContent = this.getArguments().getString(INTENT_DASHBOARDCONTENT);
 
         initiateView();
         initiateSetOnClickMethod();
@@ -155,10 +125,7 @@ public class PencarianPegawaiFragment extends Fragment {
                         String url;
                         url = konfigurasi.URL_GET_ALLBYQUERY + searchQuery + "?api_token=";
                         Bundle bundle = new Bundle();
-                        bundle.putString(INTENT_USERTOKEN, mUserToken);
                         bundle.putString(INTENT_FRAGMENTCONTENT, url);
-                        bundle.putString(INTENT_NIPLAMA, mNipLama);
-                        bundle.putInt(INTENT_ROLEIDINT, mRoleId);
 
                         fragment = new ProfilSeluruhPegawaiFragment();
                         fragment.setArguments(bundle);

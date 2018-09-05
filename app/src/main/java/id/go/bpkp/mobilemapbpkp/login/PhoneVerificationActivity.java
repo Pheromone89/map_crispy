@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -99,34 +100,6 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
         broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
         broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
-
-//        //intent dashboard dari login activity
-//        Intent dashboardIntent = getIntent();
-//        String loginPrefix = "login_";
-//        mNama = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMA, "tidak ada");
-//        //nip baru yg digabung
-//        mNipBaru = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPBARU, "tidak ada");
-//        mNipLama = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPLAMA, "tidak ada");
-//        mRoleIdInt = sharedPreferences.getInt(loginPrefix + konfigurasi.TAG_ROLEID, 99);
-//        mUserToken = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMA, "tidak ada");
-//        mFoto = PassedIntent.getFoto(PhoneVerificationActivity.this, mNipLama);
-//        mNoHp = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NOHP, "tidak ada");
-//        mEmail = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_EMAIL, "tidak ada");
-//        jenisJabatan = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_JENISJABATAN, "tidak ada");
-//        // data atasan langsung
-//        tidakPunyaAtasanLangsung = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_TIDAKPUNYAATASANLANGSUNG, true);
-//        isAtasan = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISATASAN, false);
-//        isLdap = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISLDAP, false);
-//        isJab = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISJAB, false);
-//        isHut = sharedPreferences.getBoolean(loginPrefix + konfigurasi.TAG_ISHUT, false);
-//        mAtasanLangsung = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NAMAATASAN, "tidak ada");
-//        mNipAtasanLangsung = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_NIPATASAN, "tidak ada");
-//        // broadcast
-//        isBroadcastable = sharedPreferences.getBoolean("is_broadcastable", false);
-//        broadcastStatus = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_STATUSBROADCAST, "tidak ada");
-//        broadcastImage = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_IMAGEBROADCAST, "tidak ada");
-//        broadcastTitle = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_TITLEBROADCAST, "tidak ada");
-//        broadcastMessage = sharedPreferences.getString(loginPrefix + konfigurasi.TAG_MESSAGEBROADCAST, "tidak ada");
 
         isRedirect = dashboardIntent.getBooleanExtra("is_redirect", false);
 

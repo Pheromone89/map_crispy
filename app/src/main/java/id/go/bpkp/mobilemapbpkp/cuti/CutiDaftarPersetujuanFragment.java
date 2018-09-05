@@ -34,6 +34,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -83,8 +84,8 @@ public class CutiDaftarPersetujuanFragment extends Fragment implements RecyclerV
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mUserToken = SavedInstances.userToken;
+        mNipLama = SavedInstances.nipLama;
         rootView = view;
 
         pegawaiBawahanLangsungList = new ArrayList<>();
@@ -155,6 +156,7 @@ public class CutiDaftarPersetujuanFragment extends Fragment implements RecyclerV
                 String alamat = jo.getString("alamat");
                 String catatan = jo.getString("catatan");
                 String pemrosesSebelumnya = jo.getString("pemroses_sebelumnya");
+                String tanggalPemrosesSebelumnya = jo.getString("tanggal_pemroses_sebelumnya");
                 boolean isFinal = jo.getString("is_final").equals("true");
 
                 pegawaiBawahanLangsungList.add(
@@ -172,6 +174,7 @@ public class CutiDaftarPersetujuanFragment extends Fragment implements RecyclerV
                                 alamat,
                                 catatan,
                                 pemrosesSebelumnya,
+                                tanggalPemrosesSebelumnya,
                                 isFinal
                         )
                 );

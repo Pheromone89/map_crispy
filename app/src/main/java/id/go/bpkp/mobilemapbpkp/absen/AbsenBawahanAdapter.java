@@ -15,12 +15,14 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 
 /**
  * Created by ASUS on 08/05/2018.
@@ -30,7 +32,7 @@ public class AbsenBawahanAdapter extends RecyclerView.Adapter<AbsenBawahanAdapte
 
     private static RecyclerViewClickListener itemListener;
     private Context context;
-    private List<AbsenBawahan> absenBawahanList;
+    private List<AbsenBawahan> absenBawahanList, absenBawahanListCopy;
 
     private String statusDatang, statusPulang;
     private YoYo.YoYoString ropeDataAbsen;
@@ -151,5 +153,24 @@ public class AbsenBawahanAdapter extends RecyclerView.Adapter<AbsenBawahanAdapte
 //                isDetailShown = true;
 //            }
         }
+    }
+
+    public void filter(String text) {
+        absenBawahanListCopy = new ArrayList<>();
+        absenBawahanListCopy.addAll(AbsenBawahan.absenBawahanList);
+        absenBawahanList.clear();
+        if (text.isEmpty()) {
+            absenBawahanList.addAll(AbsenBawahan.absenBawahanList);
+            absenBawahanListCopy.clear();
+        } else {
+            text = text.toLowerCase();
+            for (AbsenBawahan absenBawahan : absenBawahanListCopy) {
+                if (absenBawahan.getNama().toLowerCase().contains(text)) {
+                    absenBawahanList.add(absenBawahan);
+                }
+            }
+            absenBawahanListCopy.clear();
+        }
+        notifyDataSetChanged();
     }
 }

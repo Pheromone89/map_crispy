@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,8 +30,10 @@ import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.dashboard.DashboardActivity;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -43,19 +46,12 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
     private String
             JSON_STRING,
             kodeJenisDiklat,
-            jumlahDiklat,
             tanggalSertifikat,
             nomorSertifikat,
-            kompetensi,
-            jenisDiklat,
-            subgrupDiklat,
-            grupDiklat;
+            kompetensi;
     private String
-            mNipBaru,
-            mFoto,
             mUserToken,
-            mNipLama,
-            username;
+            mNipLama;
     private View
             rootView;
     private RecyclerView
@@ -64,9 +60,10 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
             diklatAdapter;
     private ArrayList<Diklat>
             diklatList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private LinearLayout dataView;
 
     @Nullable
     @Override
@@ -93,14 +90,8 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
         rootView = (View) view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
-        //nip lama tanpa spasi
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mUserToken = SavedInstances.userToken;
         JSON_STRING = sharedPreferences.getString("saved_json_data_diklat", null);
 
         diklatList = new ArrayList<>();
@@ -114,6 +105,9 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
     }
 
     private void initiateView() {
+        dataView = rootView.findViewById(R.id.profil_pegawai_data_diklat);
+        dataView.setVisibility(View.GONE);
+
         loadingProgressBar = rootView.findViewById(R.id.profil_individu_data_diklat_progress_bar);
         dataDiklatRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_data_diklat);
         dataDiklatRecyclerView.setHasFixedSize(true);
@@ -124,6 +118,7 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
         diklatAdapter = new DiklatAdapter(getActivity(), diklatList, this);
         dataDiklatRecyclerView.setAdapter(diklatAdapter);
 
+        dataView.setVisibility(View.VISIBLE);
         loadingProgressBar.setVisibility(View.GONE);
         konfigurasi.fadeAnimation(true, dataDiklatRecyclerView, konfigurasi.animationDurationShort);
     }
@@ -131,13 +126,9 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
     private void getJSON() {
         class GetJSON extends AsyncTask<Void, Void, String> {
 
-            ProgressDialog loading;
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                dataDiklatRecyclerView.setVisibility(View.GONE);
             }
 
             @Override
@@ -209,7 +200,6 @@ public class ProfilPegawaiDataDiklatFragment extends Fragment implements Recycle
                 editor.remove(INTENT_NIPBARU);
                 editor.apply();
                 logoutIntent = new Intent(getActivity(), LoginActivity.class);
-                logoutIntent.putExtra(INTENT_NIPBARU, mNipBaru);
                 logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);
                 getActivity().finish();

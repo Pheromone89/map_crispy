@@ -31,6 +31,7 @@ import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.cuti.BawahanLangsungCuti;
 import id.go.bpkp.mobilemapbpkp.cuti.BawahanLangsungCutiAdapter;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
@@ -80,8 +81,8 @@ public class IzinKantorDaftarPersetujuanFragment extends Fragment implements Rec
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mUserToken = SavedInstances.userToken;
+        mNipLama = SavedInstances.nipLama;
         rootView = view;
 
         pegawaiBawahanLangsungList = new ArrayList<>();
@@ -140,35 +141,35 @@ public class IzinKantorDaftarPersetujuanFragment extends Fragment implements Rec
             JSONArray result = jsonObject.getJSONArray(konfigurasi.TAG_JSON_ARRAY);
             for (int i = 0; i < result.length(); i++) {
                 JSONObject jo = result.getJSONObject(i);
+
                 String idTransaksi = jo.getString("id_transaksi");
-                String nipLama = jo.getString(konfigurasi.TAG_NIPLAMA);
-                String nama = jo.getString(konfigurasi.TAG_NAMA);
-                String jenisCuti = jo.getString("jenis_cuti");
+                String kdKatAlasan = jo.getString("kd_kat_alasan");
+                String nipLama = jo.getString("niplama");
+                String nama = jo.getString("nama");
+                String jenisIzin = jo.getString("jenis_izin");
                 String tanggalPengajuan = jo.getString("tanggal_pengajuan");
                 String tanggalAwal = jo.getString("tanggal_awal");
                 String tanggalAkhir = jo.getString("tanggal_akhir");
-                String jumlahHari = jo.getString("jumlah_hari");
-                String alasan = jo.getString("alasan");
-                String alamat = jo.getString("alamat");
-                String catatan = jo.getString("catatan");
-                String pemrosesSebelumnya = jo.getString("pemroses_sebelumnya");
+                String keterangan = jo.getString("keterangan");
+                String jamIzin = jo.getString("jam_izin");
                 boolean isFinal = jo.getString("is_final").equals("true");
+                String pemrosesSebelumnya = jo.getString("pemroses_sebelumnya");
+                String catatan = jo.getString("catatan");
 
                 pegawaiBawahanLangsungList.add(
                         new BawahanLangsungIzinKantor(
-                                i,
-                                idTransaksi,
+                                Integer.parseInt(idTransaksi),
+                                kdKatAlasan,
                                 nipLama,
                                 nama,
-                                jenisCuti,
+                                jenisIzin,
                                 tanggalPengajuan,
                                 tanggalAwal,
                                 tanggalAkhir,
-                                jumlahHari,
-                                alasan,
-                                alamat,
-                                catatan,
+                                keterangan,
+                                jamIzin,
                                 pemrosesSebelumnya,
+                                catatan,
                                 isFinal
                         )
                 );

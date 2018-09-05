@@ -1,4 +1,4 @@
-package id.go.bpkp.mobilemapbpkp.dashboard;
+package id.go.bpkp.mobilemapbpkp.konfigurasi.graphs;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;

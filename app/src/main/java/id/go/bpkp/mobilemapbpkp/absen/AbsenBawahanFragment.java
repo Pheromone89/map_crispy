@@ -3,6 +3,7 @@ package id.go.bpkp.mobilemapbpkp.absen;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,8 +35,12 @@ import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
+import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkatAdapter;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -67,7 +73,7 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
             absenBawahanAdapter;
     private ArrayList<AbsenBawahan>
             absenBawahanList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
 
     @Nullable
@@ -93,14 +99,10 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
         rootView = (View) view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
         //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
+        mUserToken = SavedInstances.userToken;
         //nip lama tanpa spasi
-        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mNipLama = SavedInstances.nipLama;
 
         absenBawahanList = new ArrayList<>();
 
@@ -110,9 +112,33 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        MenuItem searchMenuItem = menu.getItem(0);
+//        searchMenuItem.setVisible(false);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_data_absen);
+//        super.onCreateOptionsMenu(menu, inflater);
+
         MenuItem searchMenuItem = menu.getItem(0);
-        searchMenuItem.setVisible(false);
+        searchMenuItem.setVisible(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_data_absen);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        if (null != searchView) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setIconifiedByDefault(true);
+        }
+        final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                absenBawahanAdapter.filter(newText);
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                absenBawahanAdapter.filter(query);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(queryTextListener);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -124,14 +150,13 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
     }
 
     private void populateView() {
+        AbsenBawahan.absenBawahanList.addAll(absenBawahanList);
         absenBawahanAdapter = new AbsenBawahanAdapter(getActivity(), absenBawahanList, this);
         dataAbsenBawahanRecyclerView.setAdapter(absenBawahanAdapter);
     }
 
     private void getJSON() {
         class GetJSON extends AsyncTask<Void, Void, String> {
-
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
@@ -145,7 +170,6 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
                 super.onPostExecute(s);
                 loadingProgressBar.setVisibility(View.GONE);
                 konfigurasi.fadeAnimation(true, dataAbsenBawahanRecyclerView, konfigurasi.animationDurationShort);
-//                dataAbsenBawahanRecyclerView.setVisibility(View.VISIBLE);
                 JSON_STRING = s;
                 parseJSON();
             }
@@ -206,5 +230,10 @@ public class AbsenBawahanFragment extends Fragment implements RecyclerViewClickL
         } else {
             return string;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -27,8 +28,11 @@ import java.util.ArrayList;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -45,8 +49,6 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
             nomorSKJabatan,
             tanggalSKJabatan;
     private String
-            mFoto,
-            username,
             mUserToken,
             mNipLama;
     private View
@@ -57,9 +59,10 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
             jabatanAdapter;
     private ArrayList<Jabatan>
             jabatanList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private LinearLayout dataView;
 
     @Nullable
     @Override
@@ -86,14 +89,8 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
         rootView = (View) view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString("foto");
-        //login token
-        mUserToken = this.getArguments().getString("user_token");
-        //nip tanpa spasi
-        username = this.getArguments().getString("username");
-        //nip lama tanpa spasi
-        mNipLama = this.getArguments().getString("nip_lama");
+        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mUserToken = SavedInstances.userToken;
         JSON_STRING = sharedPreferences.getString("saved_json_data_jabatan", null);
 
         jabatanList = new ArrayList<>();
@@ -107,6 +104,9 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
     }
 
     private void initiateView() {
+        dataView = rootView.findViewById(R.id.profil_pegawai_data_jabatan);
+        dataView.setVisibility(View.GONE);
+
         loadingProgressBar = rootView.findViewById(R.id.profil_individu_data_jabatan_progress_bar);
         dataJabatanRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_data_jabatan);
         dataJabatanRecyclerView.setHasFixedSize(true);
@@ -117,6 +117,7 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
         jabatanAdapter = new JabatanAdapter(getActivity(), jabatanList, this);
         dataJabatanRecyclerView.setAdapter(jabatanAdapter);
 
+        dataView.setVisibility(View.VISIBLE);
         loadingProgressBar.setVisibility(View.GONE);
         konfigurasi.fadeAnimation(true, dataJabatanRecyclerView, konfigurasi.animationDurationShort);
     }
@@ -129,15 +130,11 @@ public class ProfilPegawaiDataJabatanFragment extends Fragment implements Recycl
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                dataJabatanRecyclerView.setVisibility(View.GONE);
-//                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-//                loading.dismiss();
                 JSON_STRING = s;
                 editor.putString("saved_json_data_jabatan", s);
                 editor.apply();

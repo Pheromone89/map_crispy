@@ -338,11 +338,19 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <ProgressBar
+                            <!--<ProgressBar-->
+                            <!--android:id="@+id/cuti_pengajuan_progress_bar"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_margin="20dp" />-->
+
+                            <pl.droidsonroids.gif.GifImageView
                                 android:id="@+id/cuti_pengajuan_progress_bar"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="20dp" />
+                                android:layout_height="100dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/map_logo_animated" />
+
                         </RelativeLayout>
 
 
@@ -378,7 +386,7 @@
         android:id="@+id/cuti_pengajuan_peringatan_atasan_langsung"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -428,7 +436,7 @@
         android:id="@+id/cuti_pengajuan_konfirmasi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -531,18 +539,26 @@
         android:id="@+id/cuti_pengajuan_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ProgressBar
+        <!--<ProgressBar-->
+        <!--android:id="@+id/cuti_pengajuan_progressbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:padding="150dp" />-->
+
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/cuti_pengajuan_progressbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:padding="150dp" />
+            android:padding="100dp"
+            android:src="@drawable/map_logo_animated" />
 
     </LinearLayout>
 
@@ -550,7 +566,7 @@
         android:id="@+id/cuti_pengajuan_message_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -560,7 +576,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#c5006db2" />
+            android:background="@color/blueBasicTransparent" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -620,7 +636,7 @@
         android:id="@+id/cuti_pengajuan_message_failed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c5006db2"
+        android:background="@color/blueBasicTransparent"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -630,7 +646,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#c5006db2" />
+            android:background="@color/blueBasicTransparent" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

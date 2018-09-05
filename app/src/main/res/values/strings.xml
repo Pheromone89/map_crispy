@@ -84,6 +84,7 @@
     <string name="title_fragment_gagal_fp_pengajuan">Pengajuan Pernyataan Fingerprint Pegawai</string>
     <string name="title_fragment_konfirmasi_penugasan">Konfirmasi Penugasan</string>
     <string name="title_fragment_konfirmasi_penugasan_pengajuan">Pengajuan Konfirmasi Penugasan</string>
+    <string name="title_fragment_informasi_strategis">Dashboard Strategis</string>
     <!--jenis izin-->
     <string name="spinner_pengajuan_izin_kantor_tidak_masuk">Tidak masuk kantor</string>
     <string name="spinner_pengajuan_izin_kantor_terlambat">Datang terlambat</string>

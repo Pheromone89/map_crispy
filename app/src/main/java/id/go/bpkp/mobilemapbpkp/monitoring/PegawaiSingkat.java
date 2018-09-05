@@ -1,5 +1,8 @@
 package id.go.bpkp.mobilemapbpkp.monitoring;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ASUS on 11/02/2018.
  */
@@ -9,6 +12,7 @@ public class PegawaiSingkat {
     private int id;
     private String nama, nipLama, nipBaru, nipBaruPisah, jabatanSingkat, unit, foto;
 
+    public static List<PegawaiSingkat> pegawaiSingkatList = new ArrayList<>();
 
     public PegawaiSingkat(int id, String nama, String nipLama, String nipBaru, String nipBaruPisah, String jabatanSingkat, String unit, String foto) {
         this.id = id;
@@ -51,5 +55,9 @@ public class PegawaiSingkat {
 
     public String getFoto() {
         return foto;
+    }
+
+    public String getAllDetail() {
+        return id + " " + nama + " " + nipLama + " " + nipBaru + " " + jabatanSingkat + " " + unit;
     }
 }

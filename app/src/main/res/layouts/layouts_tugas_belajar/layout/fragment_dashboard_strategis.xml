@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueBasic"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/informasi_strategis_dashboard_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:src="@drawable/map_logo_animated"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/informasi_strategis_dashboard_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blueBasicDark"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/IndividuTextTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:text="@string/copyright"
+            android:textColor="@color/whiteAlternate"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

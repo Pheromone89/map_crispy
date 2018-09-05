@@ -43,6 +43,7 @@ import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTOURL;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
@@ -90,9 +91,9 @@ public class IzinKantorDashboardPegawaiFragment extends Fragment implements Recy
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private CardView izinKantorCardView;
-    private ProgressBar rootProgressBar, persetujuanProgressBar;
+    private GifImageView rootProgressBar, persetujuanProgressBar;
     private LinearLayout messageNoTransaksi;
-    private ProgressBar listProgressBar;
+    private GifImageView listProgressBar;
 
     // persetujuan
     private boolean isAtasan;

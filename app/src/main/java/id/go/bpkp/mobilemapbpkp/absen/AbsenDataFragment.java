@@ -35,8 +35,10 @@ import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -69,7 +71,7 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
             absenAdapter;
     private ArrayList<Absen>
             absenList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
 
     @Nullable
@@ -95,14 +97,14 @@ public class AbsenDataFragment extends Fragment implements RecyclerViewClickList
         rootView = (View) view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
         //nip lama tanpa spasi
-        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mNipLama = SavedInstances.nipLama;
+        //URL foto
+        mFoto = PassedIntent.getFoto(getActivity(), mNipLama);
+        //login token
+        mUserToken = SavedInstances.userToken;
+        //nip tanpa spasi
+        username = SavedInstances.username;
 
         absenList = new ArrayList<>();
 

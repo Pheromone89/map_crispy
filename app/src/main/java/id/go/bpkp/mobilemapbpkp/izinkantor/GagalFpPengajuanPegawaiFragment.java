@@ -176,7 +176,6 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
         mNipAtasanLangsung = this.getArguments().getString(INTENT_NIPATASANLANGSUNG);
 
         mFotoUrl = this.getArguments().getString(INTENT_FOTOURL);
-        mNoHp = this.getArguments().getString(INTENT_NOHP);
         isAtasan = this.getArguments().getBoolean(INTENT_ISATASAN);
 
         // date
@@ -374,7 +373,6 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                     bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
-                    bundle.putString(INTENT_NOHP, mNoHp);
                     bundle.putString(INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
                     bundle.putString(INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                     bundle.putBoolean(INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);
@@ -393,7 +391,6 @@ public class GagalFpPengajuanPegawaiFragment extends Fragment {
                     bundle.putString(INTENT_FOTOURL, mFotoUrl);
                     bundle.putString(INTENT_FOTO, mFoto);
                     bundle.putString(INTENT_NIPBARU, mNipBaru);
-                    bundle.putString(INTENT_NOHP, mNoHp);
 
                     fragment = new IzinKantorDashboardPegawaiFragment();
                     fragment.setArguments(bundle);

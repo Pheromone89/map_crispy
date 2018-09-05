@@ -1,5 +1,5 @@
 
-package id.go.bpkp.mobilemapbpkp.dashboard;
+package id.go.bpkp.mobilemapbpkp.konfigurasi.graphs;
 
 import android.content.Context;
 import android.widget.TextView;

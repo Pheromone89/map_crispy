@@ -49,6 +49,7 @@ import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorAdapter;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Created by ASUS on 09/02/2018.
@@ -107,7 +108,7 @@ public class CutiDashboardPegawaiFragment extends Fragment implements RecyclerVi
             tidakPunyaAtasanLangsung, isAtasan;
     private YoYo.YoYoString ropeCutiDashboard;
     private LinearLayout rootLayout, detailCutiLayout;
-    private ProgressBar rootProgressBar, pengajuanProgressBar, persetujuanProgressBar;
+    private GifImageView rootProgressBar, pengajuanProgressBar, persetujuanProgressBar;
     private TextView pengajuanLabel, saldoCutiSingkatLabel;
     // persetujuan
     private CardView
@@ -125,7 +126,7 @@ public class CutiDashboardPegawaiFragment extends Fragment implements RecyclerVi
     private SharedPreferences.Editor editor;
     private CardView cutiCardView, detailCloseButton;
     private LinearLayout messageNoTransaksi;
-    private ProgressBar listProgressBar;
+    private GifImageView listProgressBar;
 
 
     @Nullable

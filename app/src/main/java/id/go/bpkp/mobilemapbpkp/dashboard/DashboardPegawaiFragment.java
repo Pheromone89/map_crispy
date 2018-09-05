@@ -41,12 +41,16 @@ import java.util.TimerTask;
 
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
+import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahan;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahanFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDaftarPersetujuanFragment;
+import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDaftarPersetujuanFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 
 import static id.go.bpkp.mobilemapbpkp.dashboard.DashboardPanel.dashboardPanelList;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
@@ -150,38 +154,32 @@ public class DashboardPegawaiFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPreferences.edit();
 
-//        //bundle dari fragment sebelumnya
-//        //URL foto
-//        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-//        //login token
-//        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-//        // nama
-//        mNama = this.getArguments().getString(PassedIntent.INTENT_NAMA);
-//        //nip tanpa spasi
-//        mNipBaru = this.getArguments().getString(PassedIntent.INTENT_NIPBARU);
-//        //nip lama tanpa spasi
-//        mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
-//        //content url
-//        mContentUrl = konfigurasi.URL_GET_ABSEN;
-//        //role id
-//        mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
-//        // IMEI
-//        mImei = this.getArguments().getString(PassedIntent.INTENT_IMEI);
-//        // HUT?
-//        isHut = this.getArguments().getBoolean(PassedIntent.INTENT_ISHUT, false);
-//        // atasan
-//        isAtasan = this.getArguments().getBoolean(PassedIntent.INTENT_ISATASAN, false);
-
-        mFoto = PassedIntent.getFoto(getActivity(), sharedPreferences.getString(FragmentBundles.BUNDLE_USERNIP_MESSAGE, "tidak ada"));
-        mUserToken = sharedPreferences.getString(FragmentBundles.BUNDLE_USERTOKEN, "tidak ada");
-        mNama = sharedPreferences.getString(FragmentBundles.BUNDLE_NAME_MESSAGE, "tidak ada");
-        mNipBaru = sharedPreferences.getString(FragmentBundles.BUNDLE_NIPBARU_MESSAGE, "tidak ada");
-        mNipLama = sharedPreferences.getString(FragmentBundles.BUNDLE_USERNIP_MESSAGE, "tidak ada");
-        mRoleId = sharedPreferences.getInt(FragmentBundles.BUNDLE_ROLEID_MESSAGE, 999);
-        isHut = sharedPreferences.getBoolean(FragmentBundles.BUNDLE_ISHUT_MESSAGE, false);
-        isAtasan = sharedPreferences.getBoolean(FragmentBundles.BUNDLE_ISATASAN_MESSAGE, false);
-
+        //bundle dari fragment sebelumnya
+        //nip lama tanpa spasi
+        mNipLama = SavedInstances.nipLama;
+        //URL foto
+        mFoto = PassedIntent.getFoto(getActivity(), mNipLama);
+        //login token
+        mUserToken = SavedInstances.userToken;
+        // nama
+        mNama = SavedInstances.name;
+        //nip tanpa spasi
+        mNipBaru = SavedInstances.nipBaru;
+        //content url
         mContentUrl = konfigurasi.URL_GET_ABSEN;
+        //role id
+        mRoleId = SavedInstances.roleId;
+        // HUT?
+        isHut = SavedInstances.isHut.equals("true");
+        // atasan
+        isAtasan = SavedInstances.isAtasan.equals("true");
+
+//        TextView textView = rootView.findViewById(R.id.debug);
+//        textView.setText(
+//                "list pegawai: " + PegawaiSingkat.pegawaiSingkatList.size() + "\n" +
+//                        "list absen bawahan: " + AbsenBawahan.absenBawahanList.size()
+//        );
+
 
         c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
@@ -515,7 +513,7 @@ public class DashboardPegawaiFragment extends Fragment {
                             .setVisibility(View.VISIBLE);
                     initiateViewPanelNotifikasiAtasan();
                     getJSONNotifikasiAtasanCuti();
-//                    getJSONNotifikasiAtasanIzinKantor();
+                    getJSONNotifikasiAtasanIzinKantor();
                     getJSONNotifikasiAtasanPresensi();
                 }
                 break;
@@ -746,7 +744,7 @@ public class DashboardPegawaiFragment extends Fragment {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(JSON_STRING);
-            if (jsonObject.getString("success").equals("true")) {
+//            if (jsonObject.getString("success").equals("true")) {
                 jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
                 jamDatang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_DATANG), "-");
                 jamPulang = checkNull(jsonObject.getString(konfigurasi.TAG_ABSEN_PULANG), "-");
@@ -764,9 +762,9 @@ public class DashboardPegawaiFragment extends Fragment {
                     isSudahAbsenSore = true;
                 }
                 populatePanelPresensi();
-            } else {
-                Toast.makeText(getActivity(), "Gagal menarik data presensi", Toast.LENGTH_SHORT).show();
-            }
+//            } else {
+//                Toast.makeText(getActivity(), "Gagal menarik data presensi", Toast.LENGTH_SHORT).show();
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Gagal menarik data presensi", Toast.LENGTH_SHORT).show();
@@ -1028,49 +1026,57 @@ public class DashboardPegawaiFragment extends Fragment {
         presensiTextView = rootView.findViewById(R.id.dashboard_notifikasi_presensi);
         ImageView info = rootView.findViewById(R.id.dashboard_notifikasi_presensi_info);
 
-
-        // onclick listener
-//        LinearLayout cutiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_cuti_layout);
-//        LinearLayout izinLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_izin_layout);
-//        LinearLayout presensiLayout = rootView.findViewById(R.id.dashboard_pegawai_notifikasi_atasan_presensi_layout);
         prosesPersetujuanCutiTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
-                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+//                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+
+                DashboardActivity.openedDrawer = "panel_dashboard_notif_cuti";
 
                 CutiDaftarPersetujuanFragment cutiDaftarPersetujuanFragment = new CutiDaftarPersetujuanFragment();
-                cutiDaftarPersetujuanFragment.setArguments(bundle);
+//                cutiDaftarPersetujuanFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.content_fragment_area, cutiDaftarPersetujuanFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
         prosesPersetujuanIzinKantorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "fitur ini belum diimplementasikan", Toast.LENGTH_SHORT).show();
+//                Bundle bundle = new Bundle();
+//                bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+//                bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
+
+                DashboardActivity.openedDrawer = "panel_dashboard_notif_izin";
+
+                IzinKantorDaftarPersetujuanFragment izinKantorDaftarPersetujuanFragment = new IzinKantorDaftarPersetujuanFragment();
+//                izinKantorDaftarPersetujuanFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.content_fragment_area, izinKantorDaftarPersetujuanFragment);
+                fragmentTransaction.commit();
             }
         });
         presensiTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(INTENT_USERTOKEN, mUserToken);
-                bundle.putString(INTENT_NAMA, mNama);
-                bundle.putString(INTENT_NIPLAMA, mNipLama);
-                bundle.putString(INTENT_NIPBARU, mNipBaru);
-                bundle.putString(INTENT_FOTO, mFoto);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(INTENT_USERTOKEN, mUserToken);
+//                bundle.putString(INTENT_NAMA, mNama);
+//                bundle.putString(INTENT_NIPLAMA, mNipLama);
+//                bundle.putString(INTENT_NIPBARU, mNipBaru);
+//                bundle.putString(INTENT_FOTO, mFoto);
+
+                DashboardActivity.openedDrawer = "panel_dashboard_notif_presensi";
 
                 AbsenBawahanFragment absenBawahanFragment = new AbsenBawahanFragment();
-                absenBawahanFragment.setArguments(bundle);
+//                absenBawahanFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.content_fragment_area, absenBawahanFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

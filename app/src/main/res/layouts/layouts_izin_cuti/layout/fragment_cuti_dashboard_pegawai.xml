@@ -6,11 +6,13 @@
     android:background="@color/blueBasic"
     android:clickable="true">
 
-    <ProgressBar
-        android:id="@+id/cuti_pegawai_progress_bar"
+    <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="150dp"
+        android:id="@+id/cuti_pegawai_progress_bar"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:src="@drawable/map_logo_animated"
         android:visibility="gone" />
 
     <LinearLayout
@@ -26,12 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp" />
 
-        <ProgressBar
+        <pl.droidsonroids.gif.GifImageView
             android:layout_width="match_parent"
             android:id="@+id/list_progress_bar"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="50dp" />
+            android:scaleX="0.3"
+            android:scaleY="0.3"
+            android:src="@drawable/map_logo_animated" />
 
         <include
             layout="@layout/i_dashboard_cuti_pegawai_pengajuan_cuti_aktif"
@@ -193,10 +197,12 @@
                 app:cardBackgroundColor="@color/blueBasicDark"
                 app:cardCornerRadius="10dp">
 
-                <ProgressBar
-                    android:id="@+id/cuti_pegawai_dashboard_pengajuan_progress_bar"
+                <pl.droidsonroids.gif.GifImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:id="@+id/cuti_pegawai_dashboard_pengajuan_progress_bar"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/map_logo_animated"
                     android:visibility="gone" />
 
                 <TextView
@@ -221,10 +227,12 @@
             app:cardBackgroundColor="@color/blueBasicDark"
             app:cardCornerRadius="10dp">
 
-            <ProgressBar
-                android:id="@+id/cuti_pegawai_dashboard_persetujuan_progress_bar"
+            <pl.droidsonroids.gif.GifImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/cuti_pegawai_dashboard_persetujuan_progress_bar"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/map_logo_animated"
                 android:visibility="gone" />
 
             <TextView

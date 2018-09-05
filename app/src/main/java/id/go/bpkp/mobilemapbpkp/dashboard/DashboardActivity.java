@@ -17,28 +17,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
+import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahan;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenBawahanFragment;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenFragment;
 import id.go.bpkp.mobilemapbpkp.absen.AbsenMACFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiDashboardPegawaiFragment;
+import id.go.bpkp.mobilemapbpkp.informasistrategis.InformasiStrategisDashboardFragment;
 import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardAdminFragment;
 import id.go.bpkp.mobilemapbpkp.izinkantor.IzinKantorDashboardPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.SettingPrefs;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.konfirmasipenugasan.KonfirmasiPenugasanDashboardPegawaiFragment;
+import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 import id.go.bpkp.mobilemapbpkp.monitoring.PencarianPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilPegawaiPagerFragment;
 import id.go.bpkp.mobilemapbpkp.monitoring.ProfilSeluruhPegawaiFragment;
@@ -46,30 +48,6 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.tentang.TentangFragment;
 
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_EMAIL_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_IMAGEBROADCAST_BROADCAST;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISATASAN_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISHUT_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISJAB_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ISLDAP_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_JENISJABATAN_PEGAWAI;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_MESSAGEBROADCAST_BROADCAST;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NAMAATASAN_ATASAN;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NAME_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPATASAN_ATASAN;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPBARU_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NIPLAMA_PEGAWAI;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_NOHP_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_ROLEID_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_STATUSBROADCAST_BROADCAST;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_TIDAKPUNYAATASANLANGSUNG_ATASAN;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_TITLEBROADCAST_BROADCAST;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_URLFOTO_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERNAME_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERNIP_MESSAGE;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.BUNDLE_USERTOKEN;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.loginPrefix;
-import static id.go.bpkp.mobilemapbpkp.konfigurasi.FragmentBundles.messageSuffix;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTIMAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTMESSAGE;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_BROADCASTSTATUS;
@@ -97,6 +75,7 @@ import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_USERTOKEN
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static String openedDrawer = "";
     String
             mNama,
             mUsername,
@@ -113,7 +92,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             jenisJabatan,
             JSON_STRING,
             mContentUrl,
-            openedDrawer,
             logoutMessage,
             mAtasanLangsung,
             mNipAtasanLangsung,
@@ -182,7 +160,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 //        mRoleIdInt = dashboardIntent.getIntExtra(INTENT_ROLEIDINT, 99);
 //        mUserToken = dashboardIntent.getStringExtra(INTENT_USERTOKEN);
 //        mFotoUrl = dashboardIntent.getStringExtra(INTENT_FOTOURL);
-////        mFoto = dashboardIntent.getStringExtra(INTENT_FOTOURL) + mNipLama;
 //        mFoto = PassedIntent.getFoto(DashboardActivity.this, mNipLama);
 //        mNoHp = dashboardIntent.getStringExtra(INTENT_NOHP);
 //        mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
@@ -203,33 +180,37 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 //        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
 //        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
 
-        mUserToken = sharedPreferences.getString(BUNDLE_USERTOKEN, "tidak ada");
-        mFotoUrl = sharedPreferences.getString(BUNDLE_URLFOTO_MESSAGE, "tidak ada");
-        mNama = sharedPreferences.getString(BUNDLE_NAME_MESSAGE, "tidak ada");
-        mNipBaru = sharedPreferences.getString(BUNDLE_NIPBARU_MESSAGE, "tidak ada");
-        mEmail = sharedPreferences.getString(BUNDLE_EMAIL_MESSAGE, "tidak ada");
-        mRoleIdInt = sharedPreferences.getInt(BUNDLE_ROLEID_MESSAGE, 999);
-        mNoHp = sharedPreferences.getString(BUNDLE_NOHP_MESSAGE, "tidak ada");
-        mNipLama = sharedPreferences.getString(BUNDLE_USERNIP_MESSAGE, "tidak ada");
-        jenisJabatan = sharedPreferences.getString(BUNDLE_JENISJABATAN_PEGAWAI, "tidak ada");
+
+        Intent dashboardIntent = getIntent();
+        //get mVar
+        mNama = SavedInstances.name;
+        mUsername = SavedInstances.loginId;
+        mPassword = SavedInstances.loginPassword;
+        //nip baru yg digabung
+        mNipBaru = SavedInstances.nipBaru;
+        mNipLama = SavedInstances.nipLama;
+        mRoleIdInt = SavedInstances.roleId;
+        mUserToken = SavedInstances.userToken;
+        mFotoUrl = SavedInstances.urlFoto;
         mFoto = PassedIntent.getFoto(DashboardActivity.this, mNipLama);
-        mUsername = sharedPreferences.getString(INTENT_USERNAME, "tidak ada");
-        mPassword = sharedPreferences.getString(INTENT_PASSWORD, "tidak ada");
-        mImei = sharedPreferences.getString(INTENT_IMEI, "tidak ada");
+        mNoHp = SavedInstances.nomorHp;
+        mImei = dashboardIntent.getStringExtra(INTENT_IMEI);
+        mEmail = SavedInstances.email;
+        jenisJabatan = dashboardIntent.getStringExtra("jenis_jabatan");
         // data atasan langsung
-        tidakPunyaAtasanLangsung = sharedPreferences.getBoolean(BUNDLE_TIDAKPUNYAATASANLANGSUNG_ATASAN, true);
-        isAtasan = sharedPreferences.getBoolean(BUNDLE_ISATASAN_MESSAGE, false);
-        isLdap = sharedPreferences.getBoolean(BUNDLE_ISLDAP_MESSAGE, false);
-        isJab = sharedPreferences.getBoolean(BUNDLE_ISJAB_MESSAGE, false);
-        isHut = sharedPreferences.getBoolean(BUNDLE_ISHUT_MESSAGE, false);
-        mAtasanLangsung = sharedPreferences.getString(BUNDLE_NAMAATASAN_ATASAN, "tidak ada");
-        mNipAtasanLangsung = sharedPreferences.getString(BUNDLE_NIPATASAN_ATASAN, "tidak ada");
+        tidakPunyaAtasanLangsung = dashboardIntent.getBooleanExtra(INTENT_TIDAKPUNYAATASANLANGSUNG, true);
+        isAtasan = SavedInstances.isAtasan.equals("true");
+        isLdap = SavedInstances.isLdap.equals("true");
+        isJab = SavedInstances.isJab.equals("true");
+        isHut = SavedInstances.isHut.equals("true");
+        mAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NAMAATASANLANGSUNG);
+        mNipAtasanLangsung = dashboardIntent.getStringExtra(INTENT_NIPATASANLANGSUNG);
         // broadcast
-        isBroadcastable = sharedPreferences.getBoolean("is_broadcastable", false);
-        broadcastStatus = sharedPreferences.getString(BUNDLE_STATUSBROADCAST_BROADCAST, "tidak ada");
-        broadcastImage = sharedPreferences.getString(BUNDLE_IMAGEBROADCAST_BROADCAST, "tidak ada");
-        broadcastTitle = sharedPreferences.getString(BUNDLE_TITLEBROADCAST_BROADCAST, "tidak ada");
-        broadcastMessage = sharedPreferences.getString(BUNDLE_MESSAGEBROADCAST_BROADCAST, "tidak ada");
+        isBroadcastable = dashboardIntent.getBooleanExtra("is_broadcastable", false);
+        broadcastStatus = dashboardIntent.getStringExtra(INTENT_BROADCASTSTATUS);
+        broadcastImage = dashboardIntent.getStringExtra(INTENT_BROADCASTIMAGE);
+        broadcastTitle = dashboardIntent.getStringExtra(INTENT_BROADCASTTITLE);
+        broadcastMessage = dashboardIntent.getStringExtra(INTENT_BROADCASTMESSAGE);
 
         initateView();
         populateView();
@@ -294,14 +275,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //toolbar
         toolbar = findViewById(R.id.toolbar);
         //menu drawer
-        presensiPegawaiMenu = navigationView.getMenu().getItem(1);
-        presensiBawahanPegawaiMenu = navigationView.getMenu().getItem(2);
-        profilSemuaPegawaiMenu = navigationView.getMenu().getItem(3);
-        profilPegawaiMenu = navigationView.getMenu().getItem(4);
+        presensiPegawaiMenu = navigationView.getMenu().findItem(R.id.nav_presensi);
+        presensiBawahanPegawaiMenu = navigationView.getMenu().findItem(R.id.nav_presensi_bawahan);
+        profilPegawaiMenu = navigationView.getMenu().findItem(R.id.nav_profile);
+        profilSemuaPegawaiMenu = navigationView.getMenu().findItem(R.id.nav_profile_seluruh_pegawai);
         if (jenisJabatan.equals("E.I.a") || jenisJabatan.equals("E.I.b")) {
             profilSemuaPegawaiMenu.setTitle("Profil Semua Pegawai");
         }
-        konfirmasiPenugasanMenu = navigationView.getMenu().getItem(5);
+        konfirmasiPenugasanMenu = navigationView.getMenu().findItem(R.id.nav_konfirmasi_penugasan);
         //broadcast
         broadcastLayout = findViewById(R.id.dashboard_broadcast);
         broadcastImageView = findViewById(R.id.dashboard_broadcast_image);
@@ -330,12 +311,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //set content dan initiate dashboard berdasarkan role
         Fragment dashboardFragment;
         String titleDashboard;
-        if (mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
+        if (
+                mRoleIdInt == UserRole.USER_ROLE_SUPERADMIN ||
                 mRoleIdInt == UserRole.USER_ROLE_ADMINPUSAT ||
                 mRoleIdInt == UserRole.USER_ROLE_ADMINUNIT ||
                 mRoleIdInt == UserRole.USER_ROLE_BAPERJAKAT ||
-                mRoleIdInt == 7) {
-            mContentUrl = konfigurasi.URL_GET_DASHBOARD_CONTENT_ADMIN;
+                        mRoleIdInt == 7
+                ) {
             dashboardFragment = new PencarianPegawaiFragment();
             titleDashboard = "Pencarian Pegawai";
             presensiPegawaiMenu.setVisible(false);
@@ -343,12 +325,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             profilPegawaiMenu.setVisible(false);
             konfirmasiPenugasanMenu.setVisible(false);
         } else {
-            mContentUrl = konfigurasi.URL_GET_DASHBOARD_CONTENT_USER;
             dashboardFragment = new DashboardPegawaiFragment();
             titleDashboard = getResources().getString(R.string.title_fragment_dashboard_pegawai);
             presensiPegawaiMenu.setVisible(true);
             profilSemuaPegawaiMenu.setVisible(false);
             profilPegawaiMenu.setVisible(true);
+            konfirmasiPenugasanMenu.setVisible(true);
         }
         // aktifkan menu pencarian pegawai
         if (isJab) {
@@ -360,27 +342,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         // delete saved json
         SettingPrefs.clearProfil(sharedPreferences);
+        PegawaiSingkat.pegawaiSingkatList.clear();
+        AbsenBawahan.absenBawahanList.clear();
 
         // initiate dashboard
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // set content dashboard
-        Bundle bundle = new Bundle();
-//        bundle.putString(INTENT_USERTOKEN, mUserToken);
-        bundle.putString(INTENT_DASHBOARDCONTENT, mContentUrl);
-//        bundle.putString(INTENT_NAMA, mNama);
-//        bundle.putString(INTENT_NIPLAMA, mNipLama);
-//        bundle.putString(INTENT_NIPBARU, mNipBaru);
-//        bundle.putString(INTENT_FOTO, mFoto);
-//        bundle.putString(INTENT_NOHP, mNoHp);
-//        bundle.putString(INTENT_IMEI, mImei);
-//        bundle.putString(INTENT_EMAIL, mEmail);
-//        bundle.putBoolean(INTENT_ISHUT, isHut);
-//        bundle.putBoolean(INTENT_ISATASAN, isAtasan);
-//        bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
-        dashboardFragment.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_fragment_area, dashboardFragment, titleDashboard);
+        fragmentTransaction.add(R.id.content_fragment_area, dashboardFragment, "nav_drawer_dashboard");
         fragmentTag = "dashboard";
         openedDrawer = "nav_drawer_dashboard";
         fragmentTransaction.commit();
@@ -444,6 +414,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 initiateDashboard();
             }
 
+        } else if (id == R.id.nav_informasi_strategis) {
+            if (openedDrawer != "nav_informasi_strategis") {
+                Bundle bundle = new Bundle();
+                bundle.putString(INTENT_USERTOKEN, mUserToken);
+
+                fragment = new InformasiStrategisDashboardFragment();
+                fragment.setArguments(bundle);
+                fragmentTag = getResources().getString(R.string.title_fragment_informasi_strategis);
+                openedDrawer = "nav_informasi_strategis";
+            }
         } else if (id == R.id.nav_profile_seluruh_pegawai) {
             if (openedDrawer != "nav_profile_seluruh_pegawai") {
                 String url;
@@ -455,11 +435,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     url = konfigurasi.URL_GET_ALLSMALL;
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString(INTENT_USERTOKEN, mUserToken);
-                bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(PassedIntent.INTENT_FRAGMENTCONTENT, url);
-                bundle.putString(INTENT_NIPLAMA, mNipLama);
-                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
 
                 fragment = new ProfilSeluruhPegawaiFragment();
                 fragment.setArguments(bundle);
@@ -468,21 +444,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             }
         } else if (id == R.id.nav_presensi) {
             if (openedDrawer != "nav_presensi") {
-                // set content dashboard
-                Bundle bundle = new Bundle();
-                bundle.putString(INTENT_USERTOKEN, mUserToken);
-                bundle.putString(INTENT_NAMA, mNama);
-                bundle.putString(INTENT_NIPLAMA, mNipLama);
-                bundle.putString(INTENT_NIPBARU, mNipBaru);
-                bundle.putString(INTENT_FOTOURL, mFotoUrl);
-                bundle.putString(INTENT_FOTO, mFoto);
-                bundle.putString(INTENT_NOHP, mNoHp);
-                bundle.putString(INTENT_IMEI, mImei);
-                bundle.putString(INTENT_EMAIL, mEmail);
-                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
 
-                fragment = new AbsenFragment();
-                fragment.setArguments(bundle);
+                fragment = new AbsenMACFragment();
                 fragmentTag = "presensi";
                 openedDrawer = "nav_presensi";
             }
@@ -510,18 +473,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.nav_profile) {
             if (openedDrawer != "nav_profile") {
                 Bundle bundle = new Bundle();
-                bundle.putString(INTENT_USERTOKEN, mUserToken);
                 bundle.putString(INTENT_NIPLAMA, mNipLama);
-                bundle.putString(INTENT_NIPBARU, mNipBaru);
-                bundle.putString(INTENT_FOTOURL, mFotoUrl);
-                bundle.putString(INTENT_FOTO, mFoto);
-                bundle.putString(INTENT_NOHP, mNoHp);
-                bundle.putString(INTENT_EMAIL, mEmail);
-                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
 
                 fragment = new ProfilPegawaiPagerFragment();
                 fragment.setArguments(bundle);
-                fragmentTag = getResources().getString(R.string.title_fragment_profil_seluruh_pegawai);
+                fragmentTag = getResources().getString(R.string.title_fragment_profil_pegawai);
                 openedDrawer = "nav_profile";
             }
         } else if (id == R.id.nav_konfirmasi_penugasan) {
@@ -536,7 +492,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 bundle.putString(INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(INTENT_FOTO, mFoto);
                 bundle.putString(INTENT_NIPBARU, mNipBaru);
-                bundle.putString(INTENT_NOHP, mNoHp);
 
                 fragment = new KonfirmasiPenugasanDashboardPegawaiFragment();
                 fragment.setArguments(bundle);
@@ -658,14 +613,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
 
         if (fragment != null) {
+            PegawaiSingkat.pegawaiSingkatList.clear();
+            AbsenBawahan.absenBawahanList.clear();
+
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.content_fragment_area, fragment, fragmentTag);
+//            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
             fragmentManager.popBackStack();
+//            }
             fragmentTransaction.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

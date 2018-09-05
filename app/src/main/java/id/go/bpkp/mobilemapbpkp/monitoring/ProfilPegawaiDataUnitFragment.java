@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,8 +30,10 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -47,11 +50,8 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
             tmtSK,
             kotaUnit;
     private String
-            mNipBaru,
-            mFoto,
             mUserToken,
             mNipLama,
-            username,
             tmtUnit;
     private View
             rootView;
@@ -61,9 +61,10 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
             unitAdapter;
     private ArrayList<Unit>
             unitList;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private LinearLayout dataView;
 
     @Nullable
     @Override
@@ -82,17 +83,11 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
         editor = sharedPreferences.edit();
 
         //inisiasi rootView
-        rootView = (View) view;
+        rootView = view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
-        //nip lama tanpa spasi
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
+        mUserToken = SavedInstances.userToken;
         JSON_STRING = sharedPreferences.getString("saved_json_data_unit", null);
 
         unitList = new ArrayList<>();
@@ -111,6 +106,9 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
     }
 
     private void initiateView() {
+        dataView = rootView.findViewById(R.id.profil_pegawai_data_unit);
+        dataView.setVisibility(View.GONE);
+
         loadingProgressBar = rootView.findViewById(R.id.profil_individu_data_unit_progress_bar);
         dataUnitRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_data_unit);
         dataUnitRecyclerView.setHasFixedSize(true);
@@ -121,6 +119,7 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
         unitAdapter = new UnitAdapter(getActivity(), unitList, this);
         dataUnitRecyclerView.setAdapter(unitAdapter);
 
+        dataView.setVisibility(View.VISIBLE);
         loadingProgressBar.setVisibility(View.GONE);
         konfigurasi.fadeAnimation(true, dataUnitRecyclerView, konfigurasi.animationDurationShort);
     }
@@ -128,20 +127,14 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
     private void getJSON() {
         class GetJSON extends AsyncTask<Void, Void, String> {
 
-            ProgressDialog loading;
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                dataUnitRecyclerView.setVisibility(View.GONE);
-//                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-//                loading.dismiss();
                 JSON_STRING = s;
                 editor.putString("saved_json_data_unit", s);
                 editor.apply();
@@ -207,7 +200,6 @@ public class ProfilPegawaiDataUnitFragment extends Fragment implements RecyclerV
                 editor.remove(INTENT_NIPBARU);
                 editor.apply();
                 logoutIntent = new Intent(getActivity(), LoginActivity.class);
-                logoutIntent.putExtra(INTENT_NIPBARU, mNipBaru);
                 logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);
                 getActivity().finish();

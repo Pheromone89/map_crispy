@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="#c5006db2"
+    android:background="@color/blueBasicTransparent"
     android:orientation="vertical"
     android:visibility="gone">
 

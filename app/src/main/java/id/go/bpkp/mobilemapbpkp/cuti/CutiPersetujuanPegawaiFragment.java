@@ -1,13 +1,9 @@
 package id.go.bpkp.mobilemapbpkp.cuti;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -26,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -129,7 +124,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
             tidakPunyaAtasanLangsung;
     private YoYo.YoYoString ropeCutiPengajuan;
     // data persetujuan bawahan
-    private String idTransaksi, fotoBawahan, namaBawahan, nipLamaBawahan, jenisCutiBawahan, tanggalPengajuanBawahan, tanggalAwalBawahan, tanggalAkhirBawahan, jumlahHariBawahan, alasanBawahan, alamatBawahan, catatanBawahan, pemrosesSebelumnya;
+    private String idTransaksi, fotoBawahan, namaBawahan, nipLamaBawahan, jenisCutiBawahan, tanggalPengajuanBawahan, tanggalAwalBawahan, tanggalAkhirBawahan, jumlahHariBawahan, alasanBawahan, alamatBawahan, catatanBawahan, pemrosesSebelumnya, tanggalPemrosesSebelumnya;
     private TextView jenisCutiView, tanggalMulaiView, tanggalSelesaiView, alasanView, alamatView, catatanView, catatanLabelView;
     private boolean isFinal;
     private int isAtasanSetuju;
@@ -171,6 +166,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         alamatBawahan = this.getArguments().getString("persetujuan_" + "alamat");
         catatanBawahan = this.getArguments().getString("persetujuan_" + "catatan");
         pemrosesSebelumnya = this.getArguments().getString("persetujuan_" + "pemroses_sebelumnya");
+        tanggalPemrosesSebelumnya = this.getArguments().getString("persetujuan_" + "tanggal_pemroses_sebelumnya");
         isFinal = this.getArguments().getBoolean("persetujuan_" + "is_final");
 
         initiateView();
@@ -231,7 +227,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         Picasso.with(getActivity()).load(fotoBawahan).into(fotoView);
         namaView.setText(namaBawahan);
         jenisCutiView.setText(jenisCutiBawahan);
-        tanggalMulaiView.setText(tanggalAkhirBawahan);
+        tanggalMulaiView.setText(tanggalAwalBawahan);
         tanggalSelesaiView.setText(tanggalAkhirBawahan);
         alasanView.setText(alasanBawahan);
         alamatView.setText(alamatBawahan);
@@ -239,7 +235,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         if (pemrosesSebelumnya.equals("null")) {
             catatanLayout.setVisibility(View.GONE);
         } else {
-            String catatanLabel = "Reviu sebelumnya oleh " + pemrosesSebelumnya + ":";
+            String catatanLabel = "Reviu sebelumnya pada tanggal " + tanggalPemrosesSebelumnya + " oleh " + pemrosesSebelumnya + ":";
             catatanLabelView.setText(catatanLabel);
         }
         catatanView.setText(catatanBawahan);
@@ -314,7 +310,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
                 v.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        postPengajuanCuti();
+                        postPersetujuanCuti();
                     }
                 }, konfigurasi.animationDurationShort);
             }
@@ -358,7 +354,7 @@ public class CutiPersetujuanPegawaiFragment extends Fragment {
         });
     }
 
-    private void postPengajuanCuti() {
+    private void postPersetujuanCuti() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, konfigurasi.URL_PERSETUJUANCUTI + mUserToken,
                 new Response.Listener<String>() {
                     @Override

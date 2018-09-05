@@ -62,6 +62,7 @@ import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.UserRole;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTO;
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_FOTOURL;
@@ -89,7 +90,7 @@ public class CutiPengajuanPegawaiFragment extends Fragment {
             messageFailView,
             cutiPengajuanProgressView,
             formPengajuan;
-    ProgressBar pengajuanProgressBar;
+    GifImageView pengajuanProgressBar;
     EditText
             tanggalMulaiView,
             tanggalSelesaiView,

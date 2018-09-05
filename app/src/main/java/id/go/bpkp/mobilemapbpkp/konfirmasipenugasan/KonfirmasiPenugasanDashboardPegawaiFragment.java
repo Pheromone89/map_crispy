@@ -46,6 +46,10 @@ import id.go.bpkp.mobilemapbpkp.konfigurasi.PassingIntent;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkat;
 import id.go.bpkp.mobilemapbpkp.monitoring.PegawaiSingkatAdapter;
+import pl.droidsonroids.gif.GifImageView;
+
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ISATASAN;
+import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_ROLEIDINT;
 
 /**
  * Created by ASUS on 09/02/2018.
@@ -62,6 +66,7 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
             mNipBaru,
             mNama,
             mFoto,
+            mFotoUrl,
             mAtasanLangsung,
             mNipAtasanLangsung;
     private int
@@ -76,7 +81,8 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
             pengajuanGagalFpButton,
             daftarKonfirmasiPenugasanButton;
     private boolean
-            tidakPunyaAtasanLangsung;
+            tidakPunyaAtasanLangsung,
+            isAtasan;
     private LinearLayout rootLayout;
     private RecyclerView konfirmasiPenugasanRecyclerView;
     private KonfirmasiPenugasanAdapter konfirmasiPenugasanAdapter;
@@ -85,9 +91,9 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private CardView konfirmasiPenugasanCardView;
-    private ProgressBar rootProgressBar;
+    private GifImageView rootProgressBar;
     private LinearLayout messageNoTransaksi;
-    private ProgressBar listProgressBar;
+    private GifImageView listProgressBar;
 
     @Nullable
     @Override
@@ -108,6 +114,7 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
         //bundle dari fragment sebelumnya
         //URL foto
         mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
+        mFotoUrl = this.getArguments().getString(PassedIntent.INTENT_FOTOURL);
         //login token
         mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
         //nip lama UNTUK PEGAWAI, BUKAN ADMIN
@@ -117,13 +124,15 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
         //nama
         mNama = this.getArguments().getString(PassedIntent.INTENT_NAMA);
         //role id
-//        mRoleIdInt = this.getArguments().getInt("role_id");
+        mRoleIdInt = this.getArguments().getInt("role_id");
         // bool atasan
         tidakPunyaAtasanLangsung = this.getArguments().getBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG);
         // atasan langsung
         mAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NAMAATASANLANGSUNG);
         // nip atasan langsung
         mNipAtasanLangsung = this.getArguments().getString(PassedIntent.INTENT_NIPATASANLANGSUNG);
+        // is atasan
+        isAtasan = this.getArguments().getBoolean(INTENT_ISATASAN);
 
         initiateView();
         populateView();
@@ -199,8 +208,11 @@ public class KonfirmasiPenugasanDashboardPegawaiFragment extends Fragment implem
                 bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
                 bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLama);
                 bundle.putString(PassedIntent.INTENT_NIPBARU, mNipBaru);
+                bundle.putInt(INTENT_ROLEIDINT, mRoleIdInt);
+                bundle.putBoolean(INTENT_ISATASAN, isAtasan);
                 bundle.putString(PassedIntent.INTENT_NAMA, mNama);
                 bundle.putString(PassedIntent.INTENT_FOTO, mFoto);
+                bundle.putString(PassedIntent.INTENT_FOTOURL, mFotoUrl);
                 bundle.putString(PassedIntent.INTENT_NAMAATASANLANGSUNG, mAtasanLangsung);
                 bundle.putString(PassedIntent.INTENT_NIPATASANLANGSUNG, mNipAtasanLangsung);
                 bundle.putBoolean(PassedIntent.INTENT_TIDAKPUNYAATASANLANGSUNG, tidakPunyaAtasanLangsung);

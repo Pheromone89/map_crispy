@@ -14,6 +14,13 @@
         android:padding="150dp"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/debug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TEST"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/dashboard_pegawai_layout"
         android:layout_width="match_parent"

@@ -36,8 +36,10 @@ import java.text.SimpleDateFormat;
 import id.go.bpkp.mobilemapbpkp.R;
 import id.go.bpkp.mobilemapbpkp.RequestHandler;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.SavedInstances;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 import id.go.bpkp.mobilemapbpkp.login.LoginActivity;
+import pl.droidsonroids.gif.GifImageView;
 
 import static id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent.INTENT_NIPBARU;
 
@@ -57,8 +59,7 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
             mUserToken,
             mNipLama,
             mNoHp,
-            mEmail,
-            username;
+            mEmail;
     private TextView
             namaGelarProfilPictureView,
             nipProfilPictureView,
@@ -109,15 +110,15 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
             jumlahanak,
             akre,
             toefl;
-    private int akreInt, mRoleId;
     private LinearLayout hpLayout, emailLayout;
     private RelativeLayout fotoEditButton;
     private DateFormat dateFormat;
-    private ProgressBar loadingProgressBar;
+    private GifImageView loadingProgressBar;
     private ScrollView dataPokokScrollView;
     private YoYo.YoYoString ropeProfilIndividu;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private ScrollView dataView;
 
     public ProfilPegawaiDataPokokFragment() {
 
@@ -149,17 +150,9 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         rootView = (View) view;
 
         //bundle dari fragment sebelumnya
-        //URL foto
-        mFoto = this.getArguments().getString(PassedIntent.INTENT_FOTO);
-        //login token
-        mUserToken = this.getArguments().getString(PassedIntent.INTENT_USERTOKEN);
-        //nip tanpa spasi
-        username = this.getArguments().getString(PassedIntent.INTENT_USERNAME);
-        //nip lama tanpa spasi
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
-        mNoHp = this.getArguments().getString(PassedIntent.INTENT_NOHP);
-        mEmail = this.getArguments().getString(PassedIntent.INTENT_EMAIL);
-        mRoleId = this.getArguments().getInt(PassedIntent.INTENT_ROLEIDINT);
+        mFoto = PassedIntent.getFoto(getActivity(), mNipLama);
+        mUserToken = SavedInstances.userToken;
         JSON_STRING = sharedPreferences.getString("saved_json_data_pokok", null);
 
         // date format
@@ -175,38 +168,41 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
     }
 
     private void initiateView(View view){
+        dataView = view.findViewById(R.id.profil_individu_data_pokok);
+        dataView.setVisibility(View.GONE);
+
         loadingProgressBar = rootView.findViewById(R.id.profil_individu_data_pokok_progress_bar);
         dataPokokScrollView = rootView.findViewById(R.id.profil_individu_data_pokok);
         dataPokokScrollView.setVisibility(View.GONE);
-        proficPegawaiIndividuView = (ImageView) view.findViewById(R.id.profil_individu_profic);
-        fotoEditButton = (RelativeLayout) view.findViewById(R.id.profil_individu_profic_edit);
-        namaGelarProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnama);
-        nipProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficnip);
-        namaPegawaiIndividuView = (TextView) view.findViewById(R.id.profil_individu_nama);
-        nipPegawaiIndividuView = (TextView) view.findViewById(R.id.profil_individu_nip);
-        pangkatPegawaiIndividuView = (TextView) view.findViewById(R.id.profil_individu_pangkat);
-        unitPegawaiIndividuView = (TextView) view.findViewById(R.id.profil_individu_unit);
-        pangkatProfilPictureView = (TextView) view.findViewById(R.id.profil_individu_proficpangkat);
-        jabatanProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_jabatan);
-        pendidikanProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_pendidikan);
-        ttglProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_ttgl);
-        agamaProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_agama);
-        alamatProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_alamat);
+        proficPegawaiIndividuView = view.findViewById(R.id.profil_individu_profic);
+        fotoEditButton = view.findViewById(R.id.profil_individu_profic_edit);
+        namaGelarProfilPictureView = view.findViewById(R.id.profil_individu_proficnama);
+        nipProfilPictureView = view.findViewById(R.id.profil_individu_proficnip);
+        namaPegawaiIndividuView = view.findViewById(R.id.profil_individu_nama);
+        nipPegawaiIndividuView = view.findViewById(R.id.profil_individu_nip);
+        pangkatPegawaiIndividuView = view.findViewById(R.id.profil_individu_pangkat);
+        unitPegawaiIndividuView = view.findViewById(R.id.profil_individu_unit);
+        pangkatProfilPictureView = view.findViewById(R.id.profil_individu_proficpangkat);
+        jabatanProfilIndividuView = view.findViewById(R.id.profil_individu_jabatan);
+        pendidikanProfilIndividuView = view.findViewById(R.id.profil_individu_pendidikan);
+        ttglProfilIndividuView = view.findViewById(R.id.profil_individu_ttgl);
+        agamaProfilIndividuView = view.findViewById(R.id.profil_individu_agama);
+        alamatProfilIndividuView = view.findViewById(R.id.profil_individu_alamat);
         hpLayout = view.findViewById(R.id.profil_individu_hp_layout);
-        noHpProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_no_hp);
+        noHpProfilIndividuView = view.findViewById(R.id.profil_individu_no_hp);
         emailLayout = view.findViewById(R.id.profil_individu_email_layout);
-        emailProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_email);
-        lamaJabProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_lama_jab);
-        lamaUnitProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_lama_unit);
-        lamaKpProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_lama_kp);
-        tmtPensiunProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_tmt_pensiun);
-        sertpimProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_sertpim);
-        sertjfaProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_sertjfa);
-        sertprofProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_sertprof);
-        pasanaganProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_pasangan);
-        jumlahanakProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_jumlahanak);
-        akreProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_akre);
-        toeflProfilIndividuView = (TextView) view.findViewById(R.id.profil_individu_toefl);
+        emailProfilIndividuView = view.findViewById(R.id.profil_individu_email);
+        lamaJabProfilIndividuView = view.findViewById(R.id.profil_individu_lama_jab);
+        lamaUnitProfilIndividuView = view.findViewById(R.id.profil_individu_lama_unit);
+        lamaKpProfilIndividuView = view.findViewById(R.id.profil_individu_lama_kp);
+        tmtPensiunProfilIndividuView = view.findViewById(R.id.profil_individu_tmt_pensiun);
+        sertpimProfilIndividuView = view.findViewById(R.id.profil_individu_sertpim);
+        sertjfaProfilIndividuView = view.findViewById(R.id.profil_individu_sertjfa);
+        sertprofProfilIndividuView = view.findViewById(R.id.profil_individu_sertprof);
+        pasanaganProfilIndividuView = view.findViewById(R.id.profil_individu_pasangan);
+        jumlahanakProfilIndividuView = view.findViewById(R.id.profil_individu_jumlahanak);
+        akreProfilIndividuView = view.findViewById(R.id.profil_individu_akre);
+        toeflProfilIndividuView = view.findViewById(R.id.profil_individu_toefl);
     }
     private void populateView(){
         // saved json
@@ -240,18 +236,15 @@ public class ProfilPegawaiDataPokokFragment extends Fragment {
         akreProfilIndividuView.setText(akre);
         toeflProfilIndividuView.setText(toefl);
 
+        dataView.setVisibility(View.VISIBLE);
         loadingProgressBar.setVisibility(View.GONE);
         konfigurasi.fadeAnimation(true, dataPokokScrollView, konfigurasi.animationDurationShort);
     }
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {
-            ProgressDialog loading;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                dataPokokScrollView.setVisibility(View.GONE);
-//                loading = ProgressDialog.show(getActivity(),"Mengambil Data","Mohon Tunggu...",false,false);
             }
 
             @Override

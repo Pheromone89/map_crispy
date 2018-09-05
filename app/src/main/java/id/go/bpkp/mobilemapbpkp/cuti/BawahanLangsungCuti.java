@@ -7,10 +7,10 @@ package id.go.bpkp.mobilemapbpkp.cuti;
 public class BawahanLangsungCuti {
 
     private int id;
-    private String idTransaksi, nipLama, nama, jenisCuti, tanggalPengajuan, tanggalAwal, tanggalAkhir, jumlahHari, alasan, alamat, catatan, pemrosesSebelumnya;
+    private String idTransaksi, nipLama, nama, jenisCuti, tanggalPengajuan, tanggalAwal, tanggalAkhir, jumlahHari, alasan, alamat, catatan, pemrosesSebelumnya, tanggalPemrosesSebelumnya;
     private boolean isFinal;
 
-    public BawahanLangsungCuti(int id, String idTransaksi, String nipLama, String nama, String jenisCuti, String tanggalPengajuan, String tanggalAwal, String tanggalAkhir, String jumlahHari, String alasan, String alamat, String catatan, String pemrosesSebelumnya, Boolean isFinal) {
+    public BawahanLangsungCuti(int id, String idTransaksi, String nipLama, String nama, String jenisCuti, String tanggalPengajuan, String tanggalAwal, String tanggalAkhir, String jumlahHari, String alasan, String alamat, String catatan, String pemrosesSebelumnya, String tanggalPemrosesSebelumnya, Boolean isFinal) {
         this.id = id;
         this.idTransaksi = idTransaksi;
         this.nipLama = nipLama;
@@ -24,6 +24,7 @@ public class BawahanLangsungCuti {
         this.alamat = alamat;
         this.catatan = catatan;
         this.pemrosesSebelumnya = pemrosesSebelumnya;
+        this.tanggalPemrosesSebelumnya = tanggalPemrosesSebelumnya;
         this.isFinal = isFinal;
     }
 
@@ -77,6 +78,10 @@ public class BawahanLangsungCuti {
 
     public String getPemrosesSebelumnya() {
         return pemrosesSebelumnya;
+    }
+
+    public String getTanggalPemrosesSebelumnya() {
+        return tanggalPemrosesSebelumnya;
     }
 
     public boolean isFinal() {

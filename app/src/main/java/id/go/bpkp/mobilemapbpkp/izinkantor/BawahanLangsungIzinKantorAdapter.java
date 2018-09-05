@@ -9,10 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
@@ -23,6 +26,7 @@ import id.go.bpkp.mobilemapbpkp.RecyclerViewClickListener;
 import id.go.bpkp.mobilemapbpkp.cuti.BawahanLangsungCuti;
 import id.go.bpkp.mobilemapbpkp.cuti.CutiPersetujuanPegawaiFragment;
 import id.go.bpkp.mobilemapbpkp.konfigurasi.PassedIntent;
+import id.go.bpkp.mobilemapbpkp.konfigurasi.konfigurasi;
 
 /**
  * Created by ASUS on 15/02/2018.
@@ -52,10 +56,9 @@ public class BawahanLangsungIzinKantorAdapter extends RecyclerView.Adapter<Bawah
     @Override
     public BawahanLangsungIzinKantorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-//        View view = inflater.inflate(R.layout.item_list_pegawai_izin_kantor_bawahan_langsung, parent, false);
-//        BawahanLangsungIzinKantorViewHolder bawahanLangsungIzinKantorViewHolder = new BawahanLangsungIzinKantorViewHolder(view);
-//        return bawahanLangsungIzinKantorViewHolder;
-        return null;
+        View view = inflater.inflate(R.layout.item_list_pegawai_izin_kantor_bawahan_langsung, parent, false);
+        BawahanLangsungIzinKantorViewHolder bawahanLangsungIzinKantorViewHolder = new BawahanLangsungIzinKantorViewHolder(view);
+        return bawahanLangsungIzinKantorViewHolder;
     }
 
     @Override
@@ -63,20 +66,47 @@ public class BawahanLangsungIzinKantorAdapter extends RecyclerView.Adapter<Bawah
         BawahanLangsungIzinKantor bawahanLangsungIzinKantor = pegawaiBawahanLangsungList.get(position);
 
 
-//        String foto = PassedIntent.getFoto(context, bawahanLangsungIzinKantor.getNipLama());
-//        String nama = bawahanLangsungIzinKantor.getNama();
-//        String tanggal = bawahanLangsungIzinKantor.getTanggalAwal() + " s.d. " + bawahanLangsungIzinKantor.getTanggalAkhir();
-//        String keterangan = bawahanLangsungIzinKantor.getJenisCuti() + " (" + bawahanLangsungIzinKantor.getJumlahHari() + " hari)";
-//        Picasso.with(context).load(foto).into(holder.profilePictureView);
-//        holder.namaView.setText(nama);
-//        holder.tanggalView.setText(tanggal);
-//        holder.keteranganView.setText(keterangan);
+        String foto = PassedIntent.getFoto(context, bawahanLangsungIzinKantor.getNipLama());
+        String nama = bawahanLangsungIzinKantor.getNama();
+        String jenisIzin = bawahanLangsungIzinKantor.getJenisIzin();
+        String tanggalAwal = bawahanLangsungIzinKantor.getTanggalAwal();
+        String tanggalAkhir = bawahanLangsungIzinKantor.getTanggalAkhir();
+        String tanggal = null;
+        String jamIzin = bawahanLangsungIzinKantor.getJamIzin();
+        if (jamIzin.equals("null")) {
+            jamIzin = "";
+        } else {
+            jamIzin = " pukul: " + jamIzin;
+        }
+        switch (jenisIzin) {
+            case "Datang Terlambat":
+                tanggal = tanggalAwal + jamIzin;
+                break;
+            case "Pulang Cepat":
+                tanggal = tanggalAwal + jamIzin;
+                break;
+            case "Absensi Fingerprint":
+                tanggal = tanggalAwal;
+                break;
+            case "Tidak Masuk Kantor":
+                tanggal = tanggalAwal + " s.d. " + tanggalAkhir;
+                break;
+        }
+        String keterangan = bawahanLangsungIzinKantor.getKeterangan();
+        if (keterangan.equals("null")) {
+            keterangan = "-";
+        }
+        Picasso.with(context).load(foto).into(holder.profilePictureView);
+        holder.namaView.setText(nama);
+        holder.jenisIzinView.setText(jenisIzin);
+        holder.tanggalView.setText(tanggal);
+        holder.keteranganView.setText(keterangan);
 
-//        ropeBawahanLangsung = YoYo.with(Techniques.FadeIn)
-//                .duration(konfigurasi.animationDurationShort)
-//                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-//                .interpolate(new AccelerateDecelerateInterpolator())
-//                .playOn(holder.rootview);
+        ropeBawahanLangsung = YoYo.with(Techniques.FadeIn)
+                .duration(konfigurasi.animationDurationShort)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(holder.rootview);
     }
 
     @Override
@@ -87,18 +117,20 @@ public class BawahanLangsungIzinKantorAdapter extends RecyclerView.Adapter<Bawah
     class BawahanLangsungIzinKantorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView profilePictureView;
-        TextView namaView, tanggalView, keteranganView;
+        TextView namaView, tanggalView, keteranganView, jenisIzinView;
         LinearLayout rootview;
+
 
         public BawahanLangsungIzinKantorViewHolder(View itemView) {
             super(itemView);
 
-//            rootview = itemView.findViewById(R.id.pegawai_bawahan_langsung_cuti_layout);
+            rootview = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_layout);
 //
-//            profilePictureView = itemView.findViewById(R.id.pegawai_bawahan_langsung_cuti_profic);
-//            namaView = itemView.findViewById(R.id.pegawai_bawahan_langsung_cuti_nama);
-//            tanggalView = itemView.findViewById(R.id.pegawai_bawahan_langsung_cuti_tanggal);
-//            keteranganView = itemView.findViewById(R.id.pegawai_bawahan_langsung_cuti_alasan);
+            profilePictureView = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_profic);
+            jenisIzinView = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_jenis_izin);
+            namaView = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_nama);
+            tanggalView = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_tanggal);
+            keteranganView = itemView.findViewById(R.id.pegawai_bawahan_langsung_izin_kantor_alasan);
 
             itemView.setOnClickListener(this);
         }
@@ -110,44 +142,44 @@ public class BawahanLangsungIzinKantorAdapter extends RecyclerView.Adapter<Bawah
             int id = this.getLayoutPosition();
 
             BawahanLangsungIzinKantor bawahanLangsungIzinKantor = pegawaiBawahanLangsungList.get(id);
-//            String empNipLama = bawahanLangsungIzinKantor.getNipLama();
-//            String empNama = bawahanLangsungIzinKantor.getNama();
-//            String empIdTransaksi = bawahanLangsungIzinKantor.getIdTransaksi();
-//            String empJenisCuti = bawahanLangsungIzinKantor.getJenisCuti();
-//            String empTanggalPengajuan = bawahanLangsungIzinKantor.getTanggalPengajuan();
-//            String empTanggalAwal = bawahanLangsungIzinKantor.getTanggalAwal();
-//            String empTanggalAkhir = bawahanLangsungIzinKantor.getTanggalAkhir();
-//            String empJumlahHari = bawahanLangsungIzinKantor.getJumlahHari();
-//            String empAlamat = bawahanLangsungIzinKantor.getAlamat();
-//            String empAlasan = bawahanLangsungIzinKantor.getAlasan();
-//            String empCatatan = bawahanLangsungIzinKantor.getCatatan();
-//            String empPemrosesSebelumnya = bawahanLangsungIzinKantor.getPemrosesSebelumnya();
-//            boolean empIsFinal = bawahanLangsungIzinKantor.isFinal();
+            int empIdTransaksi = bawahanLangsungIzinKantor.getId();
+            String empkdKatAlasan = bawahanLangsungIzinKantor.getKdKatAlasan();
+            String empnipLama = bawahanLangsungIzinKantor.getNipLama();
+            String empnama = bawahanLangsungIzinKantor.getNama();
+            String empjenisIzin = bawahanLangsungIzinKantor.getJenisIzin();
+            String emptanggalPengajuan = bawahanLangsungIzinKantor.getTanggalPengajuan();
+            String emptanggalAwal = bawahanLangsungIzinKantor.getTanggalAwal();
+            String emptanggalAkhir = bawahanLangsungIzinKantor.getTanggalAkhir();
+            String empketerangan = bawahanLangsungIzinKantor.getKeterangan();
+            String empjamIzin = bawahanLangsungIzinKantor.getJamIzin();
+            String empPemrosesSebelumnya = bawahanLangsungIzinKantor.getPemrosesSebelumnya();
+            String empCatatan = bawahanLangsungIzinKantor.getCatatan();
+            boolean empIsFinal = bawahanLangsungIzinKantor.isFinal();
 
             Bundle bundle = new Bundle();
             bundle.putString(PassedIntent.INTENT_NIPLAMA, mNipLamaAtasan);
             bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
-//            bundle.putString("persetujuan_" + PassedIntent.INTENT_NIPLAMA, empNipLama);
-//            bundle.putString("persetujuan_" + PassedIntent.INTENT_NAMA, empNama);
-//            bundle.putString("persetujuan_" + "id_transaksi", empIdTransaksi);
-//            bundle.putString("persetujuan_" + "jenis_cuti", empJenisCuti);
-//            bundle.putString("persetujuan_" + "tanggal_pengajuan", empTanggalPengajuan);
-//            bundle.putString("persetujuan_" + "tanggal_awal", empTanggalAwal);
-//            bundle.putString("persetujuan_" + "tanggal_akhir", empTanggalAkhir);
-//            bundle.putString("persetujuan_" + "jumlah_hari", empJumlahHari);
-//            bundle.putString("persetujuan_" + "alasan", empAlasan);
-//            bundle.putString("persetujuan_" + "alamat", empAlamat);
-//            bundle.putString("persetujuan_" + "catatan", empCatatan);
-//            bundle.putString("persetujuan_" + "pemroses_sebelumnya", empPemrosesSebelumnya);
-//            bundle.putBoolean("persetujuan_" + "is_final", empIsFinal);
+            bundle.putInt("persetujuan_" + "id_transaksi", empIdTransaksi);
+            bundle.putString("persetujuan_" + "kd_kat_alasan", empkdKatAlasan);
+            bundle.putString("persetujuan_" + "nip_lama", empnipLama);
+            bundle.putString("persetujuan_" + "nama", empnama);
+            bundle.putString("persetujuan_" + "jenis_izin", empjenisIzin);
+            bundle.putString("persetujuan_" + "tanggal_pengajuan", emptanggalPengajuan);
+            bundle.putString("persetujuan_" + "tanggal_awal", emptanggalAwal);
+            bundle.putString("persetujuan_" + "tanggal_akhir", emptanggalAkhir);
+            bundle.putString("persetujuan_" + "keterangan", empketerangan);
+            bundle.putString("persetujuan_" + "jam_izin", empjamIzin);
+            bundle.putString("persetujuan_" + "pemroses_sebelumnya", empPemrosesSebelumnya);
+            bundle.putString("persetujuan_" + "catatan", empCatatan);
+            bundle.putBoolean("persetujuan_" + "is_final", empIsFinal);
 
-//            IzinKantorPersetujuanPegawaiFragment fragment = new IzinKantorPersetujuanPegawaiFragment();
-//            FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragment.setArguments(bundle);
-//            fragmentTransaction.add(R.id.content_fragment_area, fragment);
-//            fragmentTransaction.addToBackStack("fragment_daftar_persetujuan_izin_kantor");
-//            fragmentTransaction.commit();
+            IzinKantorPersetujuanPegawaiFragment fragment = new IzinKantorPersetujuanPegawaiFragment();
+            FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.content_fragment_area, fragment);
+            fragmentTransaction.addToBackStack("fragment_daftar_persetujuan_izin_kantor");
+            fragmentTransaction.commit();
 
         }
     }
