@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:visibility="gone"
         app:cardBackgroundColor="@color/whiteAlternate"
         app:cardCornerRadius="10dp">
 
@@ -31,10 +32,10 @@
                 android:src="@drawable/ic_wifi" />
 
             <LinearLayout
+                android:id="@+id/dashboard_pegawai_jaringan_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/dashboard_pegawai_jaringan_background"
                 android:orientation="vertical">
 
                 <TextView

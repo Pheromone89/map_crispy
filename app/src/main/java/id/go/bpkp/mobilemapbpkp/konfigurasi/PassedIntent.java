@@ -19,6 +19,7 @@ public class PassedIntent {
     public static final String INTENT_PASSWORD = "password";
     // nama pegawai
     public static final String INTENT_NAMA = "nama";
+    public static final String INTENT_TANGGAL = "tanggal";
     // nip
     public static final String INTENT_NIPLAMA = "nip_lama";
     public static final String INTENT_NIPBARU = "nip_baru";

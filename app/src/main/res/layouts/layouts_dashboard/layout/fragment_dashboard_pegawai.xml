@@ -58,11 +58,11 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/dashboard_pegawai_panel_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dashboard_pegawai_panel_option"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -87,7 +87,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:src="@drawable/ic_person" />
+                            android:src="@drawable/ic_person"
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:id="@+id/dashboard_pegawai_profil_option_progressbar"
@@ -97,11 +98,12 @@
                             android:clickable="false"
                             android:orientation="vertical"
                             android:padding="5dp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ProgressBar
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -120,7 +122,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:src="@drawable/ic_menu_absen_white" />
+                            android:src="@drawable/ic_menu_absen_white"
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:id="@+id/dashboard_pegawai_presensi_option_progressbar"
@@ -130,11 +133,12 @@
                             android:clickable="false"
                             android:orientation="vertical"
                             android:padding="5dp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ProgressBar
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -153,7 +157,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:src="@drawable/ic_wifi" />
+                            android:src="@drawable/ic_wifi"
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:id="@+id/dashboard_pegawai_jaringan_option_progressbar"
@@ -163,11 +168,12 @@
                             android:clickable="false"
                             android:orientation="vertical"
                             android:padding="5dp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ProgressBar
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -187,7 +193,8 @@
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
                             android:src="@drawable/ic_beach"
-                            android:tint="#ffffff" />
+                            android:tint="#ffffff"
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:id="@+id/dashboard_pegawai_cuti_option_progressbar"
@@ -197,11 +204,12 @@
                             android:clickable="false"
                             android:orientation="vertical"
                             android:padding="5dp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ProgressBar
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -220,7 +228,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="15dp"
-                            android:src="@drawable/ic_rupiah" />
+                            android:src="@drawable/ic_rupiah"
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:id="@+id/dashboard_pegawai_tunjangan_option_progressbar"
@@ -230,11 +239,12 @@
                             android:clickable="false"
                             android:orientation="vertical"
                             android:padding="5dp"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ProgressBar
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -268,6 +278,43 @@
                             <ProgressBar
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/dashboard_pegawai_hotspot_option"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/blueBasic"
+                        app:cardCornerRadius="25dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/ic_wifi"
+                            android:tint="#ffffff"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:id="@+id/dashboard_pegawai_hotspot_option_progressbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/blueBasic"
+                            android:clickable="false"
+                            android:orientation="vertical"
+                            android:padding="5dp"
+                            android:visibility="visible">
+
+                            <ProgressBar
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 

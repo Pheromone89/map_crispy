@@ -79,7 +79,9 @@ public class DashboardPegawaiFragment extends Fragment {
     private View rootView;
     private TextView
             jamDatangAltView,
+            jamDatangHotspotAltView,
             jamPulangAltView,
+            jamPulangHotspotAltView,
             macAdressView,
             profilNamaView,
             profilNipView;
@@ -97,9 +99,14 @@ public class DashboardPegawaiFragment extends Fragment {
     private boolean isHut, isAtasan;
     private String
             jamDatang,
+            jamDatangHotspot,
             jamPulang,
+            jamPulangHotspot,
+            jamEfektifHotspot,
             statusDatang,
-            statusPulang;
+            statusDatangHotspot,
+            statusPulang,
+            statusPulangHotspot;
     private int
             mRoleId;
     private LinearLayout rootLayout;
@@ -108,8 +115,8 @@ public class DashboardPegawaiFragment extends Fragment {
     private LinearLayout panelOption;
     // panel cardview
     private int currentSelectedPanel = 999, currentPanelShowing;
-    private LinearLayout panelProfilCardView, panelJaringanCardView, panelPresensiCardView, panelTunjanganCardView, panelCutiCardView, panelNotifikasiAtasanCardView;
-    private LinearLayout panelProfilBackground, panelJaringanBackground, panelPresensiBackground, panelTunjanganBackground, panelCutiBackground, panelNotifikasiAtasanBackground;
+    private LinearLayout panelProfilCardView, panelJaringanCardView, panelPresensiCardView, panelHotspotCardView, panelTunjanganCardView, panelCutiCardView, panelNotifikasiAtasanCardView;
+    private LinearLayout panelProfilBackground, panelJaringanBackground, panelPresensiBackground, panelHotspotBackground, panelTunjanganBackground, panelCutiBackground, panelNotifikasiAtasanBackground;
     // khusus ultah
     private LinearLayout panelUltahCardView;
     private ImageView fotoUltah;
@@ -435,6 +442,13 @@ public class DashboardPegawaiFragment extends Fragment {
                 case konfigurasi.DASHBOARD_PANEL_ULTAH:
                     currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_ULTAH;
                     break;
+                case konfigurasi.DASHBOARD_PANEL_HOTSPOT:
+                    currentSelectedPanel = konfigurasi.DASHBOARD_PANEL_HOTSPOT;
+                    dashboardPanelList
+                            .get(currentSelectedPanel)
+                            .getPanelBackground(getActivity(), rootView)
+                            .setBackgroundResource(R.color.whiteAlternateDark);
+                    break;
             }
         } else {
             currentSelectedPanel = 999;
@@ -516,6 +530,15 @@ public class DashboardPegawaiFragment extends Fragment {
                     getJSONNotifikasiAtasanIzinKantor();
                     getJSONNotifikasiAtasanPresensi();
                 }
+                break;
+            case konfigurasi.DASHBOARD_PANEL_HOTSPOT:
+                currentPanelShowing = konfigurasi.DASHBOARD_PANEL_HOTSPOT;
+                dashboardPanelList
+                        .get(currentPanelShowing)
+                        .getPanelOption(getActivity(), rootView)
+                        .setVisibility(View.VISIBLE);
+                initiateViewPanelHotspot();
+                getJSONPresensiHotspot();
                 break;
         }
 
@@ -1274,5 +1297,134 @@ public class DashboardPegawaiFragment extends Fragment {
 
     private void populatePanelNotifikasiAtasanIzinKantor() {
         prosesPersetujuanIzinKantorTextView.setText(jumlahProsesIzinKantor);
+    }
+
+    //////////////////////////////////////////
+    // dashboard panel presensi via hotspot //
+    //////////////////////////////////////////
+
+    private void initiateViewPanelHotspot() {
+        final View v = panelLayouInflater.inflate(R.layout.i_dashboard_panel_hotspot, null);
+        panelLinearLayout.addView(v);
+
+        // alt presensi
+        panelHotspotBackground = dashboardPanelList.get(konfigurasi.DASHBOARD_PANEL_HOTSPOT).getPanelBackground(getActivity(), rootView);
+        panelHotspotCardView = rootView.findViewById(R.id.dashboard_panel_hotspot);
+        panelHotspotCardView.setVisibility(View.GONE);
+        jamDatangHotspotAltView = rootView.findViewById(R.id.dashboard_hotspot_datang_val_alt);
+        jamPulangHotspotAltView = rootView.findViewById(R.id.dashboard_hotspot_pulang_val_alt);
+    }
+
+    private void populatePanelPresensiHotspot() {
+        jamDatangHotspotAltView.setText(jamDatangHotspot);
+        jamPulangHotspotAltView.setText(jamPulangHotspot);
+
+        panelHotspotBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setHighlight(konfigurasi.DASHBOARD_PANEL_HOTSPOT);
+            }
+        });
+
+        switch (statusDatangHotspot) {
+            case "BELUM DATANG":
+                jamDatangHotspotAltView.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case "TEPAT WAKTU":
+                jamDatangHotspotAltView.setTextColor(getResources().getColor(R.color.green));
+                break;
+            case "TERLAMBAT":
+                jamDatangHotspotAltView.setTextColor(getResources().getColor(R.color.orange));
+                break;
+            default:
+                jamDatangHotspotAltView.setTextColor(getResources().getColor(R.color.blueBasicDark));
+                break;
+        }
+        switch (statusPulangHotspot) {
+            case "BELUM PULANG":
+                jamPulangHotspotAltView.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case "PULANG CEPAT":
+                jamPulangHotspotAltView.setTextColor(getResources().getColor(R.color.orange));
+                break;
+            case "TEPAT WAKTU":
+                jamPulangHotspotAltView.setTextColor(getResources().getColor(R.color.green));
+                break;
+            default:
+                jamPulangHotspotAltView.setTextColor(getResources().getColor(R.color.blueBasicDark));
+                break;
+        }
+
+        panelHotspotCardView.setVisibility(View.VISIBLE);
+        ropeAnimation = YoYo.with(Techniques.SlideInRight)
+                .duration(konfigurasi.animationDurationShort)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .interpolate(new AccelerateDecelerateInterpolator())
+                .playOn(panelHotspotCardView);
+
+        //panel
+        dashboardPanelList
+                .get(konfigurasi.DASHBOARD_PANEL_HOTSPOT)
+                .getPanelOption(getActivity(), rootView)
+                .setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+    }
+
+    private void getJSONPresensiHotspot() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.VISIBLE);
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                JSON_STRING = s;
+                parseJSONPresensiHotspot();
+                dashboardPanelList.get(currentPanelShowing).getPanelOptionProgressbar(getActivity(), rootView).setVisibility(View.GONE);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_HOTSPOT + mUserToken);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void parseJSONPresensiHotspot() {
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+//            if (jsonObject.getString("success").equals("true")) {
+            jsonObject = jsonObject.getJSONObject(konfigurasi.TAG_JSON_ARRAY);
+            jamDatangHotspot = checkNull(jsonObject.getString(konfigurasi.TAG_DATANG), "-");
+            jamPulangHotspot = checkNull(jsonObject.getString(konfigurasi.TAG_PULANG), "-");
+            statusDatangHotspot = jsonObject.getString(konfigurasi.TAG_HOTSPOT_STATUSDATANG);
+            statusPulangHotspot = jsonObject.getString(konfigurasi.TAG_HOTSPOT_STATUSPULANG);
+
+            if (jamDatangHotspot.equals("-")) {
+                isSudahAbsenPagi = false;
+            } else {
+                isSudahAbsenPagi = true;
+            }
+            if (jamPulangHotspot.equals("-")) {
+                isSudahAbsenSore = false;
+            } else {
+                isSudahAbsenSore = true;
+            }
+            populatePanelPresensiHotspot();
+//            } else {
+//                Toast.makeText(getActivity(), "Gagal menarik data presensi", Toast.LENGTH_SHORT).show();
+//            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Gagal menarik data presensi via hotspot", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -71,8 +71,7 @@ public class HotspotFragment extends Fragment implements RecyclerViewClickListen
             tanggal,
             nipLama,
             nipBaru,
-            nipBaruPisah,
-            jabatanSingkat,
+            ip,
             unit,
             acctId,
             foto;
@@ -190,7 +189,7 @@ public class HotspotFragment extends Fragment implements RecyclerViewClickListen
                 JSONObject jo = result.getJSONObject(i);
                 nama = jo.getString(konfigurasi.TAG_NAMA);
                 nipLama = jo.getString(konfigurasi.TAG_NIPLAMA);
-                tanggal = jo.getString(konfigurasi.TAG_TANGGAL_HOTSPOT);
+                tanggal = jo.getString(konfigurasi.TAG_TANGGAL_HOTSPOT_PANJANG);
                 datang = jo.getString(konfigurasi.TAG_DATANG);
                 pulang = jo.getString(konfigurasi.TAG_PULANG);
                 namanip = jo.getString(konfigurasi.TAG_NAMANIP);
@@ -198,6 +197,7 @@ public class HotspotFragment extends Fragment implements RecyclerViewClickListen
                 unit = jo.getString(konfigurasi.TAG_NAMAUNIT);
                 kodeUnit = jo.getString(konfigurasi.TAG_KODE_UNIT);
                 acctId = jo.getString(konfigurasi.TAG_ACCTID);
+                ip = jo.getString(konfigurasi.TAG_IP);
                 foto = PassedIntent.getFoto(getActivity(), nipLama);
 
                 hotspotList.add(
@@ -213,6 +213,7 @@ public class HotspotFragment extends Fragment implements RecyclerViewClickListen
                                 unit,
                                 kodeUnit,
                                 acctId,
+                                ip,
                                 foto
                         )
                 );
@@ -262,7 +263,7 @@ public class HotspotFragment extends Fragment implements RecyclerViewClickListen
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(konfigurasi.URL_GET_HOTSPOT+mUserToken);
+                String s = rh.sendGetRequest(konfigurasi.URL_GET_HOTSPOTALL+mUserToken);
                 return s;
             }
         }

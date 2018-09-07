@@ -24,12 +24,13 @@ public class Hotspot{
             unit,
             kode_unit,
             acctid,
+            ip,
             foto;
 
     public static List<Hotspot> hotspotList = new ArrayList<>();
 
     public Hotspot(int id, String niplama, String tanggal, String datang, String pulang,
-                   String nama, String namanip, String nipbaru, String unit, String kode_unit, String acctid, String foto) {
+                   String nama, String namanip, String nipbaru, String unit, String kode_unit, String acctid, String ip, String foto) {
         this.id = id;
         this.niplama = niplama;
         this.tanggal = tanggal;
@@ -41,6 +42,7 @@ public class Hotspot{
         this.unit = unit;
         this.kode_unit = kode_unit;
         this.acctid = acctid;
+        this.ip = ip;
         this.foto = foto;
     }
 
@@ -97,5 +99,9 @@ public class Hotspot{
 
     public String getFoto() {
         return foto;
+    }
+
+    public String getIp() {
+        return ip;
     }
 }

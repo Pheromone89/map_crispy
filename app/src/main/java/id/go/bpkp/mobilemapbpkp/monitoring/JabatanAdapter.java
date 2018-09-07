@@ -28,7 +28,7 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
     private static RecyclerViewClickListener itemListener;
     private Context mContext;
     private List<Jabatan> jabatanList;
-    private YoYo.YoYoString ropeJabatan;
+//    private YoYo.YoYoString ropeJabatan;
 
     public JabatanAdapter(Context mContext, List<Jabatan> jabatanList,
                           RecyclerViewClickListener itemListener) {
@@ -56,7 +56,8 @@ public class JabatanAdapter extends RecyclerView.Adapter<JabatanAdapter.JabatanV
         holder.nomorSK.setText(nomor);
         holder.tanggalSK.setText(tanggal);
 
-        ropeJabatan = YoYo.with(Techniques.FadeIn)
+//        ropeJabatan = YoYo.with(Techniques.FadeIn)
+        YoYo.with(Techniques.FadeIn)
                 .duration(konfigurasi.animationDurationShort)
                 .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
                 .interpolate(new AccelerateDecelerateInterpolator())

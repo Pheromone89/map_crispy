@@ -74,6 +74,7 @@ public class konfigurasi {
     public static final String URL_PENGAJUANKONFIRMASIPENUGASAN = "http://118.97.51.140:10001/map/api/setkonfirmasipenugasan?api_token=";
     // PRESENSI
     public static final String URL_GET_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen/";
+    public static final String URL_GET_HOTSPOT = "http://118.97.51.140:10001/map/api/dashboardKehadiran?api_token=";
     public static final String URL_POST_ABSEN = "http://118.97.51.140:10001/map/api/dashboardAbsen?api_token=";
     public static final String TAG_ABSEN_DATANG = "datang";
     public static final String TAG_ABSEN_PULANG = "pulang";
@@ -85,7 +86,8 @@ public class konfigurasi {
     public static final String URL_GET_ABSENALL = "http://118.97.51.140:10001/map/api/dashboardAbsenRekap/";
     // TUKIN
     public static final String URL_GET_TUKIN = "http://118.97.51.140:10001/map/api/tukin/";
-    public static final String URL_GET_HOTSPOT = "http://118.97.51.140:10001/map/api/listkehadiran?api_token=";
+    public static final String URL_GET_HOTSPOTALL = "http://118.97.51.140:10001/map/api/listkehadiran?api_token=";
+    public static final String URL_GET_HOTSPOTDETAIL = "http://118.97.51.140:10001/map/api/detailkehadiran/";
     public static final int DASHBOARD_PANEL_NOTIFIKASIATASAN = 6;
 
 
@@ -157,11 +159,15 @@ public class konfigurasi {
     public static final String TAG_UNIT = "namaunit";
     public static final String TAG_NAMAUNIT = "unit";
     public static final String TAG_TANGGAL_HOTSPOT = "tgl";
+    public static final String TAG_TANGGAL_HOTSPOT_PANJANG = "tanggal";
     public static final String TAG_DATANG = "datang";
     public static final String TAG_PULANG = "pulang";
     public static final String TAG_NAMANIP = "namanip";
     public static final String TAG_KODE_UNIT = "kode_unit";
     public static final String TAG_ACCTID = "acctid";
+    public static final String TAG_IP = "ip";
+    public static final String TAG_HOTSPOT_STATUSDATANG = "status_datang";
+    public static final String TAG_HOTSPOT_STATUSPULANG = "status_pulang";
 
     // keysort unit
     public static final String TAG_PENDIDIKANSINGKAT = "s_skt_pendidikan";
@@ -339,6 +345,7 @@ public class konfigurasi {
     public static final int DASHBOARD_PANEL_CUTI = 3;
     public static final int DASHBOARD_PANEL_JARINGAN = 4;
     public static final int DASHBOARD_PANEL_TUNJANGAN = 5;
+    public static final int DASHBOARD_PANEL_HOTSPOT = 7;
 
     public static final long animationDurationShort = 500;
 

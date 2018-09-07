@@ -50,6 +50,11 @@ public class DashboardPanel {
                     konfigurasi.DASHBOARD_PANEL_NOTIFIKASIATASAN,
                     "notifikasi_atasan",
                     R.layout.i_dashboard_panel_notifikasi_atasan
+            ),
+            new DashboardPanel(
+                    konfigurasi.DASHBOARD_PANEL_HOTSPOT,
+                    "hotspot",
+                    R.layout.i_dashboard_panel_hotspot
             )
     ));
     int panelId;

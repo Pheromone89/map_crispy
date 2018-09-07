@@ -67,8 +67,6 @@ public class HotspotAdapter extends RecyclerView.Adapter<HotspotAdapter.HotspotV
         Picasso.with(context).load(hotspot.getFoto()).into(holder.profilePictureView);
         holder.namaView.setText(hotspot.getNama());
         String nip = hotspot.getNipbaru() + " / " + hotspot.getNiplama();
-        holder.nipBaruView.setText(nip);
-        holder.tanggalView.setText(hotspot.getTanggal());
         holder.datangView.setText(hotspot.getDatang());
         holder.pulangView.setText(hotspot.getPulang());
     }
@@ -91,12 +89,10 @@ public class HotspotAdapter extends RecyclerView.Adapter<HotspotAdapter.HotspotV
 
             profilePictureView = itemView.findViewById(R.id.profic);
             namaView = itemView.findViewById(R.id.nama);
-            nipBaruView = itemView.findViewById(R.id.nipbaru);
             jabatanSingkatView = itemView.findViewById(R.id.jabatan_singkat);
             unitView = itemView.findViewById(R.id.unit);
             datangView = itemView.findViewById(R.id.datang);
             pulangView = itemView.findViewById(R.id.pulang);
-            tanggalView = itemView.findViewById(R.id.tanggal);
 
             itemView.setOnClickListener(this);
         }
@@ -104,29 +100,27 @@ public class HotspotAdapter extends RecyclerView.Adapter<HotspotAdapter.HotspotV
 
         @Override
         public void onClick(View view) {
-//            itemListener.recyclerViewListClicked(view, this.getLayoutPosition());
-//            int id = this.getLayoutPosition();
-//
-//            Hotspot hotspot = hotspotList.get(id);
-//            String empNipbaru = hotspot.getNipbaru();
-//            String empUsername = hotspot.getNipbaru();
-//            String empNiplama = hotspot.getNiplama();
-//            String empFoto = PassedIntent.getFoto(context, empNiplama);
-//
-//            Bundle bundle = new Bundle();
-//            bundle.putString(PassedIntent.INTENT_NIPBARU, empNipbaru);
-//            bundle.putString(PassedIntent.INTENT_FOTO, empFoto);
-//            bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
-//            bundle.putString(PassedIntent.INTENT_USERNAME, empUsername);
-//            bundle.putString(PassedIntent.INTENT_NIPLAMA, empNiplama);
-//
-//            HotspotFragment fragment = new HotspotFragment();
-//            FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragment.setArguments(bundle);
-//            fragmentTransaction.add(R.id.content_fragment_area, fragment);
-//            fragmentTransaction.addToBackStack(null);
-//            fragmentTransaction.commit();
+            itemListener.recyclerViewListClicked(view, this.getLayoutPosition());
+            int id = this.getLayoutPosition();
+
+            Hotspot hotspot = hotspotList.get(id);
+            String empNiplama = hotspot.getNiplama();
+            String tanggal = hotspot.getTanggal();
+            String empFoto = PassedIntent.getFoto(context, empNiplama);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(PassedIntent.INTENT_FOTO, empFoto);
+            bundle.putString(PassedIntent.INTENT_USERTOKEN, mUserToken);
+            bundle.putString(PassedIntent.INTENT_TANGGAL, tanggal);
+            bundle.putString(PassedIntent.INTENT_NIPLAMA, empNiplama);
+
+            HotspotDetailFragment fragment = new HotspotDetailFragment();
+            FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.content_fragment_area, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         }
     }
