@@ -16,10 +16,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +68,7 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
             mUserToken,
             mTanggal,
             mNipLama;
-    private String namaProfil, nipProfil, jamEfektif;
+    private String namaProfil, nipProfil, jamEfektif, fotoProfil;
     private View
             rootView;
     private TextView namaView, nipView, jamEfektifView;
@@ -75,6 +78,7 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
             hotspotDetailAdapter;
     private ArrayList<Hotspot>
             hotspotList;
+    private ImageView fotoView;
     private GifImageView loadingProgressBar;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -108,7 +112,6 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
         //bundle dari fragment sebelumnya
         mNipLama = this.getArguments().getString(PassedIntent.INTENT_NIPLAMA);
         mTanggal = this.getArguments().getString(PassedIntent.INTENT_TANGGAL);
-        Toast.makeText(getActivity(), mTanggal, Toast.LENGTH_SHORT).show();
         mUserToken = SavedInstances.userToken;
 
         hotspotList = new ArrayList<>();
@@ -124,6 +127,7 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
         dataView = rootView.findViewById(R.id.hotspot_detail);
         namaView = rootView.findViewById(R.id.dashboard_nama);
         nipView = rootView.findViewById(R.id.dashboard_nip);
+        fotoView = rootView.findViewById(R.id.dashboard_profic);
         jamEfektifView = rootView.findViewById(R.id.jam_efektif_value);
         dataView.setVisibility(View.GONE);
         detailListView.setVisibility(View.GONE);
@@ -140,6 +144,7 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
         namaView.setText(namaProfil);
         nipView.setText(nipProfil);
         jamEfektifView.setText(jamEfektif);
+        Picasso.with(getActivity()).load(fotoProfil).into(fotoView);
         hotspotDetailRecyclerView.setAdapter(hotspotDetailAdapter);
 
         dataView.setVisibility(View.VISIBLE);
@@ -187,6 +192,7 @@ public class HotspotDetailFragment extends Fragment implements RecyclerViewClick
             namaProfil = jsonObject.getString("nama");
             nipProfil = jsonObject.getString("nipbaru");
             jamEfektif = jsonObject.getString("jam_efektif");
+            fotoProfil = PassedIntent.getFoto(getActivity(), mNipLama);
             String tanggal = mTanggal;
             for (int i = 0; i < result.length(); i++) {
                 JSONObject jo = result.getJSONObject(i);
