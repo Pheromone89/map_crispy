@@ -109,6 +109,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             presensiBawahanPegawaiMenu,
             profilSemuaPegawaiMenu,
             profilPegawaiMenu,
+            hotspotMenu,
             konfirmasiPenugasanMenu;
     Menu
             rootMenu;
@@ -284,6 +285,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             profilSemuaPegawaiMenu.setTitle("Profil Semua Pegawai");
         }
         konfirmasiPenugasanMenu = navigationView.getMenu().findItem(R.id.nav_konfirmasi_penugasan);
+        hotspotMenu = navigationView.getMenu().findItem(R.id.nav_hotspot);
         //broadcast
         broadcastLayout = findViewById(R.id.dashboard_broadcast);
         broadcastImageView = findViewById(R.id.dashboard_broadcast_image);
@@ -338,6 +340,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             profilSemuaPegawaiMenu.setVisible(true);
         }
         if (isAtasan) {
+            hotspotMenu.setVisible(true);
             presensiBawahanPegawaiMenu.setVisible(true);
         }
 

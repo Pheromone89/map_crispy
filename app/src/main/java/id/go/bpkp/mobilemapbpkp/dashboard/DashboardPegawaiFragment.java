@@ -1408,16 +1408,15 @@ public class DashboardPegawaiFragment extends Fragment {
             statusDatangHotspot = jsonObject.getString(konfigurasi.TAG_HOTSPOT_STATUSDATANG);
             statusPulangHotspot = jsonObject.getString(konfigurasi.TAG_HOTSPOT_STATUSPULANG);
 
-            if (jamDatangHotspot.equals("-")) {
-                isSudahAbsenPagi = false;
-            } else {
+            if (jamDatangHotspot.equals(jamPulangHotspot)) {
+                jamPulangHotspot = "-";
                 isSudahAbsenPagi = true;
             }
-            if (jamPulangHotspot.equals("-")) {
-                isSudahAbsenSore = false;
-            } else {
-                isSudahAbsenSore = true;
-            }
+//            if (jamPulangHotspot.equals("-")) {
+//                isSudahAbsenSore = false;
+//            } else {
+//                isSudahAbsenSore = true;
+//            }
             populatePanelPresensiHotspot();
 //            } else {
 //                Toast.makeText(getActivity(), "Gagal menarik data presensi", Toast.LENGTH_SHORT).show();
