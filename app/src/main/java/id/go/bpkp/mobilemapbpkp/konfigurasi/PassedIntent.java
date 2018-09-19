@@ -54,6 +54,7 @@ public class PassedIntent {
     // foto
     public static final String INTENT_FOTO = "foto";
     public static final String INTENT_FOTOURL = "http://118.97.51.140:10000/Sispedap/showImage.do?jk=Laki-laki&id=";
+//    public static final String INTENT_FOTOURL = "http://118.97.51.140:10001/map/api/foto/";
 
     public static String getFoto(Context context, String nipLama) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
